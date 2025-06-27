@@ -1,0 +1,45 @@
+post:
+  tags:
+    - "AUTH"
+  summary: "Verify OTP - NOT READY"
+  description: ""
+  operationId: "verifyOTP"
+  consumes:
+    - "application/json"
+  produces:
+    - "application/json"
+  parameters:
+    - in: "body"
+      name: "body"
+      description: "Verifies OTP"
+      required: true
+      schema:
+        $ref: "./definitions.yaml#/InVerifyOTP"
+  responses:
+    200:
+      description: "successful operation"
+      schema:
+        type: "object"
+        properties:
+          ok:
+            type: "boolean"
+            default: true
+          data:
+            type: "object"
+            properties:
+              tokens:
+                type: "object"
+                properties:
+                  access_token:
+                    type: "string"
+                  refresh_token:
+                    type: "string"
+              is_registered:
+                type: "boolean"
+          status:
+            type: "number"
+            default: 200
+    400:
+      description: "Bad Request"
+    429:
+      description: "Throttled"

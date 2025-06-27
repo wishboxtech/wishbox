@@ -1,0 +1,30 @@
+swagger: "2.0"
+info:
+  description: "Wallet Management API Documentation; It's WIP"
+  version: "0.0.0"
+  title: "Wallet Management"
+host: "127.0.0.1:8000"
+basePath: /api/V0.0.0
+securityDefinitions:
+  ApiKeyAuth:
+    type: apiKey
+    in: header
+    name: access
+tags:
+  - name: "AUTH"
+    description: "Authentication"
+schemes:
+  - "https"
+  - "http"
+paths:
+  # AUTH
+  /auth/otp/:
+    $ref: "./auth/otp.yaml"
+  /auth/otp/verify/:
+    $ref: "./auth/verify.yaml"
+  /auth/otp/refresh/:
+    $ref: "./auth/refresh.yaml"
+  
+  # WALLET
+  /wallet/card/:
+    $ref: "./wallet/create_card.yaml"

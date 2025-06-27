@@ -1,0 +1,42 @@
+post:
+  tags:
+    - "AUTH"
+  summary: "Refresh OTP - NOT READY"
+  description: ""
+  operationId: "refreshOTP"
+  consumes:
+    - "application/json"
+  produces:
+    - "application/json"
+  parameters:
+    - in: "body"
+      name: "body"
+      description: "refreshes OTP"
+      required: true
+      schema:
+        type: "object"
+        properties:
+          refresh_token:
+            type: "string"
+  responses:
+    200:
+      description: "successful operation"
+      schema:
+        type: "object"
+        properties:
+          ok:
+            type: "boolean"
+          data:
+            type: "object"
+            properties:
+              access_token:
+                type: "string"
+              refresh_token:
+                type: "string"
+          status:
+            type: "number"
+            default: 200
+    400:
+      description: "Bad Request"
+    429:
+      description: "Throttled"

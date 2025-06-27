@@ -1,0 +1,199 @@
+swagger: '2.0'
+info:
+  description: Wallet Management API Documentation; It's WIP
+  version: 0.0.0
+  title: Wallet Management
+host: '127.0.0.1:8000'
+basePath: /api/V0.0.0
+securityDefinitions:
+  ApiKeyAuth:
+    type: apiKey
+    in: header
+    name: access
+tags:
+  - name: AUTH
+    description: Authentication
+schemes:
+  - https
+  - http
+paths:
+  /auth/otp/:
+    post:
+      tags:
+        - AUTH
+      summary: Send OTP - NOT READY
+      description: Send a new OTP in order to login or create a new guest
+      operationId: sendOTP
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Sends a new OTP
+          required: true
+          schema:
+            type: object
+            properties:
+              phone_number:
+                type: string
+      responses:
+        '201':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  otp_id:
+                    type: string
+              status:
+                type: number
+                default: 201
+        '400':
+          description: Bad Request
+        '429':
+          description: Throttled
+  /auth/otp/verify/:
+    post:
+      tags:
+        - AUTH
+      summary: Verify OTP - NOT READY
+      description: ''
+      operationId: verifyOTP
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Verifies OTP
+          required: true
+          schema:
+            type: object
+            properties:
+              otp_id:
+                type: string
+              otp_code:
+                type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                default: true
+              data:
+                type: object
+                properties:
+                  tokens:
+                    type: object
+                    properties:
+                      access_token:
+                        type: string
+                      refresh_token:
+                        type: string
+                  is_registered:
+                    type: boolean
+              status:
+                type: number
+                default: 200
+        '400':
+          description: Bad Request
+        '429':
+          description: Throttled
+  /auth/otp/refresh/:
+    post:
+      tags:
+        - AUTH
+      summary: Refresh OTP - NOT READY
+      description: ''
+      operationId: refreshOTP
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: refreshes OTP
+          required: true
+          schema:
+            type: object
+            properties:
+              refresh_token:
+                type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  refresh_token:
+                    type: string
+              status:
+                type: number
+                default: 200
+        '400':
+          description: Bad Request
+        '429':
+          description: Throttled
+  /wallet/card/:
+    post:
+      tags:
+        - WALLET
+      summary: Create Card - READY
+      description: Create new card for a user
+      operationId: createCard
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: card number
+          required: true
+          schema:
+            type: object
+            properties:
+              card_number:
+                type: string
+      responses:
+        '201':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  user:
+                    type: string
+                  card_number:
+                    type: string
+              status:
+                type: number
+                default: 201
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized

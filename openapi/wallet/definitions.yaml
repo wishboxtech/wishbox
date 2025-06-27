@@ -1,0 +1,16 @@
+Card:
+  type: "object"
+  properties:
+    card_number:
+      type: "string"
+
+CardResponse:
+  type: "object"
+  properties:
+    id:
+      type: "string"
+    user:
+      type: "string"
+    card_number:
+      type: "string"
+    

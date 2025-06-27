@@ -1,0 +1,34 @@
+post:
+  tags:
+    - "AUTH"
+  summary: "Send OTP - NOT READY"
+  description: "Send a new OTP in order to login or create a new guest"
+  operationId: "sendOTP"
+  consumes:
+    - "application/json"
+  produces:
+    - "application/json"
+  parameters:
+    - in: "body"
+      name: "body"
+      description: "Sends a new OTP"
+      required: true
+      schema:
+        $ref: "./definitions.yaml#/PhoneNumber"
+  responses:
+    201:
+      description: "successful operation"
+      schema:
+        type: "object"
+        properties:
+          ok:
+            type: "boolean"
+          data:
+            $ref: "./definitions.yaml#/OTPResponse"
+          status:
+            type: "number"
+            default: 201
+    400:
+      description: "Bad Request"
+    429:
+      description: "Throttled"

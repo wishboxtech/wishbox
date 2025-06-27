@@ -1,0 +1,17 @@
+## Definitions for API documentation.
+
+Note that the "WIP" Tag means that it's not developed yet.
+
+## How to make swagger.yaml file 
+
+1) Install swagger-cli using npm:
+
+```
+npm install -g swagger-cli
+```
+
+2) Use swagger-cli to bundle your schema into a single file:
+
+```
+swagger-cli bundle --outfile swagger.yaml --type yaml schema.yaml
+```

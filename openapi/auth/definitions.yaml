@@ -1,0 +1,19 @@
+PhoneNumber:
+  type: "object"
+  properties:
+    phone_number:
+      type: "string"
+
+OTPResponse:
+  type: "object"
+  properties:
+    otp_id:
+      type: "string"
+
+InVerifyOTP:
+  type: "object"
+  properties:
+    otp_id:
+      type: "string"
+    otp_code:
+      type: "string"
