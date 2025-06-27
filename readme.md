@@ -1,4 +1,4 @@
-# Django Project Template
+# Wishbox structure
 
 A clean and structured python/Django template with OTP-Authenticatin
 
