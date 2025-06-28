@@ -25,6 +25,3 @@ paths:
   /auth/otp/refresh/:
     $ref: "./auth/refresh.yaml"
   
-  # WALLET
-  /wallet/card/:
-    $ref: "./wallet/create_card.yaml"

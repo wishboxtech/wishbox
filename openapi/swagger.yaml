@@ -21,7 +21,7 @@ paths:
     post:
       tags:
         - AUTH
-      summary: Send OTP - NOT READY
+      summary: Send OTP - READY
       description: Send a new OTP in order to login or create a new guest
       operationId: sendOTP
       consumes:
@@ -62,7 +62,7 @@ paths:
     post:
       tags:
         - AUTH
-      summary: Verify OTP - NOT READY
+      summary: Verify OTP - READY
       description: ''
       operationId: verifyOTP
       consumes:
@@ -152,48 +152,3 @@ paths:
           description: Bad Request
         '429':
           description: Throttled
-  /wallet/card/:
-    post:
-      tags:
-        - WALLET
-      summary: Create Card - READY
-      description: Create new card for a user
-      operationId: createCard
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: body
-          description: card number
-          required: true
-          schema:
-            type: object
-            properties:
-              card_number:
-                type: string
-      responses:
-        '201':
-          description: successful operation
-          schema:
-            type: object
-            properties:
-              ok:
-                type: boolean
-              data:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  user:
-                    type: string
-                  card_number:
-                    type: string
-              status:
-                type: number
-                default: 201
-        '400':
-          description: Bad Request
-        '401':
-          description: Unauthorized

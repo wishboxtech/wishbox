@@ -1,1 +1,2 @@
 from src.api.views.authentication.send_otp import SendOneTimePassword
+from src.api.views.authentication.verify_token import VerifyOneTimePasswordAPIView

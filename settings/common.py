@@ -182,7 +182,6 @@ DJANGO_APPS = (
     "src.api",
     "src.apps.authentication",
     "src.apps.website",
-    "src.apps.wallet",
 )
 
 THIRD_PARTY_APPS = ("rest_framework",)

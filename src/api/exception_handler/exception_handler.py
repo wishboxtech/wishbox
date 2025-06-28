@@ -5,7 +5,6 @@ from src.utils.exceptions import NotFoundException, BadRequestException, Unautho
 from rest_framework.exceptions import NotAuthenticated
 from src.static import ErrorEnum
 
-
 def api_exception_handler(exc, context):
     """
     Custom exception handler for handling project-specific exceptions
