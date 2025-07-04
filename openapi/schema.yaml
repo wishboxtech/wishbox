@@ -25,3 +25,16 @@ paths:
   /auth/otp/refresh/:
     $ref: "./auth/refresh.yaml"
   
+  # Profile
+  /profile/{profileid}/:
+    $ref: "./profile/profile.yaml"
+  
+  # Storage
+  /storage/upload/:
+    $ref: "./storage/upload.yaml"
+
+  # Wishlist
+  /wishlist/{profileid}/:
+    $ref: "./wishlist/wishlist.yaml"
+  /wishlist/{profileid}/wish/:
+    $ref: "./wishlist/wish.yaml"

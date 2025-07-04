@@ -1,0 +1,126 @@
+get:
+  tags:
+    - "Profile"
+  summary: "Get Profile - NOT READY"
+  description: ""
+  consumes:
+    - "application/json"
+  produces:
+    - "application/json"
+  security:
+    - ApiKeyAuth: []
+  parameters:
+    - name: "profileid"
+      in: "path"
+      description: "user profile id"
+      required: True
+      type: "string"
+  responses:
+    200:
+      description: "successful operation"
+      schema:
+        type: "object"
+        properties:
+          ok:
+            type: "boolean"
+          data:
+            $ref: "./definitions.yaml#/UserProfile"
+          status:
+            type: "number"
+            default: 201
+    400:
+      description: "Bad Request"
+    429:
+      description: "Throttled"
+
+
+patch:
+  tags:
+    - "Profile"
+  summary: "Update Profile - NOT READY"
+  description: "for avatar put media_id in avatar"
+  operationId: "updateProfile"
+  consumes:
+    - "application/json"
+  produces:
+    - "application/json"
+  security:
+    - ApiKeyAuth: []
+  parameters:
+    - in: "body"
+      name: "body"
+      description: "Updates Profile"
+      required: true
+      schema:
+        $ref: "./definitions.yaml#/UpdateProfile"
+  responses:
+    200:
+      description: "successful operation"
+      schema:
+        type: "object"
+        properties:
+          ok:
+            type: "boolean"
+            default: true
+          data:
+            $ref: "./definitions.yaml#/UserProfile"
+          status:
+            type: "number"
+            default: 200
+    400:
+      description: "Bad Request"
+    401:
+      description: "Unauthorized"
+    403:
+      description: "forbidden"
+
+
+put:
+  tags:
+    - "Profile"
+  summary: "Create Profile - NOT READY"
+  description: "Creates profile for new users(or the one that didn't complete)"
+  operationId: "createProfile"
+  consumes:
+    - "application/json"
+  produces:
+    - "application/json"
+  security:
+    - ApiKeyAuth: []
+  parameters:
+    - in: "body"
+      name: "body"
+      description: "Updates Profile"
+      required: true
+      schema:
+        $ref: "./definitions.yaml#/CreateProfileRequest"
+  responses:
+    200:
+      description: "successful operation"
+      schema:
+        type: "object"
+        properties:
+          ok:
+            type: "boolean"
+            default: true
+          data:
+            type: "object"
+            properties:
+              profile:
+                $ref: "./definitions.yaml#/UserProfile"
+              tokens:
+                type: "object"
+                properties:
+                  access_token:
+                    type: "string"
+                  refresh_token:
+                    type: "string"
+          status:
+            type: "number"
+            default: 200
+    400:
+      description: "Bad Request"
+    401:
+      description: "Unauthorized"
+    403:
+      description: "forbidden"

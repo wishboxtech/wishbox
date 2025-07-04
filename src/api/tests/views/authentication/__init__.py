@@ -4,3 +4,6 @@ from src.api.tests.views.authentication.send_otp import (
 from src.api.tests.views.authentication.verify_otp import (
     VerifyOneTimePasswordViewTestCase
 )
+from src.api.tests.views.authentication.refresh_token import (
+    RefreshTokenAPIViewTestCase
+)

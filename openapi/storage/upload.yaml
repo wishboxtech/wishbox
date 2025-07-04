@@ -1,0 +1,43 @@
+post:
+  tags:
+    - "Storage"
+  summary: "upload file"
+  description: ""
+  operationId: "uploadFile"
+  consumes:
+    - "application/json"
+  produces:
+    - "application/json"
+  security:
+    - ApiKeyAuth: []
+  parameters:
+    - in: "body"
+      name: "body"
+      description: "Upload File"
+      required: true
+      schema:
+        type: "object"
+        properties:
+          file:
+            type: "string"
+  responses:
+    201:
+      description: "successful operation"
+      schema:
+        type: "object"
+        properties:
+          ok:
+            type: "boolean"
+            default: true
+          data:
+            type: object
+            properties:
+              media_id:
+                type: "string"
+          status:
+            type: "number"
+            default: 201
+    400:
+      description: "Bad Request"
+    429:
+      description: "Throttled"
