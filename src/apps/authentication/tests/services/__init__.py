@@ -6,3 +6,4 @@ from src.apps.authentication.tests.services.create_user import CreateUserService
 from src.apps.authentication.tests.services.otp_exists import OTPExistServiceTestCase
 from src.apps.authentication.tests.services.refresh import RefreshServiceTestCase
 from src.apps.authentication.tests.services.verify_otp import VerifyOTPServiceTestCase
+from src.apps.authentication.tests.services.get_user import GetUserIDServiceTestCase

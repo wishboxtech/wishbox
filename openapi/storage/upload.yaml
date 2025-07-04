@@ -1,20 +1,25 @@
 post:
   tags:
-    - "WALLET"
-  summary: "Create Card - READY"
-  description: "Create new card for a user"
-  operationId: "createCard"
+    - "Storage"
+  summary: "upload file"
+  description: ""
+  operationId: "uploadFile"
   consumes:
     - "application/json"
   produces:
     - "application/json"
+  security:
+    - ApiKeyAuth: []
   parameters:
     - in: "body"
       name: "body"
-      description: "card number"
+      description: "Upload File"
       required: true
       schema:
-        $ref: "./definitions.yaml#/Card"
+        type: "object"
+        properties:
+          file:
+            type: "string"
   responses:
     201:
       description: "successful operation"
@@ -23,12 +28,16 @@ post:
         properties:
           ok:
             type: "boolean"
+            default: true
           data:
-            $ref: "./definitions.yaml#/CardResponse"
+            type: object
+            properties:
+              media_id:
+                type: "string"
           status:
             type: "number"
             default: 201
     400:
       description: "Bad Request"
-    401:
-      description: "Unauthorized"
+    429:
+      description: "Throttled"

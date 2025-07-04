@@ -1,0 +1,52 @@
+UserProfile:
+  type: "object"
+  properties:
+    id:
+      type: "string"
+    phone_number:
+      type: "string"
+    first_name:
+      type: "string"
+    last_name:
+      type: "string"
+    email:
+      type: "string"
+    birth_date:
+      type: "string"
+      format: "date"
+    gender:
+      type: "string"
+      default: "M"
+    is_user_completed:
+      type: "boolean"
+    is_phone_number_verified:
+      type: "boolean"
+    has_accepted_terms:
+      type: "boolean"
+    avatar:
+      $ref: "../storage/definitions.yaml#/MediaModel"
+
+UpdateProfile:
+  type: "object"
+  properties:
+    username:
+      type: "string"
+    birth_date:
+      type: "string"
+      format: "date"
+    gender:
+      type: "string"
+      default: "F"
+    avatar:
+      type: "string"
+    email:
+      type: "string"
+
+CreateProfileRequest:
+  type: "object"
+  properties:
+    birth_date:
+      type: "string"
+      format: "date"
+    has_accepted_terms:
+      type: "string"

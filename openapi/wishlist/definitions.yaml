@@ -1,0 +1,95 @@
+CreateWishlist:
+  type: "object"
+  properties:
+    name:
+      type: "string"
+      format: "string"
+    cover:
+      type: "string"
+
+EditWishlist:
+  type: "object"
+  properties:
+    name:
+      type: "string"
+      format: "string"
+    cover:
+      type: "string"
+
+
+Wishlists:
+  properties:
+    wishlist:
+      type: "array"
+      items:
+        type: "object"
+        properties:
+          id:
+            type: "string"
+          name:
+            type: "string"
+          cover:
+            $ref: "../storage/definitions.yaml#/MediaModel"
+
+CreateWish:
+  type: "object"
+  properties:
+    name:
+      type: "string"
+      format: "string"
+    description:
+      type: "string"
+    price:
+      type: "string"
+    cover:
+      type: "string"
+      
+EditWish:
+  type: "object"
+  properties:
+    name:
+      type: "string"
+      format: "string"
+    description:
+      type: "string"
+    price:
+      type: "string"
+    cover:
+      type: "string"
+
+Wishes:
+  type: "array"
+  items:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        format: "string"
+      description:
+        type: "string"
+      price:
+        type: "string"
+      is_reserved:
+        type: "boolean"
+      reserver_nickname:
+        type: "string"
+      cover:
+        type: "string"
+
+Wish:
+  type: "object"
+  properties:
+    name:
+      type: "string"
+      format: "string"
+    description:
+      type: "string"
+    price:
+      type: "string"
+    is_reserved:
+      type: "boolean"
+    reserver_nickname:
+      type: "string"
+    cover:
+      type: "string"
+        

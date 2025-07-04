@@ -28,9 +28,9 @@ nats-py==2.9.0
     # via -r common.in
 psycopg==3.2.3
     # via -r common.in
-psycopg-pool==3.2.4
+psycopg-binary==3.2.3
     # via -r common.in
-psycopg2-binary==2.9.10
+psycopg-pool==3.2.4
     # via -r common.in
 pycparser==2.22
     # via cffi

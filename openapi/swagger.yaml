@@ -21,7 +21,7 @@ paths:
     post:
       tags:
         - AUTH
-      summary: Send OTP - NOT READY
+      summary: Send OTP - READY
       description: Send a new OTP in order to login or create a new guest
       operationId: sendOTP
       consumes:
@@ -62,7 +62,7 @@ paths:
     post:
       tags:
         - AUTH
-      summary: Verify OTP - NOT READY
+      summary: Verify OTP - READY
       description: ''
       operationId: verifyOTP
       consumes:
@@ -152,29 +152,26 @@ paths:
           description: Bad Request
         '429':
           description: Throttled
-  /wallet/card/:
-    post:
+  '/profile/{profileid}/':
+    get:
       tags:
-        - WALLET
-      summary: Create Card - READY
-      description: Create new card for a user
-      operationId: createCard
+        - Profile
+      summary: Get Profile - NOT READY
+      description: ''
       consumes:
         - application/json
       produces:
         - application/json
+      security:
+        - ApiKeyAuth: []
       parameters:
-        - in: body
-          name: body
-          description: card number
+        - name: profileid
+          in: path
+          description: user profile id
           required: true
-          schema:
-            type: object
-            properties:
-              card_number:
-                type: string
+          type: string
       responses:
-        '201':
+        '200':
           description: successful operation
           schema:
             type: object
@@ -186,14 +183,493 @@ paths:
                 properties:
                   id:
                     type: string
-                  user:
+                  phone_number:
                     type: string
-                  card_number:
+                  first_name:
+                    type: string
+                  last_name:
+                    type: string
+                  email:
+                    type: string
+                  birth_date:
+                    type: string
+                    format: date
+                  gender:
+                    type: string
+                    default: M
+                  is_user_completed:
+                    type: boolean
+                  is_phone_number_verified:
+                    type: boolean
+                  has_accepted_terms:
+                    type: boolean
+                  avatar:
+                    type: object
+                    properties:
+                      file:
+                        type: string
+                        format: url
+              status:
+                type: number
+                default: 201
+        '400':
+          description: Bad Request
+        '429':
+          description: Throttled
+    patch:
+      tags:
+        - Profile
+      summary: Update Profile - NOT READY
+      description: for avatar put media_id in avatar
+      operationId: updateProfile
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: body
+          name: body
+          description: Updates Profile
+          required: true
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+              birth_date:
+                type: string
+                format: date
+              gender:
+                type: string
+                default: F
+              avatar:
+                type: string
+              email:
+                type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                default: true
+              data:
+                $ref: '#/paths/~1profile~1%7Bprofileid%7D~1/get/responses/200/schema/properties/data'
+              status:
+                type: number
+                default: 200
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: forbidden
+    put:
+      tags:
+        - Profile
+      summary: Create Profile - NOT READY
+      description: Creates profile for new users(or the one that didn't complete)
+      operationId: createProfile
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: body
+          name: body
+          description: Updates Profile
+          required: true
+          schema:
+            type: object
+            properties:
+              birth_date:
+                type: string
+                format: date
+              has_accepted_terms:
+                type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                default: true
+              data:
+                type: object
+                properties:
+                  profile:
+                    $ref: '#/paths/~1profile~1%7Bprofileid%7D~1/get/responses/200/schema/properties/data'
+                  tokens:
+                    type: object
+                    properties:
+                      access_token:
+                        type: string
+                      refresh_token:
+                        type: string
+              status:
+                type: number
+                default: 200
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: forbidden
+  /storage/upload/:
+    post:
+      tags:
+        - Storage
+      summary: upload file
+      description: ''
+      operationId: uploadFile
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: body
+          name: body
+          description: Upload File
+          required: true
+          schema:
+            type: object
+            properties:
+              file:
+                type: string
+      responses:
+        '201':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                default: true
+              data:
+                type: object
+                properties:
+                  media_id:
                     type: string
               status:
                 type: number
                 default: 201
         '400':
           description: Bad Request
+        '429':
+          description: Throttled
+  '/wishlist/{profileid}/':
+    post:
+      tags:
+        - Wishlist
+      summary: Create Wishlist - NOT READY
+      description: null
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: profileid
+          in: path
+          description: user profile id
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Create Wishlist
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                format: string
+              cover:
+                type: string
+      responses:
+        '201':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                default: true
+              data:
+                type: object
+                properties:
+                  done:
+                    type: string
+              status:
+                type: number
+                default: 200
+        '400':
+          description: Bad Request
         '401':
           description: Unauthorized
+        '403':
+          description: forbidden
+    patch:
+      tags:
+        - Wishlist
+      summary: Edit Wishlist - NOT READY
+      description: null
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: profileid
+          in: path
+          description: user profile id
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Edit Wishlist
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                format: string
+              cover:
+                type: string
+      responses:
+        '201':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                default: true
+              data:
+                type: object
+                properties:
+                  done:
+                    type: string
+              status:
+                type: number
+                default: 200
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: forbidden
+    get:
+      tags:
+        - Wishlist
+      summary: Get User Wishlists - NOT READY
+      description: null
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: profileid
+          in: path
+          description: user profile id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+              data:
+                properties:
+                  wishlist:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        cover:
+                          $ref: '#/paths/~1profile~1%7Bprofileid%7D~1/get/responses/200/schema/properties/data/properties/avatar'
+              status:
+                type: number
+                default: 201
+        '400':
+          description: Bad Request
+        '429':
+          description: Throttled
+  '/wishlist/{profileid}/wish/':
+    post:
+      tags:
+        - Wishlist
+      summary: Create Wish - NOT READY
+      description: null
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: profileid
+          in: path
+          description: user profile id
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Create Wishlist
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                format: string
+              description:
+                type: string
+              price:
+                type: string
+              cover:
+                type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                default: true
+              data:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    format: string
+                  description:
+                    type: string
+                  price:
+                    type: string
+                  is_reserved:
+                    type: boolean
+                  reserver_nickname:
+                    type: string
+                  cover:
+                    type: string
+              status:
+                type: number
+                default: 200
+    patch:
+      tags:
+        - Wishlist
+      summary: Edit Wish - NOT READY
+      description: null
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: profileid
+          in: path
+          description: user profile id
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Edit Wishlist
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                format: string
+              description:
+                type: string
+              price:
+                type: string
+              cover:
+                type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                default: true
+              data:
+                $ref: '#/paths/~1wishlist~1%7Bprofileid%7D~1wish~1/post/responses/200/schema/properties/data'
+              status:
+                type: number
+                default: 200
+    get:
+      tags:
+        - Wishlist
+      summary: Get Wishes - NOT READY
+      description: null
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: profileid
+          in: path
+          description: user profile id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                default: true
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      format: string
+                    description:
+                      type: string
+                    price:
+                      type: string
+                    is_reserved:
+                      type: boolean
+                    reserver_nickname:
+                      type: string
+                    cover:
+                      type: string
+              status:
+                type: number
+                default: 200
