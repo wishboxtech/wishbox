@@ -1,35 +1,15 @@
-CreateWishlist:
-  type: "object"
-  properties:
-    name:
-      type: "string"
-      format: "string"
-    cover:
-      type: "string"
-
 EditWishlist:
   type: "object"
   properties:
+    id:
+      type: "string"
+      description: "wishlist id"
     name:
       type: "string"
       format: "string"
     cover:
       type: "string"
 
-
-Wishlists:
-  properties:
-    wishlist:
-      type: "array"
-      items:
-        type: "object"
-        properties:
-          id:
-            type: "string"
-          name:
-            type: "string"
-          cover:
-            $ref: "../storage/definitions.yaml#/MediaModel"
 
 CreateWish:
   type: "object"
@@ -47,6 +27,8 @@ CreateWish:
 EditWish:
   type: "object"
   properties:
+    id:
+      type: "string"
     name:
       type: "string"
       format: "string"
@@ -62,6 +44,8 @@ Wishes:
   items:
     type: "object"
     properties:
+      id:
+        type: "string"
       name:
         type: "string"
         format: "string"
@@ -79,6 +63,8 @@ Wishes:
 Wish:
   type: "object"
   properties:
+    id:
+      type: "string"
     name:
       type: "string"
       format: "string"
@@ -92,4 +78,39 @@ Wish:
       type: "string"
     cover:
       type: "string"
-        
+
+
+CreateWishlist:
+  type: "object"
+  properties:
+    name:
+      type: "string"
+      format: "string"
+    cover:
+      type: "string"
+
+Wishlists:
+  properties:
+    wishlist:
+      type: "array"
+      items:
+        type: "object"
+        properties:
+          id:
+            type: "string"
+          name:
+            type: "string"
+          cover:
+            $ref: "../storage/definitions.yaml#/MediaModel"
+
+Request:
+  type: "object"
+  properties:
+    nickname:
+      type: "string"
+
+RequestComplete:
+  type: "object"
+  properties:
+    done:
+      type: "string"

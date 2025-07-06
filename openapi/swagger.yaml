@@ -113,7 +113,7 @@ paths:
     post:
       tags:
         - AUTH
-      summary: Refresh OTP - NOT READY
+      summary: Refresh OTP - READY
       description: ''
       operationId: refreshOTP
       consumes:
@@ -323,6 +323,150 @@ paths:
           description: Unauthorized
         '403':
           description: forbidden
+  '/profile/{profileid}/wishlist/':
+    post:
+      tags:
+        - Profile
+      summary: Create Wishlist - NOT READY
+      description: null
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: user profile id
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Create Wishlist
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                format: string
+              cover:
+                type: string
+      responses:
+        '201':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                default: true
+              data:
+                type: object
+                properties:
+                  done:
+                    type: string
+              status:
+                type: number
+                default: 200
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: forbidden
+    patch:
+      tags:
+        - Profile
+      summary: Edit Wishlist - NOT READY
+      description: null
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: user profile id
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Edit Wishlist
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                description: wishlist id
+              name:
+                type: string
+                format: string
+              cover:
+                type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                default: true
+              data:
+                $ref: '#/paths/~1wishlist~1%7Bid%7D~1/post/responses/200/schema/properties/data'
+              status:
+                type: number
+                default: 200
+    get:
+      tags:
+        - Profile
+      summary: Get User Wishlists - NOT READY
+      description: null
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: ''
+          in: path
+          description: user profile id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+              data:
+                properties:
+                  wishlist:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        cover:
+                          $ref: '#/paths/~1profile~1%7Bprofileid%7D~1/get/responses/200/schema/properties/data/properties/avatar'
+              status:
+                type: number
+                default: 201
+        '400':
+          description: Bad Request
+        '429':
+          description: Throttled
   /storage/upload/:
     post:
       tags:
@@ -367,157 +511,7 @@ paths:
           description: Bad Request
         '429':
           description: Throttled
-  '/wishlist/{profileid}/':
-    post:
-      tags:
-        - Wishlist
-      summary: Create Wishlist - NOT READY
-      description: null
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: profileid
-          in: path
-          description: user profile id
-          required: true
-          type: string
-        - in: body
-          name: body
-          description: Create Wishlist
-          required: true
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-                format: string
-              cover:
-                type: string
-      responses:
-        '201':
-          description: successful operation
-          schema:
-            type: object
-            properties:
-              ok:
-                type: boolean
-                default: true
-              data:
-                type: object
-                properties:
-                  done:
-                    type: string
-              status:
-                type: number
-                default: 200
-        '400':
-          description: Bad Request
-        '401':
-          description: Unauthorized
-        '403':
-          description: forbidden
-    patch:
-      tags:
-        - Wishlist
-      summary: Edit Wishlist - NOT READY
-      description: null
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: profileid
-          in: path
-          description: user profile id
-          required: true
-          type: string
-        - in: body
-          name: body
-          description: Edit Wishlist
-          required: true
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-                format: string
-              cover:
-                type: string
-      responses:
-        '201':
-          description: successful operation
-          schema:
-            type: object
-            properties:
-              ok:
-                type: boolean
-                default: true
-              data:
-                type: object
-                properties:
-                  done:
-                    type: string
-              status:
-                type: number
-                default: 200
-        '400':
-          description: Bad Request
-        '401':
-          description: Unauthorized
-        '403':
-          description: forbidden
-    get:
-      tags:
-        - Wishlist
-      summary: Get User Wishlists - NOT READY
-      description: null
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: profileid
-          in: path
-          description: user profile id
-          required: true
-          type: string
-      responses:
-        '200':
-          description: successful operation
-          schema:
-            type: object
-            properties:
-              ok:
-                type: boolean
-              data:
-                properties:
-                  wishlist:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        name:
-                          type: string
-                        cover:
-                          $ref: '#/paths/~1profile~1%7Bprofileid%7D~1/get/responses/200/schema/properties/data/properties/avatar'
-              status:
-                type: number
-                default: 201
-        '400':
-          description: Bad Request
-        '429':
-          description: Throttled
-  '/wishlist/{profileid}/wish/':
+  '/wishlist/{id}/':
     post:
       tags:
         - Wishlist
@@ -530,9 +524,9 @@ paths:
       security:
         - ApiKeyAuth: []
       parameters:
-        - name: profileid
+        - name: id
           in: path
-          description: user profile id
+          description: user wishlist id
           required: true
           type: string
         - in: body
@@ -563,6 +557,8 @@ paths:
               data:
                 type: object
                 properties:
+                  id:
+                    type: string
                   name:
                     type: string
                     format: string
@@ -582,7 +578,7 @@ paths:
     patch:
       tags:
         - Wishlist
-      summary: Edit Wish - NOT READY
+      summary: Edit Wishes - NOT READY
       description: null
       consumes:
         - application/json
@@ -591,18 +587,20 @@ paths:
       security:
         - ApiKeyAuth: []
       parameters:
-        - name: profileid
+        - name: id
           in: path
-          description: user profile id
+          description: user wishlist id
           required: true
           type: string
         - in: body
           name: body
-          description: Edit Wishlist
+          description: Create Wishlist
           required: true
           schema:
             type: object
             properties:
+              id:
+                type: string
               name:
                 type: string
                 format: string
@@ -622,7 +620,7 @@ paths:
                 type: boolean
                 default: true
               data:
-                $ref: '#/paths/~1wishlist~1%7Bprofileid%7D~1wish~1/post/responses/200/schema/properties/data'
+                $ref: '#/paths/~1wishlist~1%7Bid%7D~1/get/responses/200/schema/properties/data'
               status:
                 type: number
                 default: 200
@@ -638,9 +636,9 @@ paths:
       security:
         - ApiKeyAuth: []
       parameters:
-        - name: profileid
+        - name: id
           in: path
-          description: user profile id
+          description: user wishlist id
           required: true
           type: string
       responses:
@@ -657,6 +655,8 @@ paths:
                 items:
                   type: object
                   properties:
+                    id:
+                      type: string
                     name:
                       type: string
                       format: string
@@ -670,6 +670,86 @@ paths:
                       type: string
                     cover:
                       type: string
+              status:
+                type: number
+                default: 200
+  '/wishlist/{id}/wish/{wishid}/':
+    get:
+      tags:
+        - Wishlist
+      summary: Get Wish By Id - NOT READY
+      description: null
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: user wishlist id
+          required: true
+          type: string
+        - name: wishid
+          description: user wish id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                default: true
+              data:
+                $ref: '#/paths/~1wishlist~1%7Bid%7D~1/post/responses/200/schema/properties/data'
+              status:
+                type: number
+                default: 200
+  '/wishlist/{id}/wish/{wishid}/request/':
+    post:
+      tags:
+        - Wishlist
+      summary: Request To Reserve a Wish - NOT READY
+      description: null
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: user wishlist id
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Create Wishlist
+          required: true
+          schema:
+            type: object
+            properties:
+              nickname:
+                type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                default: true
+              data:
+                type: object
+                properties:
+                  done:
+                    type: string
               status:
                 type: number
                 default: 200
