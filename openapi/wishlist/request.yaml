@@ -1,7 +1,7 @@
-get:
+post:
   tags:
     - "Wishlist"
-  summary: "Get Wish By Id - NOT READY"
+  summary: "Request To Reserve a Wish - NOT READY"
   description:
   consumes:
     - "application/json"
@@ -15,10 +15,12 @@ get:
       description: "user wishlist id"
       required: True
       type: "string"
-    - name: "wishid"
-      description: "user wish id"
-      required: True
-      type: "string"
+    - in: "body"
+      name: "body"
+      description: "Create Wishlist"
+      required: true
+      schema:
+        $ref: "./definitions.yaml#/Request"
   responses:
     200:
       description: "successful operation"
@@ -29,8 +31,7 @@ get:
             type: "boolean"
             default: true
           data:
-            $ref: "./definitions.yaml#/Wish"
+            $ref: "./definitions.yaml#/RequestComplete"
           status:
             type: "number"
             default: 200
-

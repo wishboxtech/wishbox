@@ -1,7 +1,7 @@
 post:
   tags:
     - "AUTH"
-  summary: "Refresh OTP - NOT READY"
+  summary: "Refresh OTP - READY"
   description: ""
   operationId: "refreshOTP"
   consumes:

@@ -1,7 +1,7 @@
 post:
   tags:
-    - "Wishlist"
-  summary: "Create Wish - NOT READY"
+    - "Profile"
+  summary: "Create Wishlist - NOT READY"
   description:
   consumes:
     - "application/json"
@@ -12,7 +12,7 @@ post:
   parameters:
     - name: "id"
       in: "path"
-      description: "user wishlist id"
+      description: "user profile id"
       required: True
       type: "string"
     - in: "body"
@@ -20,9 +20,9 @@ post:
       description: "Create Wishlist"
       required: true
       schema:
-        $ref: "./definitions.yaml#/CreateWish"
+        $ref: "../wishlist/definitions.yaml#/CreateWishlist"
   responses:
-    200:
+    201:
       description: "successful operation"
       schema:
         type: "object"
@@ -31,15 +31,24 @@ post:
             type: "boolean"
             default: true
           data:
-            $ref: "./definitions.yaml#/Wish"
+            type: "object"
+            properties:
+              done:
+                type: "string"
           status:
             type: "number"
             default: 200
+    400:
+      description: "Bad Request"
+    401:
+      description: "Unauthorized"
+    403:
+      description: "forbidden"
 
 patch:
   tags:
-    - "Wishlist"
-  summary: "Edit Wishes - NOT READY"
+    - "Profile"
+  summary: "Edit Wishlist - NOT READY"
   description:
   consumes:
     - "application/json"
@@ -50,15 +59,15 @@ patch:
   parameters:
     - name: "id"
       in: "path"
-      description: "user wishlist id"
+      description: "user profile id"
       required: True
       type: "string"
     - in: "body"
       name: "body"
-      description: "Create Wishlist"
+      description: "Edit Wishlist"
       required: true
       schema:
-        $ref: "./definitions.yaml#/EditWish"
+        $ref: "../wishlist/definitions.yaml#/EditWishlist"
   responses:
     200:
       description: "successful operation"
@@ -69,15 +78,17 @@ patch:
             type: "boolean"
             default: true
           data:
-            $ref: "./definitions.yaml#/Wishes"
+            $ref: "../wishlist/definitions.yaml#/Wish"
           status:
             type: "number"
             default: 200
 
+
+
 get:
   tags:
-    - "Wishlist"
-  summary: "Get Wishes - NOT READY"
+    - "Profile"
+  summary: "Get User Wishlists - NOT READY"
   description:
   consumes:
     - "application/json"
@@ -86,9 +97,9 @@ get:
   security:
     - ApiKeyAuth: []
   parameters:
-    - name: "id"
+    - name: ""
       in: "path"
-      description: "user wishlist id"
+      description: "user profile id"
       required: True
       type: "string"
   responses:
@@ -99,9 +110,12 @@ get:
         properties:
           ok:
             type: "boolean"
-            default: true
           data:
-            $ref: "./definitions.yaml#/Wishes"
+            $ref: "../wishlist/definitions.yaml#/Wishlists"
           status:
             type: "number"
-            default: 200
+            default: 201
+    400:
+      description: "Bad Request"
+    429:
+      description: "Throttled"
