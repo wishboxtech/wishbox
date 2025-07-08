@@ -1,0 +1,1 @@
+from src.apps.profile.serializers.profile import ProfileSerializer

@@ -1,7 +1,7 @@
 UserProfile:
   type: "object"
   properties:
-    id:
+    profile_id:
       type: "string"
     phone_number:
       type: "string"

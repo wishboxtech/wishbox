@@ -1,8 +1,8 @@
 swagger: '2.0'
 info:
-  description: Wallet Management API Documentation; It's WIP
+  description: Wishox API Dobcumentation; It's WIP
   version: 0.0.0
-  title: Wallet Management
+  title: Wishbox
 host: '127.0.0.1:8000'
 basePath: /api/V0.0.0
 securityDefinitions:
@@ -181,7 +181,7 @@ paths:
               data:
                 type: object
                 properties:
-                  id:
+                  profile_id:
                     type: string
                   phone_number:
                     type: string

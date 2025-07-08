@@ -11,3 +11,5 @@ pyjwt==2.10.1
 argon2-cffi==23.1.0
 django-redis==5.4.0
 nats-py==2.9.0
+python-magic==0.4.27
+pillow==11.3.0

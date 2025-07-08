@@ -181,7 +181,9 @@ DJANGO_APPS = (
     "django.contrib.staticfiles",
     "src.api",
     "src.apps.authentication",
+    "src.apps.profile",
     "src.apps.website",
+    "src.apps.storage",
 )
 
 THIRD_PARTY_APPS = ("rest_framework",)

@@ -26,6 +26,8 @@ djangorestframework==3.15.2
     # via -r common.in
 nats-py==2.9.0
     # via -r common.in
+pillow==11.3.0
+    # via -r common.in
 psycopg==3.2.3
     # via -r common.in
 psycopg-binary==3.2.3
@@ -37,6 +39,8 @@ pycparser==2.22
 pyjwt==2.10.1
     # via -r common.in
 python-dotenv==1.0.1
+    # via -r common.in
+python-magic==0.4.27
     # via -r common.in
 redis==5.2.1
     # via django-redis
