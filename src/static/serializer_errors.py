@@ -1,6 +1,12 @@
+from django.utils.translation import gettext_lazy as _
 class SerializerErrors:
-    class CreateCard:
+    class CreateProfile:
         errors = {
-            "user": "CREATE_CARD_SERIALIZER_INVALID_USER",
-            "card_number": "CREATE_CARD_SERIALIZER_INVALID_CARD_NUMBER",
+            "profile": _("CREATE_PROFILE_SERIALIZER_INVALID_USERID"),
+            "first_name": ("CREATE_PROFILE_SERIALZER_INALID_FIRST_NAME"),
+            "last_name": _("CREATE_PROFILE_SERIALZER_INALID_LAST_NAME"),
+            "birthdate":  _("CREATE_PROFILE_SERIALZER_INALID_BIRTHDATE"),
+            "bio":  _("CREATE_PROFILE_SERIALZER_INALID_BIO"),
+            "gender":  _("CREATE_PROFILE_SERIALZER_INALID_GENDER"),
+            "photo":  _("CREATE_PROFILE_SERIALZER_INALID_PHOTO"),
         }

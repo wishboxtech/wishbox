@@ -1,1 +1,1 @@
-from src.apps.profile.serializers.profile import ProfileSerializer
+from src.apps.profile.serializers.profile import ReadProfileSerializer, WriteProfileSerializer

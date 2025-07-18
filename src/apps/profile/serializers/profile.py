@@ -3,7 +3,7 @@ from rest_framework import serializers
 from src.apps.profile.models import Profile
 from src.apps.storage.services import serialize_media
 
-class ProfileSerializer(serializers.ModelSerializer):
+class ReadProfileSerializer(serializers.ModelSerializer):
     photo = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
@@ -15,7 +15,6 @@ class ProfileSerializer(serializers.ModelSerializer):
             "bio",
             "birthdate",
             "gender",
-            "has_accepted_terms",
             "photo"
         )
     
@@ -23,3 +22,17 @@ class ProfileSerializer(serializers.ModelSerializer):
         if obj.photo is None:
             return None
         return serialize_media(media=obj.photo)
+
+
+class WriteProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = (
+            "profile",
+            "first_name",
+            "last_name",
+            "birthdate",
+            "bio",
+            "gender",
+            "photo",
+        )

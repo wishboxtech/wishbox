@@ -26,7 +26,7 @@ paths:
     $ref: "./auth/refresh.yaml"
   
   # Profile
-  /profile/{profileid}/:
+  /profile/:
     $ref: "./profile/profile.yaml"
   /profile/{profileid}/wishlist/:
     $ref: "./profile/wishlist.yaml"

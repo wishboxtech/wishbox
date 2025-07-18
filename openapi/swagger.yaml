@@ -152,11 +152,11 @@ paths:
           description: Bad Request
         '429':
           description: Throttled
-  '/profile/{profileid}/':
+  /profile/:
     get:
       tags:
         - Profile
-      summary: Get Profile - NOT READY
+      summary: Get Profile - READY
       description: ''
       consumes:
         - application/json
@@ -164,12 +164,6 @@ paths:
         - application/json
       security:
         - ApiKeyAuth: []
-      parameters:
-        - name: profileid
-          in: path
-          description: user profile id
-          required: true
-          type: string
       responses:
         '200':
           description: successful operation
@@ -216,62 +210,10 @@ paths:
           description: Bad Request
         '429':
           description: Throttled
-    patch:
-      tags:
-        - Profile
-      summary: Update Profile - NOT READY
-      description: for avatar put media_id in avatar
-      operationId: updateProfile
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - in: body
-          name: body
-          description: Updates Profile
-          required: true
-          schema:
-            type: object
-            properties:
-              username:
-                type: string
-              birth_date:
-                type: string
-                format: date
-              gender:
-                type: string
-                default: F
-              avatar:
-                type: string
-              email:
-                type: string
-      responses:
-        '200':
-          description: successful operation
-          schema:
-            type: object
-            properties:
-              ok:
-                type: boolean
-                default: true
-              data:
-                $ref: '#/paths/~1profile~1%7Bprofileid%7D~1/get/responses/200/schema/properties/data'
-              status:
-                type: number
-                default: 200
-        '400':
-          description: Bad Request
-        '401':
-          description: Unauthorized
-        '403':
-          description: forbidden
     put:
       tags:
         - Profile
-      summary: Create Profile - NOT READY
+      summary: Create or Update Profile - READY
       description: Creates profile for new users(or the one that didn't complete)
       operationId: createProfile
       consumes:
@@ -306,7 +248,7 @@ paths:
                 type: object
                 properties:
                   profile:
-                    $ref: '#/paths/~1profile~1%7Bprofileid%7D~1/get/responses/200/schema/properties/data'
+                    $ref: '#/paths/~1profile~1/get/responses/200/schema/properties/data'
                   tokens:
                     type: object
                     properties:
@@ -459,7 +401,7 @@ paths:
                         name:
                           type: string
                         cover:
-                          $ref: '#/paths/~1profile~1%7Bprofileid%7D~1/get/responses/200/schema/properties/data/properties/avatar'
+                          $ref: '#/paths/~1profile~1/get/responses/200/schema/properties/data/properties/avatar'
               status:
                 type: number
                 default: 201
