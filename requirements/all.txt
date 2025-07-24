@@ -43,7 +43,7 @@ flake8==4.0.1
     # via -r dev.in
 freezegun==1.5.1
     # via -r dev.in
-gunicorn==20.1.0
+gunicorn==23.0.0
     # via -r production.in
 h11==0.16.0
     # via uvicorn
@@ -58,7 +58,9 @@ mypy-extensions==1.0.0
 nats-py==2.9.0
     # via -r common.in
 packaging==24.2
-    # via build
+    # via
+    #   build
+    #   gunicorn
 pathspec==0.12.1
     # via black
 pillow==11.3.0
@@ -107,7 +109,9 @@ typing-extensions==4.12.2
     #   -r common.in
     #   faker
     #   psycopg-pool
-uvicorn==0.18.2
+uvicorn==0.35.0
+    # via -r production.in
+uvloop==0.21.0
     # via -r production.in
 wheel==0.45.1
     # via pip-tools

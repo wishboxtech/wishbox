@@ -11,10 +11,10 @@ V_0_0_0_url_patterns = [
     path("profile/", include(profile_urlpatterns)),
 ]
 
-if ENABLE_SWAGGER:
-    V_0_0_0_url_patterns += [
-        path("openapi/", include(openapi_urlpatterns)),
-    ]
+
+V_0_0_0_url_patterns += [
+    path("openapi/", include(openapi_urlpatterns)),
+]
 
 
 urlpatterns = [
