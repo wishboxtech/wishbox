@@ -52,7 +52,7 @@ services:
     build:
       context: ../.. 
       dockerfile: build/Dockerfile
-    image: theparsa/wishbox
+    image: theparsa/wishbox:fe1faf3eea12233a866af5a963d4e0927019497c
     container_name: dev_back
     ports:
       - "8000:8000"

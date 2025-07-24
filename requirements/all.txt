@@ -47,7 +47,7 @@ gunicorn==20.1.0
     # via -r production.in
 h11==0.16.0
     # via uvicorn
-httptools==0.4.0
+httptools==0.6.4
     # via -r production.in
 isort==5.10.1
     # via -r dev.in
