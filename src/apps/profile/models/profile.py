@@ -39,7 +39,7 @@ class Profile(models.Model):
     class Gender(models.TextChoices):
         MALE = "male", _("Male")
         FEMALE = "female", _("Female")
-
+    
     gender = models.CharField(
         max_length=10,
         choices=Gender.choices,

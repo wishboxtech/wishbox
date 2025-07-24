@@ -20,6 +20,7 @@ click==8.1.8
     # via
     #   black
     #   pip-tools
+    #   uvicorn
 coverage==6.4.2
     # via -r dev.in
 django==5.1.4
@@ -42,6 +43,12 @@ flake8==4.0.1
     # via -r dev.in
 freezegun==1.5.1
     # via -r dev.in
+gunicorn==20.1.0
+    # via -r production.in
+h11==0.16.0
+    # via uvicorn
+httptools==0.4.0
+    # via -r production.in
 isort==5.10.1
     # via -r dev.in
 mccabe==0.6.1
@@ -100,6 +107,8 @@ typing-extensions==4.12.2
     #   -r common.in
     #   faker
     #   psycopg-pool
+uvicorn==0.18.2
+    # via -r production.in
 wheel==0.45.1
     # via pip-tools
 
