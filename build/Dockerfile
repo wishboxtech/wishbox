@@ -67,7 +67,7 @@ RUN chmod +x $APP_HOME/manage.py
 USER app
 
 ENTRYPOINT [ "/usr/src/app/entrypoint.sh" ]
-CMD [ "sh", "-c", "gunicorn -w 4 -b 0.0.0.0:8000 src.core.asgi:application" ]
+CMD [ "sh", "-c", "gunicorn -w 4 -b 0.0.0.0:8000 src.core.asgi:application -k src.core.worker.Worker" ]
 
 
 # pull official base image
