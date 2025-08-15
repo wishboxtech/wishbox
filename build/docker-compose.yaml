@@ -15,13 +15,13 @@ services:
     networks:
       - app_network
 
-  # redis:
-  #   image: redis:latest
-  #   container_name: dev_redis
-  #   ports:
-  #     - "6379:6379"
-  #   networks:
-  #     - app_network
+  redis:
+    image: redis:latest
+    container_name: dev_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - app_network
       
   # elasticsearch:
   #   image: docker.elastic.co/elasticsearch/elasticsearch:7.17.7
@@ -52,7 +52,7 @@ services:
     build:
       context: ../.. 
       dockerfile: build/Dockerfile
-    image: theparsa/wishbox:53b1778d5f7cd19a09b4a62fb6bacf7e31ed7928
+    image: theparsa/wishbox:1.0.2
     container_name: dev_back
     ports:
       - "8000:8000"
@@ -84,7 +84,7 @@ services:
       NATS_URL: "127.0.0.1:4223"
       OTP_CODE_LENGTH: 6
       OTP_TTL: 120
-      REDIS_URL: "redis://localhost:6379"
+      REDIS_URL: "redis://redis:6379"
       REDIS_PASSWORD: ""
       ACCESS_TTL: 10000000
       REFRESH_TTL: 120
@@ -115,7 +115,7 @@ services:
       LIKE_DAY: "10/d"
       COMMENT_HOUR: "13/h"
       COMMENT_DAY: "10/d"
-      TEMPLATE_DIR: ""
+      TEMPLATE_DIR: "templates"
       NEW_EPISODE_DTL: "10"
       ARVAN_API_ROOT: ""
       ARVAN_API_KEY: ""
@@ -155,6 +155,7 @@ services:
       DELETE_CHAT_GROUP_URL: "url"
       ADD_MEMBER_URL: "add"
       REMOVE_MEMBER_URL: "remove"
+      ENABLE_SWAGGER: True
     networks:
       - app_network
 
