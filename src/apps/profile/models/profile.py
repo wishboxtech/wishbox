@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+
 class Profile(models.Model):
     profile = models.OneToOneField(
         "authentication.User",
@@ -29,17 +30,12 @@ class Profile(models.Model):
         null=True,
     )
 
-    bio = models.CharField(
-        max_length=250,
-        verbose_name=_("bio"),
-        blank=True,
-        null=True
-    )
+    bio = models.CharField(max_length=250, verbose_name=_("bio"), blank=True, null=True)
 
     class Gender(models.TextChoices):
         MALE = "male", _("Male")
         FEMALE = "female", _("Female")
-    
+
     gender = models.CharField(
         max_length=10,
         choices=Gender.choices,

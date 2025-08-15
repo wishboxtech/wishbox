@@ -19,6 +19,9 @@ class ErrorEnum:
 
     class Services:
         INVALID_USER_ID = "SERVICE_INVALID_USER_ID"
-    
+
     class Profile:
         PROFILE_NOT_FOUND = "PROFILE_NOT_FOUND"
+
+    class Wishlist:
+        WISHLIST_NOT_FOUND = "WISHLIST_NOT_FOUND"

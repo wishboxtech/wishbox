@@ -3,7 +3,7 @@ info:
   description: "Wishox API Dobcumentation; It's WIP"
   version: "0.0.0"
   title: "Wishbox"
-host: "127.0.0.1:8000"
+host: "37.32.10.55:8000"
 basePath: /api/V0.0.0
 securityDefinitions:
   ApiKeyAuth:
@@ -28,8 +28,10 @@ paths:
   # Profile
   /profile/:
     $ref: "./profile/profile.yaml"
-  /profile/{profileid}/wishlist/:
+  /profile/wishlist/:
     $ref: "./profile/wishlist.yaml"
+  /profile/wishlist/{id}/:
+    $ref: "./profile/update_wishlist.yaml"
   
   # Storage
   /storage/upload/:

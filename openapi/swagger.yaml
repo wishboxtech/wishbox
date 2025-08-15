@@ -3,7 +3,7 @@ info:
   description: Wishox API Dobcumentation; It's WIP
   version: 0.0.0
   title: Wishbox
-host: '127.0.0.1:8000'
+host: '37.32.10.55:8000'
 basePath: /api/V0.0.0
 securityDefinitions:
   ApiKeyAuth:
@@ -265,11 +265,11 @@ paths:
           description: Unauthorized
         '403':
           description: forbidden
-  '/profile/{profileid}/wishlist/':
+  /profile/wishlist/:
     post:
       tags:
         - Profile
-      summary: Create Wishlist - NOT READY
+      summary: Create Wishlist - READY
       description: null
       consumes:
         - application/json
@@ -278,11 +278,6 @@ paths:
       security:
         - ApiKeyAuth: []
       parameters:
-        - name: id
-          in: path
-          description: user profile id
-          required: true
-          type: string
         - in: body
           name: body
           description: Create Wishlist
@@ -291,6 +286,9 @@ paths:
             type: object
             properties:
               name:
+                type: string
+                format: string
+              description:
                 type: string
                 format: string
               cover:
@@ -307,67 +305,30 @@ paths:
               data:
                 type: object
                 properties:
-                  done:
+                  id:
+                    type: string
+                    format: string
+                  name:
+                    type: string
+                    format: string
+                  description:
+                    type: string
+                    format: string
+                  cover:
                     type: string
               status:
                 type: number
-                default: 200
+                default: 201
         '400':
           description: Bad Request
         '401':
           description: Unauthorized
         '403':
           description: forbidden
-    patch:
-      tags:
-        - Profile
-      summary: Edit Wishlist - NOT READY
-      description: null
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: id
-          in: path
-          description: user profile id
-          required: true
-          type: string
-        - in: body
-          name: body
-          description: Edit Wishlist
-          required: true
-          schema:
-            type: object
-            properties:
-              id:
-                type: string
-                description: wishlist id
-              name:
-                type: string
-                format: string
-              cover:
-                type: string
-      responses:
-        '200':
-          description: successful operation
-          schema:
-            type: object
-            properties:
-              ok:
-                type: boolean
-                default: true
-              data:
-                $ref: '#/paths/~1wishlist~1%7Bid%7D~1/post/responses/200/schema/properties/data'
-              status:
-                type: number
-                default: 200
     get:
       tags:
         - Profile
-      summary: Get User Wishlists - NOT READY
+      summary: Get User Wishlists - READY
       description: null
       consumes:
         - application/json
@@ -400,6 +361,8 @@ paths:
                           type: string
                         name:
                           type: string
+                        description:
+                          type: string
                         cover:
                           $ref: '#/paths/~1profile~1/get/responses/200/schema/properties/data/properties/avatar'
               status:
@@ -409,6 +372,53 @@ paths:
           description: Bad Request
         '429':
           description: Throttled
+  '/profile/wishlist/{id}/':
+    patch:
+      tags:
+        - Profile
+      summary: Edit Wishlist - READY
+      description: null
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: user profile id
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Edit Wishlist
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                format: string
+              description:
+                type: string
+                format: string
+              cover:
+                type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                default: true
+              data:
+                $ref: '#/paths/~1profile~1wishlist~1/post/responses/201/schema/properties/data'
+              status:
+                type: number
+                default: 200
   /storage/upload/:
     post:
       tags:

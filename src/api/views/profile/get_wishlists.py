@@ -4,27 +4,21 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
-from src.apps.profile.services import get_profile_by_user_id
-
-from src.static import ErrorEnum
+from src.apps.wishlist.services import get_wishlists_by_profile
 from src.utils.exceptions import NotFoundException
+from src.static import ErrorEnum
 
 
-class GetProfileAPIView(APIView):
+class GetWishlistsAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, *args, **kwargs):
         user_id = self.request.user.id
-        profile = get_profile_by_user_id(id=user_id)
-        if profile is None:
-            raise NotFoundException(
-                error_type=[ErrorEnum.Profile.PROFILE_NOT_FOUND],
-                message={"error": _("profile does not exist")},
-            )
+        wishlists = get_wishlists_by_profile(profile_id=user_id)
         return Response(
             data={
                 "ok": True,
-                "data": profile,
+                "data": wishlists,
                 "status": status.HTTP_200_OK,
             },
             status=status.HTTP_200_OK,

@@ -4,19 +4,20 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
-from src.apps.profile.services import create_or_update_profile
-
+from src.apps.wishlist.services import create_wishlist
 from src.utils.exceptions import BadRequestException
 
 
-class CreateUpdateProfile(APIView):
+class CreateWishlist(APIView):
     permission_classes = [IsAuthenticated]
 
-    def put(self, *args, **kwargs):
-        user_id = self.request.user.id
+    def post(self, *args, **kwargs):
+        profile_id = self.request.user.id
         data = self.request.data
-        data["profile"] = user_id
-        created, profile, errs = create_or_update_profile(user_id=user_id, data=data)
+        data["profile"] = profile_id
+        created, wishlist, errs = create_wishlist(
+            data=data,
+        )
         if errs:
             raise BadRequestException(
                 message=errs.get("errors"),
@@ -25,8 +26,8 @@ class CreateUpdateProfile(APIView):
         return Response(
             data={
                 "created": created,
-                "data": profile,
-                "status": status.HTTP_202_ACCEPTED,
+                "data": wishlist,
+                "status": status.HTTP_201_CREATED,
             },
-            status=status.HTTP_202_ACCEPTED,
+            status=status.HTTP_201_CREATED,
         )

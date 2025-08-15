@@ -184,6 +184,7 @@ DJANGO_APPS = (
     "src.apps.profile",
     "src.apps.website",
     "src.apps.storage",
+    "src.apps.wishlist"
 )
 
 THIRD_PARTY_APPS = ("rest_framework",)

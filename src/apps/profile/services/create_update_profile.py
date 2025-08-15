@@ -2,6 +2,7 @@ from src.apps.profile.serializers import ReadProfileSerializer, WriteProfileSeri
 from src.apps.profile.selectors import get_profile_by_id
 from src.static import SerializerErrors
 
+
 def create_or_update_profile(user_id, data):
     """
     Create or update a user profile based on the provided data.
@@ -12,7 +13,7 @@ def create_or_update_profile(user_id, data):
     profile_data = None
 
     error_dict = SerializerErrors.CreateProfile.errors
-    
+
     profile = get_profile_by_id(profile_id=user_id)
     serializer = WriteProfileSerializer(
         instance=profile,

@@ -1,7 +1,7 @@
 post:
   tags:
     - "Profile"
-  summary: "Create Wishlist - NOT READY"
+  summary: "Create Wishlist - READY"
   description:
   consumes:
     - "application/json"
@@ -10,11 +10,6 @@ post:
   security:
     - ApiKeyAuth: []
   parameters:
-    - name: "id"
-      in: "path"
-      description: "user profile id"
-      required: True
-      type: "string"
     - in: "body"
       name: "body"
       description: "Create Wishlist"
@@ -31,13 +26,10 @@ post:
             type: "boolean"
             default: true
           data:
-            type: "object"
-            properties:
-              done:
-                type: "string"
+            $ref: "../wishlist/definitions.yaml#/Wishlist"
           status:
             type: "number"
-            default: 200
+            default: 201
     400:
       description: "Bad Request"
     401:
@@ -45,50 +37,11 @@ post:
     403:
       description: "forbidden"
 
-patch:
-  tags:
-    - "Profile"
-  summary: "Edit Wishlist - NOT READY"
-  description:
-  consumes:
-    - "application/json"
-  produces:
-    - "application/json"
-  security:
-    - ApiKeyAuth: []
-  parameters:
-    - name: "id"
-      in: "path"
-      description: "user profile id"
-      required: True
-      type: "string"
-    - in: "body"
-      name: "body"
-      description: "Edit Wishlist"
-      required: true
-      schema:
-        $ref: "../wishlist/definitions.yaml#/EditWishlist"
-  responses:
-    200:
-      description: "successful operation"
-      schema:
-        type: "object"
-        properties:
-          ok:
-            type: "boolean"
-            default: true
-          data:
-            $ref: "../wishlist/definitions.yaml#/Wish"
-          status:
-            type: "number"
-            default: 200
-
-
 
 get:
   tags:
     - "Profile"
-  summary: "Get User Wishlists - NOT READY"
+  summary: "Get User Wishlists - READY"
   description:
   consumes:
     - "application/json"

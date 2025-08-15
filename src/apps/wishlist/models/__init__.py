@@ -1,0 +1,1 @@
+from src.apps.wishlist.models.wishlist import Wishlist
