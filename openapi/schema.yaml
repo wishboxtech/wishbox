@@ -3,7 +3,7 @@ info:
   description: "Wishox API Dobcumentation; It's WIP"
   version: "0.0.0"
   title: "Wishbox"
-host: "37.32.10.55:8000"
+host: "api.gameparty.ir"
 basePath: /api/V0.0.0
 securityDefinitions:
   ApiKeyAuth:
