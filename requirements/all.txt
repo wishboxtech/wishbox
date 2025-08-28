@@ -9,7 +9,9 @@ argon2-cffi==23.1.0
 argon2-cffi-bindings==21.2.0
     # via argon2-cffi
 asgiref==3.8.1
-    # via django
+    # via
+    #   django
+    #   django-cors-headers
 black==22.6.0
     # via -r dev.in
 build==1.2.2.post1
@@ -26,9 +28,12 @@ coverage==6.4.2
 django==5.1.4
     # via
     #   -r common.in
+    #   django-cors-headers
     #   django-debug-toolbar
     #   django-redis
     #   djangorestframework
+django-cors-headers==4.7.0
+    # via -r common.in
 django-debug-toolbar==4.4.6
     # via -r common.in
 django-redis==5.4.0

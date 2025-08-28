@@ -13,3 +13,4 @@ django-redis==5.4.0
 nats-py==2.9.0
 python-magic==0.4.27
 pillow==11.3.0
+django-cors-headers==4.7.0
