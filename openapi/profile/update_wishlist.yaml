@@ -12,7 +12,7 @@ patch:
   parameters:
     - name: "id"
       in: "path"
-      description: "user profile id"
+      description: "user wishlist id"
       required: True
       type: "string"
     - in: "body"

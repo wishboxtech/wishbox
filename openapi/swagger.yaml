@@ -336,12 +336,6 @@ paths:
         - application/json
       security:
         - ApiKeyAuth: []
-      parameters:
-        - name: ''
-          in: path
-          description: user profile id
-          required: true
-          type: string
       responses:
         '200':
           description: successful operation
@@ -387,7 +381,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: user profile id
+          description: user wishlist id
           required: true
           type: string
         - in: body
@@ -467,7 +461,7 @@ paths:
     post:
       tags:
         - Wishlist
-      summary: Create Wish - NOT READY
+      summary: Create Wish - READY
       description: null
       consumes:
         - application/json
@@ -530,7 +524,7 @@ paths:
     patch:
       tags:
         - Wishlist
-      summary: Edit Wishes - NOT READY
+      summary: Edit Wishes - SEMI READY
       description: null
       consumes:
         - application/json
@@ -579,7 +573,7 @@ paths:
     get:
       tags:
         - Wishlist
-      summary: Get Wishes - NOT READY
+      summary: Get Wishes - SEMI READY
       description: null
       consumes:
         - application/json

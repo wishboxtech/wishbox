@@ -19,3 +19,11 @@ class SerializerErrors:
             "description": _("CREATE_WISHLIST_SERIALIZER_INVALID_DESCRIPTION"),
             "cover": _("CREATE_WISHLIST_SERIALIZER_INVALID_COVER"),
         }
+
+    class CreateWish:
+        errors = {
+            "name": _("CREATE_WISH_SERIALZER_INVALID_NAME"),
+            "description": _("CREATE_WISH_SERIALIZER_INVALID_DESCRIPTION"),
+            "cover": _("CREATE_WISH_SERIALIZER_INVALID_COVER"),
+            "price": _("CREATE_WISH_SERIALIZER_INVALID_PRICE"),
+        }

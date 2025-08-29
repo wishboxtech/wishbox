@@ -24,7 +24,7 @@ load_dotenv(dotenv_path=env_path)
 
 # Site name:
 SITE_NAME = get_env("SITE_NAME")
-SITE_ID = int(get_env("SITE_ID"))
+SITE_ID = get_env("SITE_ID")
 
 # Add our project to our pythonpath, this way we don't need to type our project
 # name in our dotted import paths:
@@ -184,7 +184,7 @@ DJANGO_APPS = (
     "src.apps.profile",
     "src.apps.website",
     "src.apps.storage",
-    "src.apps.wishlist"
+    "src.apps.wishlist",
 )
 
 THIRD_PARTY_APPS = ("rest_framework",)

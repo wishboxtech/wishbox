@@ -1,0 +1,1 @@
+from src.api.permissions.is_owner_of_wishlist import IsOwnerOfWishlist

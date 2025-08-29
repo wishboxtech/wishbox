@@ -6,6 +6,7 @@ class ErrorEnum:
 
     class Authentication:
         UNAUTHORIZED = "AUTHENTICATION_UNAUTHORIZED"
+        FORBIDDEN = "AUTHENTICATION_FORBIDDEN"
 
     class RefreshToken:
         REFRESH_IS_EMPTY = "REFRESH_TOKEN_REFRESH_IS_EMPTY"
@@ -25,3 +26,9 @@ class ErrorEnum:
 
     class Wishlist:
         WISHLIST_NOT_FOUND = "WISHLIST_NOT_FOUND"
+        WISH_NOT_FOUND = "WISH_NOT_FOUND"
+        NOT_WISHLIST_OWNER = "NOT_WISHLIST_OWNER"
+
+    class HTTP:
+        METHOD_NOT_ALLOWED = "HTTP_METHOD_NOT_ALLOWED"
+        THROTTLED = "HTTP_THROTTLED"

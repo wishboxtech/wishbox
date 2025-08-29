@@ -9,7 +9,7 @@ from src.apps.wishlist.services import update_wishlist
 from src.utils.exceptions import BadRequestException
 
 
-class UpdateWishlist(APIView):
+class UpdateWishlistAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def patch(self, *args, **kwargs):

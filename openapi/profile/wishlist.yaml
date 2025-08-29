@@ -49,12 +49,6 @@ get:
     - "application/json"
   security:
     - ApiKeyAuth: []
-  parameters:
-    - name: ""
-      in: "path"
-      description: "user profile id"
-      required: True
-      type: "string"
   responses:
     200:
       description: "successful operation"

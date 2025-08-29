@@ -1,5 +1,3 @@
-from django.db.models.query import QuerySet
-
 from django.test import TestCase
 
 from src.apps.wishlist.selectors import get_wishlists_by_profile

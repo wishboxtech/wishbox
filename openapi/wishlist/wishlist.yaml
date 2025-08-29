@@ -1,7 +1,7 @@
 post:
   tags:
     - "Wishlist"
-  summary: "Create Wish - NOT READY"
+  summary: "Create Wish - READY"
   description:
   consumes:
     - "application/json"
@@ -39,7 +39,7 @@ post:
 patch:
   tags:
     - "Wishlist"
-  summary: "Edit Wishes - NOT READY"
+  summary: "Edit Wishes - SEMI READY"
   description:
   consumes:
     - "application/json"
@@ -77,7 +77,7 @@ patch:
 get:
   tags:
     - "Wishlist"
-  summary: "Get Wishes - NOT READY"
+  summary: "Get Wishes - SEMI READY"
   description:
   consumes:
     - "application/json"

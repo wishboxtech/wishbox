@@ -1,26 +1,55 @@
-from rest_framework.views import exception_handler
-from rest_framework.response import Response
+import sys
+import traceback
+
+from django.utils.translation import gettext as _
 from rest_framework import status
-from src.utils.exceptions import NotFoundException, BadRequestException, Unauthorized
-from rest_framework.exceptions import NotAuthenticated
+from rest_framework.exceptions import (
+    MethodNotAllowed,
+    NotAuthenticated,
+    PermissionDenied,
+    Throttled,
+)
+from rest_framework.response import Response
+
 from src.static import ErrorEnum
+from src.utils.exceptions import (
+    BadRequestException,
+    NotFoundException,
+    Unauthorized,
+)
+
 
 def api_exception_handler(exc, context):
-    """
-    Custom exception handler for handling project-specific exceptions
-    """
-    if isinstance(exc, NotFoundException):
-        return Response(
-            {"detail": exc.message, "error_type": exc.error_type},
-            status=status.HTTP_404_NOT_FOUND,
-        )
-
     if isinstance(exc, BadRequestException):
         return Response(
-            {"detail": exc.message, "error_type": exc.error_type},
+            data={
+                "ok": False,
+                "data": exc.message,
+                "status": status.HTTP_400_BAD_REQUEST,
+                "error_type": exc.error_type,
+            },
             status=status.HTTP_400_BAD_REQUEST,
         )
-
+    if isinstance(exc, NotFoundException):
+        return Response(
+            data={
+                "ok": False,
+                "data": exc.message,
+                "status": status.HTTP_404_NOT_FOUND,
+                "error_type": exc.error_type,
+            },
+            status=status.HTTP_404_NOT_FOUND,
+        )
+    if isinstance(exc, Unauthorized):
+        return Response(
+            data={
+                "ok": False,
+                "data": {"error": exc.message},
+                "status": status.HTTP_401_UNAUTHORIZED,
+                "error_type": [ErrorEnum.Authentication.UNAUTHORIZED],
+            },
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
     if isinstance(exc, NotAuthenticated):
         return Response(
             data={
@@ -31,15 +60,43 @@ def api_exception_handler(exc, context):
             },
             status=status.HTTP_401_UNAUTHORIZED,
         )
-
-    if isinstance(exc, Unauthorized):
+    if isinstance(exc, PermissionDenied):
         return Response(
-            {"detail": exc.message},
-            status=status.HTTP_401_UNAUTHORIZED,
+            data={
+                "ok": False,
+                "data": {"error": _("user does not have permission.")},
+                "status": status.HTTP_403_FORBIDDEN,
+                "error_type": [ErrorEnum.Authentication.FORBIDDEN],
+            },
+            status=status.HTTP_403_FORBIDDEN,
         )
-
-    # Default response for unhandled exceptions
+    if isinstance(exc, Throttled):
+        return Response(
+            data={
+                "ok": False,
+                "data": {"error": str(exc)},
+                "status": status.HTTP_429_TOO_MANY_REQUESTS,
+                "error_type": [ErrorEnum.HTTP.THROTTLED],
+            },
+            status=status.HTTP_429_TOO_MANY_REQUESTS,
+        )
+    if isinstance(exc, MethodNotAllowed):
+        return Response(
+            data={
+                "ok": False,
+                "data": {"error": str(exc)},
+                "status": status.HTTP_405_METHOD_NOT_ALLOWED,
+                "error_type": [ErrorEnum.HTTP.METHOD_NOT_ALLOWED],
+            },
+            status=status.HTTP_405_METHOD_NOT_ALLOWED,
+        )
+    print(type(exc), exc.args, exc, end="\n")
+    traceback.print_exception(*sys.exc_info())
     return Response(
-        {"detail": "An unexpected error occurred"},
+        data={
+            "ok": False,
+            "data": {"error": str(exc)},
+            "status": status.HTTP_500_INTERNAL_SERVER_ERROR,
+        },
         status=status.HTTP_500_INTERNAL_SERVER_ERROR,
     )
