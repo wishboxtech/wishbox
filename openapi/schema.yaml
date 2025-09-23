@@ -1,9 +1,9 @@
 swagger: "2.0"
 info:
-  description: "Wallet Management API Documentation; It's WIP"
+  description: "Wishox API Dobcumentation; It's WIP"
   version: "0.0.0"
-  title: "Wallet Management"
-host: "127.0.0.1:8000"
+  title: "Wishbox"
+host: "api.gameparty.ir"
 basePath: /api/V0.0.0
 securityDefinitions:
   ApiKeyAuth:
@@ -25,6 +25,23 @@ paths:
   /auth/otp/refresh/:
     $ref: "./auth/refresh.yaml"
   
-  # WALLET
-  /wallet/card/:
-    $ref: "./wallet/create_card.yaml"
+  # Profile
+  /profile/:
+    $ref: "./profile/profile.yaml"
+  /profile/wishlist/:
+    $ref: "./profile/wishlist.yaml"
+  /profile/wishlist/{id}/:
+    $ref: "./profile/update_wishlist.yaml"
+  
+  # Storage
+  /storage/upload/:
+    $ref: "./storage/upload.yaml"
+
+  # Wish
+  /wishlist/{id}/:
+    $ref: "./wishlist/wishlist.yaml"
+  /wishlist/{id}/wish/{wishid}/:
+    $ref: "./wishlist/wish.yaml"
+  /wishlist/{id}/wish/{wishid}/request/:
+    $ref: "./wishlist/request.yaml"
+  

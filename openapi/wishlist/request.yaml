@@ -1,0 +1,37 @@
+post:
+  tags:
+    - "Wishlist"
+  summary: "Request To Reserve a Wish - NOT READY"
+  description:
+  consumes:
+    - "application/json"
+  produces:
+    - "application/json"
+  security:
+    - ApiKeyAuth: []
+  parameters:
+    - name: "id"
+      in: "path"
+      description: "user wishlist id"
+      required: True
+      type: "string"
+    - in: "body"
+      name: "body"
+      description: "Create Wishlist"
+      required: true
+      schema:
+        $ref: "./definitions.yaml#/Request"
+  responses:
+    200:
+      description: "successful operation"
+      schema:
+        type: "object"
+        properties:
+          ok:
+            type: "boolean"
+            default: true
+          data:
+            $ref: "./definitions.yaml#/RequestComplete"
+          status:
+            type: "number"
+            default: 200

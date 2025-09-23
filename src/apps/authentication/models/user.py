@@ -1,7 +1,6 @@
 import uuid
 
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -25,7 +24,6 @@ class User(AbstractUser):
     username = None
     first_name = None
     last_name = None
-    email = None
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     type = models.CharField(
         max_length=2,
@@ -44,11 +42,12 @@ class User(AbstractUser):
         max_length=11,
         unique=True,
     )
-
+    
     has_accepted_terms = models.BooleanField(
         default=False,
         verbose_name=_("has accepted terms"),
     )
+
     is_phone_number_verified = models.BooleanField(
         default=False,
         verbose_name=_("is phone number verified"),

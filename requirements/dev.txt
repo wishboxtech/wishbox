@@ -54,15 +54,17 @@ packaging==24.2
     # via build
 pathspec==0.12.1
     # via black
+pillow==11.3.0
+    # via -r common.in
 pip-tools==7.4.1
     # via -r dev.in
 platformdirs==4.3.6
     # via black
 psycopg==3.2.3
     # via -r common.in
-psycopg-pool==3.2.4
+psycopg-binary==3.2.3
     # via -r common.in
-psycopg2-binary==2.9.10
+psycopg-pool==3.2.4
     # via -r common.in
 pycodestyle==2.8.0
     # via flake8
@@ -81,6 +83,8 @@ python-dateutil==2.9.0.post0
     #   faker
     #   freezegun
 python-dotenv==1.0.1
+    # via -r common.in
+python-magic==0.4.27
     # via -r common.in
 redis==5.2.1
     # via django-redis

@@ -1,7 +1,3 @@
-import random
-import string
-import uuid
-
 import factory
 
 

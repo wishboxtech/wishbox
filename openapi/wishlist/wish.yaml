@@ -1,0 +1,36 @@
+get:
+  tags:
+    - "Wishlist"
+  summary: "Get Wish By Id - NOT READY"
+  description:
+  consumes:
+    - "application/json"
+  produces:
+    - "application/json"
+  security:
+    - ApiKeyAuth: []
+  parameters:
+    - name: "id"
+      in: "path"
+      description: "user wishlist id"
+      required: True
+      type: "string"
+    - name: "wishid"
+      description: "user wish id"
+      required: True
+      type: "string"
+  responses:
+    200:
+      description: "successful operation"
+      schema:
+        type: "object"
+        properties:
+          ok:
+            type: "boolean"
+            default: true
+          data:
+            $ref: "./definitions.yaml#/Wish"
+          status:
+            type: "number"
+            default: 200
+

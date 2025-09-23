@@ -1,0 +1,168 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:14
+    container_name: dev_db
+    environment:
+      POSTGRES_DB: wishbox
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    networks:
+      - app_network
+
+  redis:
+    image: redis:latest
+    container_name: dev_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - app_network
+      
+  # elasticsearch:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.17.7
+  #   container_name: dev_elasticsearch
+  #   volumes:
+  #     - esdata:/usr/share/elasticsearch/data
+  #   ports:
+  #     - 9200:9200
+  #   environment:
+  #     - discovery.type=single-node
+  #   mem_limit: 1g
+  #   tty: true 
+  #   networks:
+  #     - app_network
+
+  # nats-server:
+  #   image: nats:latest
+  #   container_name: nats-server
+  #   ports:
+  #     - "4222:4222"
+  #     - "8222:8222"
+  #     - "6222:6222"
+  #   command: -js
+  #   networks:
+  #     - app_network
+
+  back:
+    build:
+      context: ../.. 
+      dockerfile: build/Dockerfile
+    image: theparsa/wishbox:1.0.2
+    container_name: dev_back
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      # - redis
+      # - elasticsearch
+      # - nats-server
+    environment:
+      STAGE: "dev"
+      SITE_NAME: "wishbox"
+      SITE_ID: 1
+      ALLOWED_HOSTS: "*"
+      DEFAULT_DATABASE_NAME: "wishbox"
+      DEFAULT_DATABASE_USER: "postgres"
+      DEFAULT_DATABASE_PASSWORD: "123456"
+      DEFAULT_DATABASE_HOST: "postgres"
+      DEFAULT_DATABASE_PORT: "5432"
+      UNDER_DEVELOPMENT: "True"
+      IS_TRANSACTION_ASYNC: "False"
+      LANGUAGE_CODE: "en"
+      MEDIA_ROOT: "./media"
+      MEDIA_URL: "media/"
+      STATIC_ROOT: "./static/"
+      STATIC_URL: "static/"
+      DEFAULT_FILE_STORAGE: "minio_storage.storage.MinioMediaStorage"
+      STATICFILES_STORAGE: "minio_storage.storage.MinioStaticStorage"
+      NATS_CLUSTER_ID: "test-cluster"
+      NATS_URL: "127.0.0.1:4223"
+      OTP_CODE_LENGTH: 6
+      OTP_TTL: 120
+      REDIS_URL: "redis://redis:6379"
+      REDIS_PASSWORD: ""
+      ACCESS_TTL: 10000000
+      REFRESH_TTL: 120
+      JWT_SECRET: ""
+      EMAIL_TOKEN_LENGTH: 10
+      VERIFY_EMAIL_VIEW_NAME: "verify-email"
+      VERIFY_URL_SUCCESS: "bing.com"
+      VERIFY_URL_FAIL: "google.com"
+      DEFAULT_DOMAIN: "127.0.0.1"
+      FORGET_PASSWORD_TTL: 1
+      FORGET_PASSWORD_VIEW_NAME: "forget-password"
+      FORGET_PASSWORD_SUCCESS: "google.com"
+      FORGET_PASSWORD_FAIL: "bing.com"
+      EMAIL_TTL: 1
+      CART_TTL: 10
+      POST_COST: 100000
+      PACKAGE_COST: 100000
+      OTP_HOUR: "3000/h"
+      OTP_DAY: "15000/d"
+      MERCHANT: ""
+      VERIFY_PAY_VIEW: "verify-payment"
+      VERIFY_PAY_FAIL_URL: "google.com"
+      VERIFY_PAY_SUCCESS_URL: "bing.com"
+      SECRET_KEY: ""
+      WALLET_UPDATE_INTERVAL: "100"
+      DEBUG: "False"
+      LIKE_HOUR: "10/h"
+      LIKE_DAY: "10/d"
+      COMMENT_HOUR: "13/h"
+      COMMENT_DAY: "10/d"
+      TEMPLATE_DIR: "templates"
+      NEW_EPISODE_DTL: "10"
+      ARVAN_API_ROOT: ""
+      ARVAN_API_KEY: ""
+      VOD_CHANNEL_ID: ""
+      WEEKLY_LEADERBOARD_TTL: 10
+      MONTHLY_LEADERBOARD_TTL: 10
+      ALL_TIME_LEADERBOARD_TTL: 10
+      BLOCKCHAIN_API_KEY: ""
+      BLOCKCHAIN_ENDPOINT: "https://service.exchange.glss.ir/api/v1"
+      FOOT_BLOCKCHAIN_ADDR: ""
+      CHAIN_CONTRACT_ADDRESS: ""
+      CHAIN: "AMOY"
+      CHAIN_API_KEY: ""
+      CHAIN_PRIVATE_KEY: ""
+      RIAL_TRANSACTION_COMISSION: "10000"
+      FAIL_URL: "google.com"
+      SUCCESS_URL: "bing.com"
+      REDIS_LOW_CACHE_TTL: 10
+      CELERY_BROKER_URL: 'redis://localhost:6379'
+      CELERY_RESULT_BACKEND: 'redis://localhost:6379'
+      SHIPPING_FIAT_FEE: 10000
+      COMMISSION_FEE: 10000
+      RAPID_API_HOST: "api-football-v1.p.rapidapi.com"
+      RAPID_API_KEY: ""
+      RAPID_API_URL_STANDINGS: "https://api-football-v1.p.rapidapi.com/v3/standings"
+      RAPID_API_URL_TOP_SCORERS: "https://api-football-v1.p.rapidapi.com/v3/players/topscorers"
+      SEASON: "2023"
+      SHARE_DAY: "1"
+      VOD_SECRET_CHANNEL_ID: ""
+      LEAGUE_API_PATH: "https://api-football-v1.p.rapidapi.com/v3/"
+      IRAN_LEAGUE_ID: "230"
+      LEAGUE_DATE_OFFSET: "260"
+      LEAGUE_TIMEZONE: "Asia/Tehran"
+      MATCH_STATUS: "1H-HT-2H-ET-BT-P-SUSP-INT-LIVE-FT-AET-PEN"
+      CREATE_CHAT_GROUP_URL: "FAIL_URL"
+      API_KEY: ""
+      DELETE_CHAT_GROUP_URL: "url"
+      ADD_MEMBER_URL: "add"
+      REMOVE_MEMBER_URL: "remove"
+      ENABLE_SWAGGER: True
+    networks:
+      - app_network
+
+volumes:
+  postgres_data:
+  # esdata:
+
+networks:
+  app_network:
+    driver: bridge

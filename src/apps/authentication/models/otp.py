@@ -17,6 +17,7 @@ class OneTimePassword:
     code = None
     otp_id = None
     phone_number = None
+    
 
     def __init__(self, phone_number, prefix=""):
         self.otp_id = str(uuid.uuid4())
@@ -47,7 +48,7 @@ class OneTimePassword:
 
     def verify_otp(otp_id, otp_code, prefix=""):
         key = f"{prefix}{otp_id}"
-        if cache.ttl(key) == 0:
+        if cache.get(key) is None:
             raise InvalidOTP("otp is inavlid")
         value = cache.get(key)
         data = json.loads(value)

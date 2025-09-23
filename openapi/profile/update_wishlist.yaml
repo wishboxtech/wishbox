@@ -1,0 +1,37 @@
+patch:
+  tags:
+    - "Profile"
+  summary: "Edit Wishlist - READY"
+  description:
+  consumes:
+    - "application/json"
+  produces:
+    - "application/json"
+  security:
+    - ApiKeyAuth: []
+  parameters:
+    - name: "id"
+      in: "path"
+      description: "user wishlist id"
+      required: True
+      type: "string"
+    - in: "body"
+      name: "body"
+      description: "Edit Wishlist"
+      required: true
+      schema:
+        $ref: "../wishlist/definitions.yaml#/EditWishlist"
+  responses:
+    200:
+      description: "successful operation"
+      schema:
+        type: "object"
+        properties:
+          ok:
+            type: "boolean"
+            default: true
+          data:
+            $ref: "../wishlist/definitions.yaml#/Wishlist"
+          status:
+            type: "number"
+            default: 200

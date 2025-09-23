@@ -9,27 +9,44 @@ argon2-cffi==23.1.0
 argon2-cffi-bindings==21.2.0
     # via argon2-cffi
 asgiref==3.8.1
-    # via django
+    # via
+    #   django
+    #   django-cors-headers
 black==22.6.0
     # via -r dev.in
 build==1.2.2.post1
     # via pip-tools
+certifi==2025.8.3
+    # via
+    #   minio
+    #   requests
 cffi==1.17.1
     # via argon2-cffi-bindings
+charset-normalizer==3.4.3
+    # via requests
 click==8.1.8
     # via
     #   black
     #   pip-tools
+    #   uvicorn
+configparser==7.2.0
+    # via minio
 coverage==6.4.2
     # via -r dev.in
 django==5.1.4
     # via
     #   -r common.in
+    #   django-cors-headers
     #   django-debug-toolbar
+    #   django-minio-storage
     #   django-redis
     #   djangorestframework
+django-cors-headers==4.7.0
+    # via -r common.in
 django-debug-toolbar==4.4.6
     # via -r common.in
+django-minio-storage==0.3.10
+    # via -r production.in
 django-redis==5.4.0
     # via -r common.in
 djangorestframework==3.15.2
@@ -42,27 +59,41 @@ flake8==4.0.1
     # via -r dev.in
 freezegun==1.5.1
     # via -r dev.in
+gunicorn==23.0.0
+    # via -r production.in
+h11==0.16.0
+    # via uvicorn
+httptools==0.6.4
+    # via -r production.in
+idna==3.10
+    # via requests
 isort==5.10.1
     # via -r dev.in
 mccabe==0.6.1
     # via flake8
+minio==6.0.2
+    # via django-minio-storage
 mypy-extensions==1.0.0
     # via black
 nats-py==2.9.0
     # via -r common.in
 packaging==24.2
-    # via build
+    # via
+    #   build
+    #   gunicorn
 pathspec==0.12.1
     # via black
+pillow==11.3.0
+    # via -r common.in
 pip-tools==7.4.1
     # via -r dev.in
 platformdirs==4.3.6
     # via black
 psycopg==3.2.3
     # via -r common.in
-psycopg-pool==3.2.4
+psycopg-binary==3.2.3
     # via -r common.in
-psycopg2-binary==2.9.10
+psycopg-pool==3.2.4
     # via -r common.in
 pycodestyle==2.8.0
     # via flake8
@@ -80,10 +111,17 @@ python-dateutil==2.9.0.post0
     # via
     #   faker
     #   freezegun
+    #   minio
 python-dotenv==1.0.1
     # via -r common.in
+python-magic==0.4.27
+    # via -r common.in
+pytz==2025.2
+    # via minio
 redis==5.2.1
     # via django-redis
+requests==2.32.5
+    # via -r common.in
 six==1.17.0
     # via python-dateutil
 sqlparse==0.5.3
@@ -96,6 +134,14 @@ typing-extensions==4.12.2
     #   -r common.in
     #   faker
     #   psycopg-pool
+urllib3==2.5.0
+    # via
+    #   minio
+    #   requests
+uvicorn==0.35.0
+    # via -r production.in
+uvloop==0.21.0
+    # via -r production.in
 wheel==0.45.1
     # via pip-tools
 

@@ -1,0 +1,72 @@
+get:
+  tags:
+    - "Profile"
+  summary: "Get Profile - READY"
+  description: ""
+  consumes:
+    - "application/json"
+  produces:
+    - "application/json"
+  security:
+    - ApiKeyAuth: []
+  responses:
+    200:
+      description: "successful operation"
+      schema:
+        type: "object"
+        properties:
+          ok:
+            type: "boolean"
+          data:
+            $ref: "./definitions.yaml#/UserProfile"
+          status:
+            type: "number"
+            default: 201
+    400:
+      description: "Bad Request"
+    429:
+      description: "Throttled"
+
+
+put:
+  tags:
+    - "Profile"
+  summary: "Create or Update Profile - READY"
+  description: "Creates profile for new users(or the one that didn't complete)"
+  operationId: "createProfile"
+  consumes:
+    - "application/json"
+  produces:
+    - "application/json"
+  security:
+    - ApiKeyAuth: []
+  parameters:
+    - in: "body"
+      name: "body"
+      description: "Updates Profile"
+      required: true
+      schema:
+        $ref: "./definitions.yaml#/CreateProfileRequest"
+  responses:
+    200:
+      description: "successful operation"
+      schema:
+        type: "object"
+        properties:
+          ok:
+            type: "boolean"
+            default: true
+          data:
+            type: "object"
+            properties:
+              profile:
+                $ref: "./definitions.yaml#/UserProfile"
+          status:
+            type: "number"
+            default: 200
+    400:
+      description: "Bad Request"
+    401:
+      description: "Unauthorized"
+    403:
+      description: "forbidden"

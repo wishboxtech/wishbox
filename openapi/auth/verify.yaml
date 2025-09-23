@@ -1,7 +1,7 @@
 post:
   tags:
     - "AUTH"
-  summary: "Verify OTP - NOT READY"
+  summary: "Verify OTP - READY"
   description: ""
   operationId: "verifyOTP"
   consumes:
