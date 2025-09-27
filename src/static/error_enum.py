@@ -32,3 +32,6 @@ class ErrorEnum:
     class HTTP:
         METHOD_NOT_ALLOWED = "HTTP_METHOD_NOT_ALLOWED"
         THROTTLED = "HTTP_THROTTLED"
+
+    class UploadFile:
+        FILE_IS_EMPTY = "FILE_IS_EMPTY"

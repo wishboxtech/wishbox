@@ -21,7 +21,7 @@ def get_env_setting(setting):
         raise ImproperlyConfigured(error_msg)
 
 
-INSTALLED_APPS = ("corsheaders",) + INSTALLED_APPS + ("gunicorn", "minio_storage")
+INSTALLED_APPS = ("corsheaders",) + INSTALLED_APPS + ("gunicorn", "storages")
 
 ########## HOST CONFIGURATION
 # See: https://docs.djangoproject.com/en/1.5/releases/1.5/#allowed-hosts-required-in-production
@@ -59,15 +59,12 @@ SERVER_EMAIL = EMAIL_HOST_USER
 SECRET_KEY = get_env_setting("SECRET_KEY")
 ########## END SECRET CONFIGURATION
 
-# MINIO CONFIGURATION
-DEFAULT_FILE_STORAGE = get_env(
-    "DEFAULT_FILE_STORAGE",
-    default="django.core.files.storage.FileSystemStorage",
-)
-STATICFILES_STORAGE = get_env(
-    "STATICFILES_STORAGE",
-    default="django.contrib.staticfiles.storage.StaticFilesStorage",
-)
+# STORAGE CONFIGURATION
+# settings.py
+
+
+# Common settings
+USE_S3 = get_env("USE_S3")
 MINIO_STORAGE_ENDPOINT = get_env("MINIO_STORAGE_ENDPOINT", optional=True)
 MINIO_STORAGE_ACCESS_KEY = get_env("MINIO_STORAGE_ACCESS_KEY", optional=True)
 MINIO_STORAGE_SECRET_KEY = get_env("MINIO_STORAGE_SECRET_KEY", optional=True)
@@ -78,22 +75,57 @@ MINIO_STORAGE_STATIC_BUCKET_NAME = get_env(
     "MINIO_STORAGE_STATIC_BUCKET_NAME", optional=True
 )
 MINIO_STORAGE_USE_HTTPS = get_env("MINIO_STORAGE_USE_HTTPS", optional=True)
+
+
+if USE_S3:
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+            "OPTIONS": {
+                "access_key": MINIO_STORAGE_ACCESS_KEY,
+                "secret_key": MINIO_STORAGE_SECRET_KEY,
+                "bucket_name": MEDIA_URL,  # should get seperated from the ORIGINAL ONE
+                "endpoint_url": f"http{'s' if MINIO_STORAGE_USE_HTTPS else ''}://{MINIO_STORAGE_ENDPOINT}",
+            },
+        },
+        "staticfiles": {
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+            "OPTIONS": {
+                "access_key": MINIO_STORAGE_ACCESS_KEY,
+                "secret_key": MINIO_STORAGE_SECRET_KEY,
+                "bucket_name": STATIC_URL,  # should get seperated from the ORIGINAL ONE
+                "endpoint_url": f"http{'s' if MINIO_STORAGE_USE_HTTPS else ''}://{MINIO_STORAGE_ENDPOINT}",
+            },
+        },
+    }
+
+
+DEFAULT_FILE_STORAGE = get_env(
+    "DEFAULT_FILE_STORAGE",
+    default="django.core.files.storage.FileSystemStorage",
+)
+STATICFILES_STORAGE = get_env(
+    "STATICFILES_STORAGE",
+    default="django.contrib.staticfiles.storage.StaticFilesStorage",
+)
+
 # END MINIO CONFIGURATION
 
 
 # CORSHEADERS CONFIGURATION
 CSRF_TRUSTED_ORIGINS = get_env("CSRF_TRUSTED_ORIGINS").split(",")
 CSRF_COOKIE_DOMAIN = get_env("CSRF_COOKIE_DOMAIN")
-CORS_ORIGIN_REGEX_WHITELIST = [
-    re.compile(r) for r in get_env("CORS_ORIGIN_REGEX_WHITELIST").split(",")
-]
+# CORS_ORIGIN_REGEX_WHITELIST = [
+#     re.compile(r) for r in get_env("CORS_ORIGIN_REGEX_WHITELIST").split(",")
+# ]
 CORS_REPLACE_HTTPS_REFERER = True
 CORS_ALLOW_CREDENTIALS = True
-CORS_URLS_REGEX = re.compile(get_env("CORS_URLS_REGEX"))
+# CORS_URLS_REGEX = re.compile(get_env("CORS_URLS_REGEX"))
 CSRF_COOKIE_SAMESITE = get_env("CSRF_COOKIE_SAMESITE")
 SESSION_COOKIE_SAMESITE = get_env("SESSION_COOKIE_SAMESITE")
 CSRF_COOKIE_SECURE = get_env("CSRF_COOKIE_SECURE")
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTOCOL", "https")
+
 # END CORSHEADERS CONFIGURATION
 DEBUG = get_env("DEBUG") == "True"
 

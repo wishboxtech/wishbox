@@ -14,12 +14,17 @@ asgiref==3.8.1
     #   django-cors-headers
 black==22.6.0
     # via -r dev.in
+boto3==1.40.36
+    # via -r production.in
+botocore==1.40.36
+    # via
+    #   -r production.in
+    #   boto3
+    #   s3transfer
 build==1.2.2.post1
     # via pip-tools
 certifi==2025.8.3
-    # via
-    #   minio
-    #   requests
+    # via requests
 cffi==1.17.1
     # via argon2-cffi-bindings
 charset-normalizer==3.4.3
@@ -29,8 +34,6 @@ click==8.1.8
     #   black
     #   pip-tools
     #   uvicorn
-configparser==7.2.0
-    # via minio
 coverage==6.4.2
     # via -r dev.in
 django==5.1.4
@@ -38,17 +41,17 @@ django==5.1.4
     #   -r common.in
     #   django-cors-headers
     #   django-debug-toolbar
-    #   django-minio-storage
     #   django-redis
+    #   django-storages
     #   djangorestframework
 django-cors-headers==4.7.0
     # via -r common.in
 django-debug-toolbar==4.4.6
     # via -r common.in
-django-minio-storage==0.3.10
-    # via -r production.in
 django-redis==5.4.0
     # via -r common.in
+django-storages==1.14.6
+    # via -r production.in
 djangorestframework==3.15.2
     # via -r common.in
 factory-boy==3.3.1
@@ -69,10 +72,12 @@ idna==3.10
     # via requests
 isort==5.10.1
     # via -r dev.in
+jmespath==1.0.1
+    # via
+    #   boto3
+    #   botocore
 mccabe==0.6.1
     # via flake8
-minio==6.0.2
-    # via django-minio-storage
 mypy-extensions==1.0.0
     # via black
 nats-py==2.9.0
@@ -109,19 +114,19 @@ pyproject-hooks==1.2.0
     #   pip-tools
 python-dateutil==2.9.0.post0
     # via
+    #   botocore
     #   faker
     #   freezegun
-    #   minio
 python-dotenv==1.0.1
     # via -r common.in
 python-magic==0.4.27
     # via -r common.in
-pytz==2025.2
-    # via minio
 redis==5.2.1
     # via django-redis
 requests==2.32.5
     # via -r common.in
+s3transfer==0.14.0
+    # via boto3
 six==1.17.0
     # via python-dateutil
 sqlparse==0.5.3
@@ -136,7 +141,7 @@ typing-extensions==4.12.2
     #   psycopg-pool
 urllib3==2.5.0
     # via
-    #   minio
+    #   botocore
     #   requests
 uvicorn==0.35.0
     # via -r production.in

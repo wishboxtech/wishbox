@@ -4,6 +4,7 @@ from src.api.url_patterns_v0_0_0.openapi import openapi_urlpatterns
 from src.api.url_patterns_v0_0_0.authentication import authentication_urlpatterns
 from src.api.url_patterns_v0_0_0.profile import profile_urlpatterns
 from src.api.url_patterns_v0_0_0.wishlist import wishlist_urlpatterns
+from src.api.url_patterns_v0_0_0.storage import storage_urlpatterns
 from settings import ENABLE_SWAGGER
 
 V_0_0_0_url_patterns = [
@@ -11,6 +12,7 @@ V_0_0_0_url_patterns = [
     path("auth/", include(authentication_urlpatterns)),
     path("profile/", include(profile_urlpatterns)),
     path("wishlist/", include(wishlist_urlpatterns)),
+    path("storage/", include(storage_urlpatterns)),
 ]
 
 

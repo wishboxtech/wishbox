@@ -11,15 +11,11 @@ post:
   security:
     - ApiKeyAuth: []
   parameters:
-    - in: "body"
-      name: "body"
-      description: "Upload File"
+    - in: "formData"
+      name: "file"
+      type: "file"
       required: true
-      schema:
-        type: "object"
-        properties:
-          file:
-            type: "string"
+      description: "Upload File"
   responses:
     201:
       description: "successful operation"
