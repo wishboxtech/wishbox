@@ -1,0 +1,56 @@
+name: Python application
+on:
+  push:
+    branches: [ "test-dev"  ]
+  pull_request:
+    branches: [ "test-dev" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: myuser
+          POSTGRES_PASSWORD: mypassword
+          POSTGRES_DB: wishbox
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+      redis:
+        image: redis:latest
+        ports:
+          - "6379:6379"
+    
+    env:
+      STAGE: dev
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.13.7"
+    - name: Load env file
+      run: |
+        cp .env.test .env
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 pytest
+        if [ -f requirements/all.txt ]; then pip install -r requirements/all.txt; fi
+    - name: Running simple test
+      run: |
+        coverage run manage.py test src.apps
+    - name: "SHOW RESULTS"
+      run: |
+        coverage report --sort=-Cover
