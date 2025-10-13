@@ -36,43 +36,6 @@ post:
             type: "number"
             default: 200
 
-patch:
-  tags:
-    - "Wishlist"
-  summary: "Edit Wishes - SEMI READY"
-  description:
-  consumes:
-    - "application/json"
-  produces:
-    - "application/json"
-  security:
-    - ApiKeyAuth: []
-  parameters:
-    - name: "id"
-      in: "path"
-      description: "user wishlist id"
-      required: True
-      type: "string"
-    - in: "body"
-      name: "body"
-      description: "Create Wishlist"
-      required: true
-      schema:
-        $ref: "./definitions.yaml#/EditWish"
-  responses:
-    200:
-      description: "successful operation"
-      schema:
-        type: "object"
-        properties:
-          ok:
-            type: "boolean"
-            default: true
-          data:
-            $ref: "./definitions.yaml#/Wishes"
-          status:
-            type: "number"
-            default: 200
 
 get:
   tags:

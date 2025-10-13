@@ -17,7 +17,7 @@ def get_wish_by_id(id):
     Return serialized wish data for a given wish id.
     Returns None if no wish exists.
     """
-    wishlist = get_wish_by_id_selector(id=id)
+    wishlist = get_wish_by_id_selector(wish_id=id)
     if not wishlist:
         return None
     return WishSerializer(instance=wishlist).data

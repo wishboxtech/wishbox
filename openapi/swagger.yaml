@@ -497,72 +497,7 @@ paths:
                 type: boolean
                 default: true
               data:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  name:
-                    type: string
-                    format: string
-                  description:
-                    type: string
-                  price:
-                    type: string
-                  cover:
-                    type: string
-                  created_at:
-                    type: string
-                  updated_at:
-                    type: string
-              status:
-                type: number
-                default: 200
-    patch:
-      tags:
-        - Wishlist
-      summary: Edit Wishes - SEMI READY
-      description: null
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: id
-          in: path
-          description: user wishlist id
-          required: true
-          type: string
-        - in: body
-          name: body
-          description: Create Wishlist
-          required: true
-          schema:
-            type: object
-            properties:
-              id:
-                type: string
-              name:
-                type: string
-                format: string
-              description:
-                type: string
-              price:
-                type: string
-              cover:
-                type: string
-      responses:
-        '200':
-          description: successful operation
-          schema:
-            type: object
-            properties:
-              ok:
-                type: boolean
-                default: true
-              data:
-                $ref: '#/paths/~1wishlist~1%7Bid%7D~1/get/responses/200/schema/properties/data'
+                $ref: '#/paths/~1wish~1%7Bid%7D~1/get/responses/200/schema/properties/data'
               status:
                 type: number
                 default: 200
@@ -616,10 +551,10 @@ paths:
                 type: number
                 default: 200
   '/wishlist/{id}/wish/{wishid}/':
-    get:
+    patch:
       tags:
         - Wishlist
-      summary: Get Wish By Id - NOT READY
+      summary: Edit Wishes - SEMI READY
       description: null
       consumes:
         - application/json
@@ -637,6 +572,24 @@ paths:
           description: user wish id
           required: true
           type: string
+        - in: body
+          name: body
+          description: Create Wishlist
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+                format: string
+              description:
+                type: string
+              price:
+                type: string
+              cover:
+                type: string
       responses:
         '200':
           description: successful operation
@@ -647,7 +600,7 @@ paths:
                 type: boolean
                 default: true
               data:
-                $ref: '#/paths/~1wishlist~1%7Bid%7D~1/post/responses/200/schema/properties/data'
+                $ref: '#/paths/~1wishlist~1%7Bid%7D~1/get/responses/200/schema/properties/data'
               status:
                 type: number
                 default: 200
@@ -691,6 +644,54 @@ paths:
                 type: object
                 properties:
                   done:
+                    type: string
+              status:
+                type: number
+                default: 200
+  '/wish/{id}/':
+    get:
+      tags:
+        - Wishlist
+      summary: Get Wish By Id - READY
+      description: null
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: user wishlist id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                default: true
+              data:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                    format: string
+                  description:
+                    type: string
+                  price:
+                    type: string
+                  cover:
+                    type: string
+                  created_at:
+                    type: string
+                  updated_at:
                     type: string
               status:
                 type: number

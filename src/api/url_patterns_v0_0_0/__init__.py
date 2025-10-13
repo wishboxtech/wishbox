@@ -1,3 +1,4 @@
 from src.api.url_patterns_v0_0_0.website import website_urlpatterns
 from src.api.url_patterns_v0_0_0.openapi import openapi_urlpatterns
 from src.api.url_patterns_v0_0_0.authentication import authentication_urlpatterns
+from src.api.url_patterns_v0_0_0.wish import wish_urlpatterns

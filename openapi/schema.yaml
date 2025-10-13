@@ -44,4 +44,5 @@ paths:
     $ref: "./wishlist/wish.yaml"
   /wishlist/{id}/wish/{wishid}/request/:
     $ref: "./wishlist/request.yaml"
-  
+  /wish/{id}/:
+    $ref: "./wishlist/wish_by_id.yaml"  
