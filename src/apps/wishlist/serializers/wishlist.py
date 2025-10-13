@@ -8,7 +8,14 @@ class WishlistSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Wishlist
-        fields = ("id", "name", "description", "cover")
+        fields = (
+            "id",
+            "name",
+            "description",
+            "cover",
+            "created_at",
+            "updated_at",
+        )
 
     def get_cover(self, obj):
         if obj.cover is None:

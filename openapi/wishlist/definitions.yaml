@@ -67,11 +67,15 @@ Wishes:
         type: "string"
       price:
         type: "string"
-      is_reserved:
-        type: "boolean"
-      reserver_nickname:
-        type: "string"
+      # is_reserved:
+      #   type: "boolean"
+      # reserver_nickname:
+      #   type: "string"
       cover:
+        type: "string"
+      created_at:
+        type: "string"
+      updated_at:
         type: "string"
 
 Wish:
@@ -86,11 +90,15 @@ Wish:
       type: "string"
     price:
       type: "string"
-    is_reserved:
-      type: "boolean"
-    reserver_nickname:
-      type: "string"
+    # is_reserved:
+    #   type: "boolean"
+    # reserver_nickname:
+    #   type: "string"
     cover:
+      type: "string"
+    created_at:
+      type: "string"
+    updated_at:
       type: "string"
 
 

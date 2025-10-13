@@ -14,6 +14,8 @@ class WishSerializer(serializers.ModelSerializer):
             "description",
             "price",
             "cover",
+            "created_at",
+            "updated_at",
         )
 
     def get_cover(self, obj):
