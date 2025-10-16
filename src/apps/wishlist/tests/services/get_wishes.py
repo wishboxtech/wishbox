@@ -1,10 +1,8 @@
 from django.test import TestCase
 
-from src.apps.wishlist.services import (
-    get_wishes_by_wishlist_id,
-    get_wish_by_id,
-)
-from src.utils.fakers import ProfileFactory, WishlistFactory, WishFactory
+from src.apps.wishlist.services import (get_wish_by_id,
+                                        get_wishes_by_wishlist_id)
+from src.utils.fakers import ProfileFactory, WishFactory, WishlistFactory
 
 
 class GetWishesServiceTestCase(TestCase):

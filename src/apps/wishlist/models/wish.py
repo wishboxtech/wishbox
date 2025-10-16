@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -39,6 +40,14 @@ class Wish(models.Model):
         blank=True,
         verbose_name=_("cover"),
         related_name="wish_cover",
+    )
+
+    accepted_request = models.ForeignKey(
+        "ReservationRequest",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="accepted_wish",
     )
 
     created_at = models.DateTimeField(

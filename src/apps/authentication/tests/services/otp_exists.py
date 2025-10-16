@@ -2,10 +2,8 @@ from unittest.mock import patch
 
 from django.test import TestCase
 
-from src.apps.authentication.services import (
-    create_one_time_password,
-    one_time_password_exists,
-)
+from src.apps.authentication.services import (create_one_time_password,
+                                              one_time_password_exists)
 from src.utils.fakers import UserFactory
 
 

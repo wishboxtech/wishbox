@@ -3,8 +3,8 @@ import uuid
 from django.test import TestCase
 
 from src.apps.authentication.services import user_registered
-from src.utils.fakers import UserFactory
 from src.utils.exceptions import InvalidUserID
+from src.utils.fakers import UserFactory
 
 
 class UserRegisteredServiceTestCase(TestCase):

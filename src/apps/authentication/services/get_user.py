@@ -1,7 +1,8 @@
-from src.apps.authentication.selectors import (
-    get_user_by_id as get_user_by_id_selector,
+from src.apps.authentication.selectors import \
+    get_user_by_id as get_user_by_id_selector
+from src.apps.authentication.selectors import \
     get_user_by_phone_number as get_user_id_selector
-)
+
 
 def get_user_by_id(user_id):
     return get_user_by_id_selector(user_id)

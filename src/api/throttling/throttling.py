@@ -1,6 +1,9 @@
-from rest_framework.throttling import SimpleRateThrottle
-import re 
 import hashlib
+import re
+
+from rest_framework.throttling import SimpleRateThrottle
+
+
 class SendOneTimePasswordThrottleByDateHour(SimpleRateThrottle):
     scope = 'otp_hour'
 

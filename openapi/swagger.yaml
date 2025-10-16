@@ -366,10 +366,50 @@ paths:
           description: Bad Request
         '429':
           description: Throttled
-  '/profile/wishlist/{id}/':
+  /storage/upload/:
+    post:
+      tags:
+        - Storage
+      summary: upload file
+      description: ''
+      operationId: uploadFile
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: formData
+          name: file
+          type: file
+          required: true
+          description: Upload File
+      responses:
+        '201':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                default: true
+              data:
+                type: object
+                properties:
+                  media_id:
+                    type: string
+              status:
+                type: number
+                default: 201
+        '400':
+          description: Bad Request
+        '429':
+          description: Throttled
+  '/wishlist/{id}/':
     patch:
       tags:
-        - Profile
+        - Wishlist
       summary: Edit Wishlist - READY
       description: null
       consumes:
@@ -413,13 +453,11 @@ paths:
               status:
                 type: number
                 default: 200
-  /storage/upload/:
-    post:
+    delete:
       tags:
-        - Storage
-      summary: upload file
-      description: ''
-      operationId: uploadFile
+        - Wishlist
+      summary: Delete Wishlist - READY
+      description: null
       consumes:
         - application/json
       produces:
@@ -427,33 +465,27 @@ paths:
       security:
         - ApiKeyAuth: []
       parameters:
-        - in: formData
-          name: file
-          type: file
+        - name: id
+          in: path
+          description: user wishlist id
           required: true
-          description: Upload File
+          type: string
       responses:
-        '201':
+        '200':
           description: successful operation
           schema:
             type: object
             properties:
-              ok:
+              deleted:
                 type: boolean
                 default: true
-              data:
-                type: object
-                properties:
-                  media_id:
-                    type: string
               status:
                 type: number
-                default: 201
-        '400':
-          description: Bad Request
+                default: 200
+        '404':
+          description: NotFound Request
         '429':
           description: Throttled
-  '/wishlist/{id}/':
     post:
       tags:
         - Wishlist
@@ -554,7 +586,7 @@ paths:
     patch:
       tags:
         - Wishlist
-      summary: Edit Wishes - SEMI READY
+      summary: Edit Wish - SEMI READY
       description: null
       consumes:
         - application/json
@@ -590,6 +622,41 @@ paths:
                 type: string
               cover:
                 type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                default: true
+              data:
+                $ref: '#/paths/~1wishlist~1%7Bid%7D~1/get/responses/200/schema/properties/data'
+              status:
+                type: number
+                default: 200
+    delete:
+      tags:
+        - Wishlist
+      summary: Delete Wish - READY
+      description: null
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: user wishlist id
+          required: true
+          type: string
+        - name: wishid
+          description: user wish id
+          required: true
+          type: string
       responses:
         '200':
           description: successful operation
@@ -651,7 +718,7 @@ paths:
   '/wish/{id}/':
     get:
       tags:
-        - Wishlist
+        - Wish
       summary: Get Wish By Id - READY
       description: null
       consumes:

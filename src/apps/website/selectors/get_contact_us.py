@@ -1,5 +1,5 @@
-from src.utils.exceptions import NotFoundException
 from src.apps.website.models import ContactUs
+from src.utils.exceptions import NotFoundException
 
 
 def get_contact_us():

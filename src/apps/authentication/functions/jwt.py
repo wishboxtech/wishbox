@@ -5,9 +5,7 @@ from django.core.cache import cache
 from django.utils import timezone
 
 from settings import ACCESS_TTL, JWT_SECRET, REFRESH_TTL
-
 from src.apps.authentication.selectors import user_with_id_exist
-
 from src.utils.exceptions import InvalidRefresh
 
 

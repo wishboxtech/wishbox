@@ -1,6 +1,6 @@
 get:
   tags:
-    - "Wishlist"
+    - "Wish"
   summary: "Get Wish By Id - READY"
   description:
   consumes:

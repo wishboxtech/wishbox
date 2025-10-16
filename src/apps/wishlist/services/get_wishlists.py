@@ -1,9 +1,7 @@
-from src.apps.wishlist.selectors import (
-    get_wishlists_by_profile as get_wishlists_by_profile_selector,
-)
-from src.apps.wishlist.selectors import (
-    get_wishlist_by_id as get_wishlist_by_id_selector,
-)
+from src.apps.wishlist.selectors import \
+    get_wishlist_by_id as get_wishlist_by_id_selector
+from src.apps.wishlist.selectors import \
+    get_wishlists_by_profile as get_wishlists_by_profile_selector
 from src.apps.wishlist.serializers import WishlistSerializer
 
 

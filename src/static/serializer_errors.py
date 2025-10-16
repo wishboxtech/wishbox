@@ -27,3 +27,15 @@ class SerializerErrors:
             "cover": _("CREATE_WISH_SERIALIZER_INVALID_COVER"),
             "price": _("CREATE_WISH_SERIALIZER_INVALID_PRICE"),
         }
+
+    class CreateAnonymousFriend:
+        errors = {
+            "nickname": _("CREATE_WISH_SERIALZER_INVALID_NICKNAME"),
+        }
+
+    class ReservationRequest:
+        errors = {
+            "wish": _("CREATE_WISH_SERIALZER_INVALID_WISH"),
+            "anonymous_friend": _("CREATE_WISH_SERIALZER_INVALID_ANONYMOUS_FRIEND"),
+            "friend": _("CREATE_WISH_SERIALZER_INVALID_FRIEND"),
+        }

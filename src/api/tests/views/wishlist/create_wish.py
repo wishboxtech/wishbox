@@ -1,10 +1,10 @@
 from django.test import LiveServerTestCase
 from django.urls import reverse
-from rest_framework.test import RequestsClient
 from faker import Faker
+from rest_framework.test import RequestsClient
 
 from src.apps.authentication.services import login_user_by_id
-from src.utils.fakers import UserFactory, ProfileFactory, WishlistFactory
+from src.utils.fakers import ProfileFactory, UserFactory, WishlistFactory
 
 
 class CreateWishTestCase(LiveServerTestCase):
@@ -34,7 +34,9 @@ class CreateWishTestCase(LiveServerTestCase):
         }
 
     def make_request(self, wishlist_id, headers=None, data=None):
-        url = self.live_server_url + reverse("wish", kwargs={"id": wishlist_id})
+        url = self.live_server_url + reverse(
+            "wishlist_action", kwargs={"id": wishlist_id}
+        )
         return self.rc.post(url, headers=headers, json=data)
 
     def test_unauthorized(self):

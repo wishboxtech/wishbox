@@ -1,7 +1,9 @@
-from django.test import TestCase
 from django.core.exceptions import ValidationError
+from django.test import TestCase
+
 from src.apps.website.models.contact_us import ContactUs
 from src.utils.fakers import ContactUsFactory
+
 
 class TestContactUsModel(TestCase):
     def setUp(self):

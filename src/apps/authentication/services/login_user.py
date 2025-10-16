@@ -1,5 +1,5 @@
-from src.apps.authentication.selectors import get_user_by_id
 from src.apps.authentication.functions import login
+from src.apps.authentication.selectors import get_user_by_id
 
 
 def login_user_by_id(user_id, extra_data=None):

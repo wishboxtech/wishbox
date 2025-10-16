@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from src.apps.wishlist.models import Wishlist
+
 from src.apps.storage.services import serialize_media
+from src.apps.wishlist.models import Wishlist
 
 
 class WishlistSerializer(serializers.ModelSerializer):

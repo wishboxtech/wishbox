@@ -1,11 +1,12 @@
-from django.test import TestCase
 import uuid
+
+from django.core.exceptions import ValidationError
+from django.test import TestCase
 from faker import Faker
 
 from src.apps.wishlist.models import Wish
 from src.apps.wishlist.selectors import get_wish_by_id
 from src.utils.fakers import WishFactory
-from django.core.exceptions import ValidationError
 
 
 class GetWishByIdSelectorTestCase(TestCase):

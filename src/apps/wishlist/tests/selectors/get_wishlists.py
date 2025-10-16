@@ -1,8 +1,8 @@
 from django.test import TestCase
+from faker import Faker
 
 from src.apps.wishlist.selectors import get_wishlists_by_profile
-from src.utils.fakers import WishlistFactory, ProfileFactory
-from faker import Faker
+from src.utils.fakers import ProfileFactory, WishlistFactory
 
 
 class GetWishlistsSelectorTestCase(TestCase):

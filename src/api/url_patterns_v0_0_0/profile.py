@@ -1,6 +1,7 @@
 from django.urls import path
+
 from src.api.views.profile import ProfileAPIView
-from src.api.views.wishlist import WishlistAPIView, UpdateWishlistAPIView
+from src.api.views.wishlist import UpdateWishlistAPIView, WishlistAPIView
 
 profile_urlpatterns = [
     path(
@@ -12,10 +13,5 @@ profile_urlpatterns = [
         "wishlist/",
         WishlistAPIView.as_view(),
         name="wishlist",
-    ),
-    path(
-        "wishlist/<str:id>/",
-        UpdateWishlistAPIView.as_view(),
-        name="wishlist_with_id",
     ),
 ]

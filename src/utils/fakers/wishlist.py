@@ -1,6 +1,7 @@
 import factory
-from src.utils.fakers.profile import ProfileFactory
 from faker import Faker
+
+from src.utils.fakers.profile import ProfileFactory
 
 fake = Faker()
 

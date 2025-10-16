@@ -1,10 +1,10 @@
 from django.test import LiveServerTestCase
 from django.urls import reverse
-from rest_framework.test import RequestsClient
 from faker import Faker
+from rest_framework.test import RequestsClient
 
 from src.apps.authentication.services import login_user_by_id
-from src.utils.fakers import UserFactory, ProfileFactory
+from src.utils.fakers import ProfileFactory, UserFactory
 
 
 class CreateWishlistTestCase(LiveServerTestCase):

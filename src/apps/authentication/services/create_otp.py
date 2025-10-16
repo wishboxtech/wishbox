@@ -1,6 +1,5 @@
 from settings import UNDER_DEVELOPMENT
 from src.apps.authentication.models import OneTimePassword
-
 from src.utils.otp import send_sms_otp
 
 

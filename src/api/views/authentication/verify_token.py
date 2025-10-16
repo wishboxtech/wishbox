@@ -7,15 +7,12 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from src.apps.authentication.services import (
-    get_user_id_by_phone_number,
-    verify_otp_and_get_user_phone, 
-    login_user_by_id,
-    create_user,
-    user_registered
-)
-
 from settings import ACCESS_TTL
+from src.apps.authentication.services import (create_user,
+                                              get_user_id_by_phone_number,
+                                              login_user_by_id,
+                                              user_registered,
+                                              verify_otp_and_get_user_phone)
 from src.static import ErrorEnum
 from src.utils.exceptions import BadRequestException
 

@@ -1,7 +1,9 @@
-from rest_framework.test import APITestCase
-from rest_framework import status
-from src.apps.website.models import ContactUs
 from django.urls import reverse
+from rest_framework import status
+from rest_framework.test import APITestCase
+
+from src.apps.website.models import ContactUs
+
 
 class ContactUsAPIViewTest(APITestCase):
 

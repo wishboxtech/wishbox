@@ -9,7 +9,6 @@ from django.utils.translation import gettext_lazy as _
 from settings import OTP_TTL
 from src.static import ErrorEnum
 from src.utils.exceptions import BadRequestException, InvalidOTP
-
 from src.utils.otp import generate_otp
 
 

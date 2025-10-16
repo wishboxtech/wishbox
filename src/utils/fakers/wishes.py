@@ -1,7 +1,8 @@
 import factory
 from factory import fuzzy
-from src.utils.fakers.wishlist import WishlistFactory
 from faker import Faker
+
+from src.utils.fakers.wishlist import WishlistFactory
 
 fake = Faker()
 

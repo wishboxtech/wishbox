@@ -1,5 +1,6 @@
 import factory
 from faker import Faker
+
 from src.apps.website.models import ContactUs
 
 fake = Faker()

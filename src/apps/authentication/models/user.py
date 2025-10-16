@@ -7,7 +7,6 @@ from django.utils.translation import gettext_lazy as _
 
 from src.apps.authentication.models.user_manager import UserManager
 
-
 REQUIRED_FIELDS_FOR_EACH_USER = {
     "NU": [
         "phone_number",
