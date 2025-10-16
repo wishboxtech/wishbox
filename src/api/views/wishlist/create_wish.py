@@ -1,9 +1,8 @@
 from rest_framework import status
 from rest_framework.response import Response
-
-from src.api.permissions import IsOwnerOfWishlist
 from rest_framework.views import APIView
 
+from src.api.permissions import IsOwnerOfWishlist
 from src.apps.wishlist.services import create_wish
 from src.utils.exceptions import BadRequestException
 

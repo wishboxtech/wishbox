@@ -4,11 +4,9 @@ from django.test import LiveServerTestCase
 from factory.faker import faker
 from rest_framework.test import RequestsClient
 
-from src.utils.fakers import UserFactory
-from src.apps.authentication.services import (
-    create_one_time_password,
-)
+from src.apps.authentication.services import create_one_time_password
 from src.static import ErrorEnum
+from src.utils.fakers import UserFactory
 
 
 class VerifyOneTimePasswordViewTestCase(LiveServerTestCase):

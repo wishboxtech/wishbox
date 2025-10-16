@@ -1,11 +1,12 @@
 import uuid
+
 from django.test import LiveServerTestCase
 from django.urls import reverse
-from rest_framework.test import RequestsClient
 from faker import Faker
+from rest_framework.test import RequestsClient
 
 from src.apps.authentication.services import login_user_by_id
-from src.utils.fakers import UserFactory, ProfileFactory, WishlistFactory, WishFactory
+from src.utils.fakers import ProfileFactory, UserFactory, WishFactory, WishlistFactory
 
 
 class UpdateWishAPITestCase(LiveServerTestCase):
@@ -38,7 +39,7 @@ class UpdateWishAPITestCase(LiveServerTestCase):
 
     def make_request(self, wishlist_id, wish_id, headers=None, data=None):
         url = self.live_server_url + reverse(
-            "update_wish",  # 🔑 make sure your urls.py route name matches
+            "wish_action",
             args=[wishlist_id, wish_id],
         )
         return self.rc.patch(url, headers=headers, json=data)

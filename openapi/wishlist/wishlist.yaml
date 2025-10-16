@@ -1,3 +1,76 @@
+patch:
+  tags:
+    - "Wishlist"
+  summary: "Edit Wishlist - READY"
+  description:
+  consumes:
+    - "application/json"
+  produces:
+    - "application/json"
+  security:
+    - ApiKeyAuth: []
+  parameters:
+    - name: "id"
+      in: "path"
+      description: "user wishlist id"
+      required: True
+      type: "string"
+    - in: "body"
+      name: "body"
+      description: "Edit Wishlist"
+      required: true
+      schema:
+        $ref: "../wishlist/definitions.yaml#/EditWishlist"
+  responses:
+    200:
+      description: "successful operation"
+      schema:
+        type: "object"
+        properties:
+          ok:
+            type: "boolean"
+            default: true
+          data:
+            $ref: "../wishlist/definitions.yaml#/Wishlist"
+          status:
+            type: "number"
+            default: 200
+
+delete:
+  tags:
+    - "Wishlist"
+  summary: "Delete Wishlist - READY"
+  description:
+  consumes:
+    - "application/json"
+  produces:
+    - "application/json"
+  security:
+    - ApiKeyAuth: []
+  parameters:
+    - name: "id"
+      in: "path"
+      description: "user wishlist id"
+      required: True
+      type: "string"
+  responses:
+    200:
+      description: "successful operation"
+      schema:
+        type: "object"
+        properties:
+          deleted:
+            type: "boolean"
+            default: true
+          status:
+            type: "number"
+            default: 200
+    404:
+      description: "NotFound Request"
+    429:
+      description: "Throttled"
+
+
 post:
   tags:
     - "Wishlist"
@@ -20,7 +93,7 @@ post:
       description: "Create Wishlist"
       required: true
       schema:
-        $ref: "./definitions.yaml#/CreateWish"
+        $ref: "../wishlist/definitions.yaml#/CreateWish"
   responses:
     200:
       description: "successful operation"
@@ -31,11 +104,10 @@ post:
             type: "boolean"
             default: true
           data:
-            $ref: "./definitions.yaml#/Wish"
+            $ref: "../wishlist/definitions.yaml#/Wish"
           status:
             type: "number"
             default: 200
-
 
 get:
   tags:
@@ -64,7 +136,7 @@ get:
             type: "boolean"
             default: true
           data:
-            $ref: "./definitions.yaml#/Wishes"
+            $ref: "../wishlist/definitions.yaml#/Wishes"
           status:
             type: "number"
             default: 200

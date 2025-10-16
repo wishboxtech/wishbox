@@ -1,9 +1,11 @@
+import uuid
+
 from django.test import LiveServerTestCase
 from django.urls import reverse
 from rest_framework.test import RequestsClient
-import uuid
 
-from src.utils.fakers import ProfileFactory, UserFactory, WishlistFactory, WishFactory
+from src.utils.fakers import (ProfileFactory, UserFactory, WishFactory,
+                              WishlistFactory)
 
 
 class GetWishByIdAPIViewTestCase(LiveServerTestCase):

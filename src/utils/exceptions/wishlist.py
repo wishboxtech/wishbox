@@ -1,4 +1,5 @@
 from django.utils.translation import gettext_lazy as _
+
 from src.static.error_enum import ErrorEnum
 from src.utils.exceptions import BadRequestException
 

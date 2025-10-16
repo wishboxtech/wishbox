@@ -1,11 +1,10 @@
 import faker
-
 from django.test import TestCase
 
-from src.apps.profile.services import get_profile_by_user_id
 from src.apps.profile.selectors import get_profile_by_id
-from src.utils.fakers import UserFactory, ProfileFactory
 from src.apps.profile.serializers.profile import ReadProfileSerializer
+from src.apps.profile.services import get_profile_by_user_id
+from src.utils.fakers import ProfileFactory, UserFactory
 
 
 class GetProfileById(TestCase):

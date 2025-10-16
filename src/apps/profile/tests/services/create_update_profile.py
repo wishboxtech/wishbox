@@ -1,9 +1,8 @@
 import faker
-
 from django.test import TestCase
 
 from src.apps.profile.services import create_or_update_profile
-from src.utils.fakers import UserFactory, ProfileFactory
+from src.utils.fakers import ProfileFactory, UserFactory
 
 
 class CreateUpdateProfileTestCase(TestCase):

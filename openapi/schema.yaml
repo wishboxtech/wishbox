@@ -30,14 +30,13 @@ paths:
     $ref: "./profile/profile.yaml"
   /profile/wishlist/:
     $ref: "./profile/wishlist.yaml"
-  /profile/wishlist/{id}/:
-    $ref: "./profile/update_wishlist.yaml"
   
   # Storage
   /storage/upload/:
     $ref: "./storage/upload.yaml"
 
   # Wish
+  
   /wishlist/{id}/:
     $ref: "./wishlist/wishlist.yaml"
   /wishlist/{id}/wish/{wishid}/:

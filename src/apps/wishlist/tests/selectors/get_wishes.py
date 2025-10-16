@@ -1,8 +1,10 @@
-from django.test import TestCase
 import uuid
-from src.apps.wishlist.selectors import get_wishes_by_wishlist_id
-from src.utils.fakers import WishlistFactory, WishFactory
+
+from django.test import TestCase
 from faker import Faker
+
+from src.apps.wishlist.selectors import get_wishes_by_wishlist_id
+from src.utils.fakers import WishFactory, WishlistFactory
 
 
 class GetWishesSelectorTestCase(TestCase):

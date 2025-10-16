@@ -7,8 +7,8 @@ from freezegun import freeze_time
 
 from src.apps.authentication.functions import login, validate_token
 from src.apps.authentication.services import refresh
-from src.utils.fakers import UserFactory
 from src.utils.exceptions import InvalidRefresh
+from src.utils.fakers import UserFactory
 
 
 class RefreshServiceTestCase(TestCase):

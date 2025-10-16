@@ -1,11 +1,9 @@
 from rest_framework import status
-from rest_framework.response import Response
-
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from src.apps.profile.services import create_or_update_profile
-
 from src.utils.exceptions import BadRequestException
 
 

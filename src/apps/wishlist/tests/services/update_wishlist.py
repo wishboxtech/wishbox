@@ -1,11 +1,12 @@
-import faker
 import uuid
+
+import faker
 from django.test import TestCase
 
 from src.apps.wishlist.services import update_wishlist
-from src.utils.fakers import WishlistFactory, UserFactory, ProfileFactory
 from src.static.serializer_errors import SerializerErrors
 from src.utils.exceptions import InvalidWishlistId
+from src.utils.fakers import ProfileFactory, UserFactory, WishlistFactory
 
 
 class UpdateWishlistTestCase(TestCase):

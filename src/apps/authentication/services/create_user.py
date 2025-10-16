@@ -1,6 +1,7 @@
 from django.db import transaction
 
-from src.apps.authentication.selectors import create_user as create_user_selector
+from src.apps.authentication.selectors import \
+    create_user as create_user_selector
 
 
 @transaction.atomic

@@ -1,5 +1,5 @@
-from src.apps.wishlist.serializers import EditWishSerialzier, WishSerializer
 from src.apps.wishlist.selectors import get_wish_by_id, is_owner_of_wishlist
+from src.apps.wishlist.serializers import EditWishSerialzier, WishSerializer
 from src.static import SerializerErrors
 from src.utils.exceptions import InvalidWishId, NotWishlistOwner
 

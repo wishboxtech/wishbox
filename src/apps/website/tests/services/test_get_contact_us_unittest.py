@@ -1,9 +1,11 @@
 from django.test import TestCase
+
 from src.apps.website.models import ContactUs
-from src.apps.website.serializers import ContactUsSerializer
-from src.utils.fakers import ContactUsFactory
-from src.utils.exceptions import NotFoundException
 from src.apps.website.selectors import get_contact_us
+from src.apps.website.serializers import ContactUsSerializer
+from src.utils.exceptions import NotFoundException
+from src.utils.fakers import ContactUsFactory
+
 
 class TestGetContactUsService(TestCase):
     def setUp(self):

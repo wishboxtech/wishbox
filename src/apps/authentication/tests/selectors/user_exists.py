@@ -3,9 +3,7 @@ import uuid
 from django.test import TestCase
 from factory.faker import faker
 
-from src.apps.authentication.selectors import (
-    user_with_id_exist,
-)
+from src.apps.authentication.selectors import user_with_id_exist
 from src.utils.fakers import UserFactory
 
 

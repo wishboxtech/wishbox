@@ -1,6 +1,7 @@
 import factory
-from src.utils.fakers.user import UserFactory
 from faker import Faker
+
+from src.utils.fakers.user import UserFactory
 
 fake = Faker()
 

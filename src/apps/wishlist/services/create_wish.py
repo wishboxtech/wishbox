@@ -1,4 +1,4 @@
-from src.apps.wishlist.serializers import WriteWishSerialzier, WishSerializer
+from src.apps.wishlist.serializers import WishSerializer, WriteWishSerialzier
 from src.static import SerializerErrors
 
 

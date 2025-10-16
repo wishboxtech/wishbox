@@ -1,10 +1,10 @@
 from django.test import LiveServerTestCase
-from rest_framework.test import RequestsClient
 from django.urls import reverse
+from rest_framework.test import RequestsClient
 
-from src.utils.fakers import UserFactory, fake_image
 from src.apps.authentication.services import login_user_by_id
 from src.static import ErrorEnum
+from src.utils.fakers import UserFactory, fake_image
 
 
 class UploadFileViewTestCase(LiveServerTestCase):

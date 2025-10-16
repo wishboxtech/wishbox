@@ -11,6 +11,7 @@ from src.apps.authentication.services import refresh
 from src.static import ErrorEnum
 from src.utils.exceptions import BadRequestException
 
+
 class RefreshTokenAPIView(APIView):
     permission_classes = []
 

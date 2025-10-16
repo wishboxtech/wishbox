@@ -1,10 +1,9 @@
 import faker
-
 from django.test import TestCase
 
 from src.apps.wishlist.services import create_wish
-from src.utils.fakers import WishFactory, WishlistFactory
 from src.static.serializer_errors import SerializerErrors
+from src.utils.fakers import WishFactory, WishlistFactory
 
 
 class CreateWishTestCase(TestCase):

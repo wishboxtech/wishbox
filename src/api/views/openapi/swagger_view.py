@@ -1,6 +1,7 @@
+from pathlib import Path
+
 from django.conf import settings
 from django.http import HttpResponse
-from pathlib import Path
 from django.views.decorators.cache import cache_page
 
 

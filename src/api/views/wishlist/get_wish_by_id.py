@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from src.apps.wishlist.services import get_wish_by_id
-from src.utils.exceptions import NotFoundException
 from src.static import ErrorEnum
+from src.utils.exceptions import NotFoundException
 
 
 class GetWishByIdAPIView(APIView):

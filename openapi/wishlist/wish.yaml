@@ -1,7 +1,7 @@
 patch:
   tags:
     - "Wishlist"
-  summary: "Edit Wishes - SEMI READY"
+  summary: "Edit Wish - SEMI READY"
   description:
   consumes:
     - "application/json"
@@ -25,6 +25,42 @@ patch:
       required: true
       schema:
         $ref: "./definitions.yaml#/EditWish"
+  responses:
+    200:
+      description: "successful operation"
+      schema:
+        type: "object"
+        properties:
+          ok:
+            type: "boolean"
+            default: true
+          data:
+            $ref: "./definitions.yaml#/Wishes"
+          status:
+            type: "number"
+            default: 200
+
+delete:
+  tags:
+    - "Wishlist"
+  summary: "Delete Wish - READY"
+  description:
+  consumes:
+    - "application/json"
+  produces:
+    - "application/json"
+  security:
+    - ApiKeyAuth: []
+  parameters:
+    - name: "id"
+      in: "path"
+      description: "user wishlist id"
+      required: True
+      type: "string"
+    - name: "wishid"
+      description: "user wish id"
+      required: True
+      type: "string"
   responses:
     200:
       description: "successful operation"

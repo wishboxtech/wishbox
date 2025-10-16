@@ -1,4 +1,5 @@
 from django.urls import path
+
 from src.api.views.openapi import swagger_schema_view, swagger_ui_view
 
 openapi_urlpatterns = [

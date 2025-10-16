@@ -1,10 +1,10 @@
 import uuid
 
 from django.test import TestCase
+from faker import Faker
 
 from src.apps.profile.selectors import get_profile_by_id
 from src.utils.fakers import ProfileFactory
-from faker import Faker
 
 
 class GetProfileSelectorTestCase(TestCase):

@@ -1,12 +1,10 @@
 from django.utils.translation import gettext_lazy as _
 from rest_framework import status
-from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from src.apps.wishlist.services import get_wishlists_by_profile
-from src.utils.exceptions import NotFoundException
-from src.static import ErrorEnum
 
 
 class GetWishlistsAPIView(APIView):

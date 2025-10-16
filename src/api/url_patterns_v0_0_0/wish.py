@@ -1,4 +1,5 @@
 from django.urls import path
+
 from src.api.views.wishlist import GetWishByIdAPIView
 
 wish_urlpatterns = [

@@ -1,8 +1,10 @@
 from django.test import TestCase
-from src.apps.website.selectors import get_contact_us
-from src.utils.fakers import ContactUsFactory
-from src.utils.exceptions import NotFoundException
+
 from src.apps.website.models.contact_us import ContactUs
+from src.apps.website.selectors import get_contact_us
+from src.utils.exceptions import NotFoundException
+from src.utils.fakers import ContactUsFactory
+
 
 class TestGetContactUsSelector(TestCase):
     def setUp(self):

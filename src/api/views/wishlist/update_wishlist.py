@@ -1,20 +1,23 @@
 from django.utils.translation import gettext_lazy as _
 from rest_framework import status
 from rest_framework.response import Response
-
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
+from src.api.permissions import IsOwnerOfWishlist
 from src.apps.wishlist.services import update_wishlist
 from src.utils.exceptions import BadRequestException
 
 
 class UpdateWishlistAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsOwnerOfWishlist]
 
     def patch(self, *args, **kwargs):
         wishlist_id = kwargs.get("id")
+        profile_id = self.request.user.id
         data = self.request.data
+
+        obj = {"profile_id": profile_id, "wishlist_id": wishlist_id}
+        self.check_object_permissions(self.request, obj)
 
         try:
             updated, wishlist, errs = update_wishlist(

@@ -1,8 +1,10 @@
+import uuid
+
 from django.test import LiveServerTestCase
 from django.urls import reverse
 from rest_framework.test import RequestsClient
-import uuid
-from src.utils.fakers import ProfileFactory, UserFactory, WishlistFactory, WishFactory
+
+from src.utils.fakers import ProfileFactory, UserFactory, WishFactory, WishlistFactory
 
 
 class GetWishesAPIViewTestCase(LiveServerTestCase):
@@ -18,7 +20,9 @@ class GetWishesAPIViewTestCase(LiveServerTestCase):
         self.wishes = WishFactory.create_batch(3, wishlist=self.wishlist)
 
     def make_request(self, wishlist_id):
-        url = self.live_server_url + reverse("wish", kwargs={"id": wishlist_id})
+        url = self.live_server_url + reverse(
+            "wishlist_action", kwargs={"id": wishlist_id}
+        )
         return self.rc.get(url)
 
     def test_ok_response_with_wishes(self):

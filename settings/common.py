@@ -1,10 +1,12 @@
 """Common settings"""
 
+from os.path import abspath, dirname
 from pathlib import Path
-from os.path import dirname, abspath
-from settings.utils import get_env
-from dotenv import load_dotenv
 from sys import path
+
+from dotenv import load_dotenv
+
+from settings.utils import get_env
 
 # * PATH CONFIGURATION
 BASE_DIR = Path(__file__).resolve().parent.parent
