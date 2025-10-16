@@ -10,11 +10,9 @@ def get_user_by_id(user_id: Union[str, uuid.UUID]):
     except User.DoesNotExist:
         return None
 
+
 def get_user_by_phone_number(phone_number: str):
     try:
-        return User.objects.get(
-            phone_number=phone_number
-        )
+        return User.objects.get(phone_number=phone_number)
     except User.DoesNotExist:
         return None
-

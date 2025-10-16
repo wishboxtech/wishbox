@@ -15,9 +15,7 @@ class VerifyOneTimePasswordViewTestCase(LiveServerTestCase):
         self.user = UserFactory()
 
     def make_request(self, data=None):
-        return self.rc.post(
-            "http://testserver/api/V0.0.0/auth/otp/verify/", json=data
-        )
+        return self.rc.post("http://testserver/api/V0.0.0/auth/otp/verify/", json=data)
 
     def test_bad_request_response(self):
         def post_bad_request(error_type, data=None):
@@ -59,9 +57,7 @@ class VerifyOneTimePasswordViewTestCase(LiveServerTestCase):
             "src.apps.authentication.models.otp.generate_otp",
             new=lambda *args: otp_code,
         ):
-            otp_id = create_one_time_password(
-                phone_number=self.user.phone_number
-            )
+            otp_id = create_one_time_password(phone_number=self.user.phone_number)
             post_ok(
                 data={"otp_id": otp_id, "otp_code": otp_code},
             )

@@ -3,13 +3,16 @@ import traceback
 
 from django.utils.translation import gettext as _
 from rest_framework import status
-from rest_framework.exceptions import (MethodNotAllowed, NotAuthenticated,
-                                       PermissionDenied, Throttled)
+from rest_framework.exceptions import (
+    MethodNotAllowed,
+    NotAuthenticated,
+    PermissionDenied,
+    Throttled,
+)
 from rest_framework.response import Response
 
 from src.static import ErrorEnum
-from src.utils.exceptions import (BadRequestException, NotFoundException,
-                                  Unauthorized)
+from src.utils.exceptions import BadRequestException, NotFoundException, Unauthorized
 
 
 def api_exception_handler(exc, context):

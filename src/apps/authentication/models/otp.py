@@ -16,7 +16,6 @@ class OneTimePassword:
     code = None
     otp_id = None
     phone_number = None
-    
 
     def __init__(self, phone_number, prefix=""):
         self.otp_id = str(uuid.uuid4())

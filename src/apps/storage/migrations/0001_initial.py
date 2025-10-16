@@ -12,27 +12,71 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='MediaType',
+            name="MediaType",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, primary_key=True, serialize=False)),
-                ('media_type', models.CharField(max_length=100, verbose_name='media type')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4, primary_key=True, serialize=False
+                    ),
+                ),
+                (
+                    "media_type",
+                    models.CharField(max_length=100, verbose_name="media type"),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='MediaModel',
+            name="MediaModel",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('file', models.FileField(upload_to=src.apps.storage.models.media.MediaModel.file_path, verbose_name='file')),
-                ('alt', models.CharField(max_length=50, verbose_name='alt description')),
-                ('checksum', models.CharField(blank=True, max_length=40, verbose_name='checksum')),
-                ('created_at', models.DateField(auto_now_add=True, verbose_name='created at')),
-                ('updated_at', models.DateField(auto_now=True, verbose_name='updated at')),
-                ('mime_type', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='storage.mediatype', verbose_name='mime type')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "file",
+                    models.FileField(
+                        upload_to=src.apps.storage.models.media.MediaModel.file_path,
+                        verbose_name="file",
+                    ),
+                ),
+                (
+                    "alt",
+                    models.CharField(max_length=50, verbose_name="alt description"),
+                ),
+                (
+                    "checksum",
+                    models.CharField(
+                        blank=True, max_length=40, verbose_name="checksum"
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateField(auto_now_add=True, verbose_name="created at"),
+                ),
+                (
+                    "updated_at",
+                    models.DateField(auto_now=True, verbose_name="updated at"),
+                ),
+                (
+                    "mime_type",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="storage.mediatype",
+                        verbose_name="mime type",
+                    ),
+                ),
             ],
         ),
     ]

@@ -13,9 +13,7 @@ from src.apps.storage.models.media_type import MediaType
 class MediaModel(models.Model):
     def file_path(instance, filename):
         file_name = filename.split(".")[-1]
-        return "{}/{}.{}".format(
-            instance.mime_type, str(uuid.uuid4()), file_name
-        )
+        return "{}/{}.{}".format(instance.mime_type, str(uuid.uuid4()), file_name)
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     file = models.FileField(upload_to=file_path, verbose_name=_("file"))
@@ -27,12 +25,8 @@ class MediaModel(models.Model):
         verbose_name=_("mime type"),
     )
     alt = models.CharField(max_length=50, verbose_name=_("alt description"))
-    checksum = models.CharField(
-        max_length=40, verbose_name=_("checksum"), blank=True
-    )
-    created_at = models.DateField(
-        auto_now_add=True, verbose_name=_("created at")
-    )
+    checksum = models.CharField(max_length=40, verbose_name=_("checksum"), blank=True)
+    created_at = models.DateField(auto_now_add=True, verbose_name=_("created at"))
     updated_at = models.DateField(auto_now=True, verbose_name=_("updated at"))
 
 
