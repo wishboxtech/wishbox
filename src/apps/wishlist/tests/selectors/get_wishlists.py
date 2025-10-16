@@ -6,7 +6,6 @@ from src.utils.fakers import ProfileFactory, WishlistFactory
 
 
 class GetWishlistsSelectorTestCase(TestCase):
-
     def setUp(self):
         self.faker = Faker()
         self.profile = ProfileFactory()

@@ -13,10 +13,6 @@ class MediaTypeModelTestCase(TestCase):
         mim_of_media_object = magic.from_buffer(
             self.media_object.file.read(), mime=True
         )
-        media_type_object = MediaType.objects.filter(
-            media_type=mim_of_media_object
-        )
+        media_type_object = MediaType.objects.filter(media_type=mim_of_media_object)
         self.assertTrue(media_type_object.exists())
-        self.assertEqual(
-            self.media_object.mime_type.id, media_type_object.first().id
-        )
+        self.assertEqual(self.media_object.mime_type.id, media_type_object.first().id)

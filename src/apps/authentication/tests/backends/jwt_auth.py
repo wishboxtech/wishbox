@@ -27,7 +27,6 @@ class JWTAuthenticationBackendTestCase(TestCase):
         self.assertEqual(self.auth_class.authenticate(request_success)[0], self.user)
 
     def test_jwt_with_parental_control(self):
-
         def create_request(HTTP_ACCESS=None):
             return self.factory.get("/examlple", data=None, HTTP_ACCESS=HTTP_ACCESS)
 

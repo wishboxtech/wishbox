@@ -8,7 +8,6 @@ from src.utils.fakers import WishFactory, WishlistFactory
 
 
 class GetWishesSelectorTestCase(TestCase):
-
     def setUp(self):
         self.faker = Faker()
         self.wishlist = WishlistFactory()

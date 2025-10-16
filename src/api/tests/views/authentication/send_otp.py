@@ -8,7 +8,6 @@ from src.utils.fakers import UserFactory
 
 
 class SendOneTimePasswordAPIViewTestCase(LiveServerTestCase):
-
     def setUp(self):
         self.rc = RequestsClient()
         self.user = UserFactory()

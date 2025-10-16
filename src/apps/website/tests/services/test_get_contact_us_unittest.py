@@ -16,7 +16,7 @@ class TestGetContactUsService(TestCase):
         """Ensure the selector returns the correct ContactUs instance."""
         expected = ContactUsSerializer(self.contact_us).data
         fetched_contact = get_contact_us()
-        self.assertEqual(fetched_contact.email, expected['email'])
+        self.assertEqual(fetched_contact.email, expected["email"])
 
     def test_get_contact_us_no_instance(self):
         """Ensure the selector raises an exception when no instance exists."""
@@ -25,5 +25,7 @@ class TestGetContactUsService(TestCase):
         with self.assertRaises(NotFoundException) as context:
             get_contact_us()
 
-        self.assertEqual(context.exception.message, {"detail": "ContactUs instance not found"})
+        self.assertEqual(
+            context.exception.message, {"detail": "ContactUs instance not found"}
+        )
         self.assertEqual(context.exception.error_type, [["not_found"]])

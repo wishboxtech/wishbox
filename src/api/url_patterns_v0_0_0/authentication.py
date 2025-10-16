@@ -1,8 +1,10 @@
 from django.urls import path
 
-from src.api.views.authentication import (RefreshTokenAPIView,
-                                          SendOneTimePassword,
-                                          VerifyOneTimePasswordAPIView)
+from src.api.views.authentication import (
+    RefreshTokenAPIView,
+    SendOneTimePassword,
+    VerifyOneTimePasswordAPIView,
+)
 
 authentication_urlpatterns = [
     path(
@@ -10,14 +12,6 @@ authentication_urlpatterns = [
         SendOneTimePassword.as_view(),
         name="send_otp",
     ),
-    path(
-        "otp/verify/",
-        VerifyOneTimePasswordAPIView.as_view(),
-        name="verify_otp"
-    ),
-    path(
-        "otp/refresh/",
-        RefreshTokenAPIView.as_view(),
-        name="refresh_token"
-    )
+    path("otp/verify/", VerifyOneTimePasswordAPIView.as_view(), name="verify_otp"),
+    path("otp/refresh/", RefreshTokenAPIView.as_view(), name="refresh_token"),
 ]

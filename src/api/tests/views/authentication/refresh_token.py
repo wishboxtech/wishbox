@@ -23,9 +23,7 @@ class RefreshTokenAPIViewTestCase(LiveServerTestCase):
         )
 
     def make_request(self, data=None):
-        return self.rc.post(
-            "http://testserver/api/V0.0.0/auth/otp/refresh/", json=data
-        )
+        return self.rc.post("http://testserver/api/V0.0.0/auth/otp/refresh/", json=data)
 
     def test_bad_request_response(self):
         def post_bad_request(error_type, data=None):

@@ -8,17 +8,18 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from settings import ACCESS_TTL
-from src.apps.authentication.services import (create_user,
-                                              get_user_id_by_phone_number,
-                                              login_user_by_id,
-                                              user_registered,
-                                              verify_otp_and_get_user_phone)
+from src.apps.authentication.services import (
+    create_user,
+    get_user_id_by_phone_number,
+    login_user_by_id,
+    user_registered,
+    verify_otp_and_get_user_phone,
+)
 from src.static import ErrorEnum
 from src.utils.exceptions import BadRequestException
 
 
 class VerifyOneTimePasswordAPIView(APIView):
-    
     def post(self, *args, **kwargs):
         otp_id = self.request.data.get("otp_id")
         otp_code = self.request.data.get("otp_code")
@@ -29,13 +30,9 @@ class VerifyOneTimePasswordAPIView(APIView):
             error_types.append(ErrorEnum.VerifyOneTimePassword.OTP_ID_IS_EMPTY)
         if otp_code is None:
             error_messages["otp_code"] = _("otp_code must be submitted.")
-            error_types.append(
-                ErrorEnum.VerifyOneTimePassword.OTP_CODE_IS_EMPTY
-            )
+            error_types.append(ErrorEnum.VerifyOneTimePassword.OTP_CODE_IS_EMPTY)
         if len(error_types) != 0:
-            raise BadRequestException(
-                message=error_messages, error_type=error_types
-            )
+            raise BadRequestException(message=error_messages, error_type=error_types)
         phone_number = verify_otp_and_get_user_phone(otp_id, otp_code)
         if phone_number is None:
             raise BadRequestException(

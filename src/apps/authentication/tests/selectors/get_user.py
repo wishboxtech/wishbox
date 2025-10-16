@@ -2,8 +2,7 @@ import uuid
 
 from django.test import TestCase
 
-from src.apps.authentication.selectors import (get_user_by_id,
-                                               get_user_by_phone_number)
+from src.apps.authentication.selectors import get_user_by_id, get_user_by_phone_number
 from src.utils.fakers import UserFactory
 
 

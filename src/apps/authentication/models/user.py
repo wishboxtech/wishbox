@@ -41,7 +41,7 @@ class User(AbstractUser):
         max_length=11,
         unique=True,
     )
-    
+
     has_accepted_terms = models.BooleanField(
         default=False,
         verbose_name=_("has accepted terms"),
