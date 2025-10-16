@@ -65,6 +65,8 @@ SECRET_KEY = get_env_setting("SECRET_KEY")
 
 # Common settings
 USE_S3 = get_env("USE_S3")
+S3_MEDIA_URL = get_env("S3_MEDIA_URL")
+S3_STATIC_URL = get_env("S3_STATIC_URL")
 MINIO_STORAGE_ENDPOINT = get_env("MINIO_STORAGE_ENDPOINT", optional=True)
 MINIO_STORAGE_ACCESS_KEY = get_env("MINIO_STORAGE_ACCESS_KEY", optional=True)
 MINIO_STORAGE_SECRET_KEY = get_env("MINIO_STORAGE_SECRET_KEY", optional=True)
@@ -84,7 +86,7 @@ if USE_S3:
             "OPTIONS": {
                 "access_key": MINIO_STORAGE_ACCESS_KEY,
                 "secret_key": MINIO_STORAGE_SECRET_KEY,
-                "bucket_name": MEDIA_URL,  # should get seperated from the ORIGINAL ONE
+                "bucket_name": S3_MEDIA_URL,  # should get seperated from the ORIGINAL ONE
                 "endpoint_url": f"http{'s' if MINIO_STORAGE_USE_HTTPS else ''}://{MINIO_STORAGE_ENDPOINT}",
             },
         },
@@ -93,7 +95,7 @@ if USE_S3:
             "OPTIONS": {
                 "access_key": MINIO_STORAGE_ACCESS_KEY,
                 "secret_key": MINIO_STORAGE_SECRET_KEY,
-                "bucket_name": STATIC_URL,  # should get seperated from the ORIGINAL ONE
+                "bucket_name": S3_STATIC_URL,  # should get seperated from the ORIGINAL ONE
                 "endpoint_url": f"http{'s' if MINIO_STORAGE_USE_HTTPS else ''}://{MINIO_STORAGE_ENDPOINT}",
             },
         },
