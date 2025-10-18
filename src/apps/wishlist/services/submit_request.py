@@ -1,4 +1,4 @@
-from src.apps.wishlist.serializers import WriteReservationRequestSerialzier
+from src.apps.wishlist.serializers import WriteReservationRequestSerialzier, ReservationRequestSerializer
 from src.static import SerializerErrors
 
 
@@ -20,7 +20,7 @@ def submit_request(data):
 
     if serializer.is_valid():
         instance = serializer.save()
-        reservation_data = instance
+        reservation_data = ReservationRequestSerializer(instance=instance).data
         created = True
     else:
         error_types = []
