@@ -2,7 +2,7 @@ get:
   tags:
     - "Wish"
   summary: "Get Wish By Id - READY"
-  description:
+  description: get wish by id
   consumes:
     - "application/json"
   produces:

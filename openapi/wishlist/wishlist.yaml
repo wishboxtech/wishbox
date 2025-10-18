@@ -2,7 +2,7 @@ patch:
   tags:
     - "Wishlist"
   summary: "Edit Wishlist - READY"
-  description:
+  description: edit a wishlist
   consumes:
     - "application/json"
   produces:
@@ -40,7 +40,7 @@ delete:
   tags:
     - "Wishlist"
   summary: "Delete Wishlist - READY"
-  description:
+  description: delete a wishlist
   consumes:
     - "application/json"
   produces:
@@ -75,7 +75,7 @@ post:
   tags:
     - "Wishlist"
   summary: "Create Wish - READY"
-  description:
+  description: create a wish
   consumes:
     - "application/json"
   produces:
@@ -113,7 +113,7 @@ get:
   tags:
     - "Wishlist"
   summary: "Get Wishes - SEMI READY"
-  description:
+  description: get wishes of wishlist
   consumes:
     - "application/json"
   produces:

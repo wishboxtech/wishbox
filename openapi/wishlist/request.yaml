@@ -2,7 +2,7 @@ post:
   tags:
     - "Wishlist"
   summary: "Request To Reserve a Wish - NOT READY"
-  description:
+  description: request a wish
   consumes:
     - "application/json"
   produces:
