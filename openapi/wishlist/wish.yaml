@@ -2,7 +2,7 @@ patch:
   tags:
     - "Wishlist"
   summary: "Edit Wish - SEMI READY"
-  description:
+  description: edit a wish
   consumes:
     - "application/json"
   produces:
@@ -16,6 +16,7 @@ patch:
       required: True
       type: "string"
     - name: "wishid"
+      in: "path"
       description: "user wish id"
       required: True
       type: "string"
@@ -44,7 +45,7 @@ delete:
   tags:
     - "Wishlist"
   summary: "Delete Wish - READY"
-  description:
+  description: delete a wish
   consumes:
     - "application/json"
   produces:
@@ -58,6 +59,7 @@ delete:
       required: True
       type: "string"
     - name: "wishid"
+      in: "path"
       description: "user wish id"
       required: True
       type: "string"

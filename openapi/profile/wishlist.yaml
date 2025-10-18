@@ -2,7 +2,7 @@ post:
   tags:
     - "Profile"
   summary: "Create Wishlist - READY"
-  description:
+  description: create a wishlist
   consumes:
     - "application/json"
   produces:
@@ -42,7 +42,7 @@ get:
   tags:
     - "Profile"
   summary: "Get User Wishlists - READY"
-  description:
+  description: get user wishlists
   consumes:
     - "application/json"
   produces:

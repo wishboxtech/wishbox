@@ -270,7 +270,7 @@ paths:
       tags:
         - Profile
       summary: Create Wishlist - READY
-      description: null
+      description: create a wishlist
       consumes:
         - application/json
       produces:
@@ -329,7 +329,7 @@ paths:
       tags:
         - Profile
       summary: Get User Wishlists - READY
-      description: null
+      description: get user wishlists
       consumes:
         - application/json
       produces:
@@ -411,7 +411,7 @@ paths:
       tags:
         - Wishlist
       summary: Edit Wishlist - READY
-      description: null
+      description: edit a wishlist
       consumes:
         - application/json
       produces:
@@ -457,7 +457,7 @@ paths:
       tags:
         - Wishlist
       summary: Delete Wishlist - READY
-      description: null
+      description: delete a wishlist
       consumes:
         - application/json
       produces:
@@ -490,7 +490,7 @@ paths:
       tags:
         - Wishlist
       summary: Create Wish - READY
-      description: null
+      description: create a wish
       consumes:
         - application/json
       produces:
@@ -537,7 +537,7 @@ paths:
       tags:
         - Wishlist
       summary: Get Wishes - SEMI READY
-      description: null
+      description: get wishes of wishlist
       consumes:
         - application/json
       produces:
@@ -587,7 +587,7 @@ paths:
       tags:
         - Wishlist
       summary: Edit Wish - SEMI READY
-      description: null
+      description: edit a wish
       consumes:
         - application/json
       produces:
@@ -601,6 +601,7 @@ paths:
           required: true
           type: string
         - name: wishid
+          in: path
           description: user wish id
           required: true
           type: string
@@ -640,7 +641,7 @@ paths:
       tags:
         - Wishlist
       summary: Delete Wish - READY
-      description: null
+      description: delete a wish
       consumes:
         - application/json
       produces:
@@ -654,6 +655,7 @@ paths:
           required: true
           type: string
         - name: wishid
+          in: path
           description: user wish id
           required: true
           type: string
@@ -676,7 +678,7 @@ paths:
       tags:
         - Wishlist
       summary: Request To Reserve a Wish - NOT READY
-      description: null
+      description: request a wish
       consumes:
         - application/json
       produces:
@@ -720,7 +722,7 @@ paths:
       tags:
         - Wish
       summary: Get Wish By Id - READY
-      description: null
+      description: get wish by id
       consumes:
         - application/json
       produces:
