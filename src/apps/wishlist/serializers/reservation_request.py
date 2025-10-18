@@ -37,3 +37,16 @@ class WriteReservationRequestSerialzier(serializers.ModelSerializer):
             raise serializers.ValidationError(errors)
 
         return data
+
+
+class ReservationRequestSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = ReservationRequest
+        fields = (
+            "wish",
+            "anonymous_friend",
+            "friend",
+            "status",
+            "created_at"
+        )

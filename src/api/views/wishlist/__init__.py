@@ -10,7 +10,8 @@ from src.api.views.wishlist.get_wishes import GetWishesAPIView
 from src.api.views.wishlist.get_wishlists import GetWishlistsAPIView
 from src.api.views.wishlist.update_wish import UpdateWishAPIView
 from src.api.views.wishlist.update_wishlist import UpdateWishlistAPIView
-
+from src.api.views.wishlist.create_anonymous_friend import CreateAnonymousFriendAPIView
+from src.api.views.wishlist.submit_request import SubmitRequestAPIView
 
 class WishlistAPIView(GetWishlistsAPIView, CreateWishlistAPIView):
     ...
