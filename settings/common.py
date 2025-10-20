@@ -182,6 +182,8 @@ DJANGO_APPS = (
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "src.api",
+    "src.core",
+    "src.tasks",
     "src.apps.authentication",
     "src.apps.profile",
     "src.apps.website",
@@ -262,3 +264,16 @@ SMS_STREAM = get_env("SMS_STREAM", default="WINKIE")
 NATS_CLUSTER_ID = get_env("NATS_CLUSTER_ID")
 NATS_URL = get_env("NATS_URL")
 ########## END NATS CONFIGURATION
+
+# CELERY
+CELERY_BROKER_URL = get_env("CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = get_env("CELERY_RESULT_BACKEND")
+# END CELERY
+
+# RABBITMQ
+RABBITMQ_HOST = get_env("RABBITMQ_HOST")
+RABBITMQ_PORT = get_env("RABBITMQ_PORT")
+RABBITMQ_USER = get_env("RABBITMQ_USER")
+RABBITMQ_PASSWORD = get_env("RABBITMQ_PASSWORD")
+RABBITMQ_VHOST = get_env("RABBITMQ_VHOST")
+# END RABBITMQ
