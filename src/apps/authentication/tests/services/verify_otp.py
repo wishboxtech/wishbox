@@ -18,20 +18,23 @@ class VerifyOTPServiceTestCase(TestCase):
             "src.apps.authentication.models.otp.generate_otp",
             new=lambda *args: self.otp_code,
         ):
-            self.otp_id = create_one_time_password(self.user.phone_number)
+            self.otp_id = create_one_time_password(
+                state="phone_number", phone_number=self.user.phone_number
+            )
 
     def test_valid_verify_otp_and_get_user_phone_service(self):
-        user_phone = verify_otp_and_get_user_phone(
+        user_phone, _ = verify_otp_and_get_user_phone(
             otp_id=self.otp_id, otp_code=self.otp_code
         )
         self.assertEqual(user_phone, str(self.user.phone_number))
 
     def test_invalid_verify_otp_and_get_user_phone_service(self):
-        user_phone = verify_otp_and_get_user_phone(
+        user_phone, state = verify_otp_and_get_user_phone(
             otp_id="invalid", otp_code=self.otp_code
         )
         self.assertIsNone(user_phone)
-        user_phone = verify_otp_and_get_user_phone(
+        self.assertIsNone(state)
+        user_phone, state = verify_otp_and_get_user_phone(
             otp_id=self.otp_id, otp_code="invalid"
         )
         self.assertIsNone(user_phone)

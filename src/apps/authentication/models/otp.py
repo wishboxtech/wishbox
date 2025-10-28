@@ -15,11 +15,18 @@ from src.utils.otp import generate_otp
 class OneTimePassword:
     code = None
     otp_id = None
-    phone_number = None
+    target = None
 
-    def __init__(self, phone_number, prefix=""):
+    def __init__(
+        self,
+        state,
+        phone_number=None,
+        email=None,
+        prefix="",
+    ):
         self.otp_id = str(uuid.uuid4())
-        self.phone_number = phone_number
+        self.target = phone_number if phone_number else email
+        self.state = state
         self.code = generate_otp()
         self.prefix = prefix
         self.created_at = timezone.now()
@@ -27,8 +34,8 @@ class OneTimePassword:
 
     def __save(self):
         key = f"{self.prefix}{self.otp_id}"
-        phone_key = f"{self.prefix}{self.phone_number}"
-        not_duplicate = cache.set(phone_key, "", timeout=OTP_TTL, nx=True)
+        target_key = f"{self.prefix}{self.target}"
+        not_duplicate = cache.set(target_key, "", timeout=OTP_TTL, nx=True)
         if not not_duplicate:
             raise BadRequestException(
                 message={"message": _("OTP already sent.")},
@@ -39,7 +46,8 @@ class OneTimePassword:
     def __gen_value(self):
         raw_code = "{}{}".format(self.otp_id, self.code)
         raw_data = {
-            "user_phone": self.phone_number,
+            "user_target": self.target,
+            "state": self.state,
             "hash": make_password(raw_code),
         }
         return json.dumps(raw_data)
@@ -52,10 +60,10 @@ class OneTimePassword:
         data = json.loads(value)
         if not check_password("{}{}".format(otp_id, otp_code), data.get("hash")):
             raise InvalidOTP("otp is inavlid")
-        return data.get("user_phone")
+        return data.get("user_target"), data.get("state")
 
-    def otp_exist(phone_number, prefix=""):
-        key = f"{prefix}{phone_number}"
+    def otp_exist(target, prefix=""):
+        key = f"{prefix}{target}"
         return cache.ttl(key) != 0
 
     @property

@@ -9,8 +9,8 @@ from src.utils.fakers import UserFactory
 
 class LoginUserServiceTestCase(TestCase):
     def setUp(self):
-        self.user_inactive = UserFactory()
-        self.user_active = UserFactory(is_active=True)
+        self.user_inactive = UserFactory(email=None)
+        self.user_active = UserFactory(is_active=True, email=None)
 
     def test_login_user_by_id_service(self):
         self.assertIsNone(login_user_by_id(uuid.uuid4()))

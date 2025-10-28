@@ -3,6 +3,7 @@ from src.apps.authentication.services.create_user import create_user
 from src.apps.authentication.services.get_user import (
     get_user_by_id,
     get_user_id_by_phone_number,
+    get_user_id_by_identifier,
 )
 from src.apps.authentication.services.login_user import login_user_by_id
 from src.apps.authentication.services.otp_exists import one_time_password_exists

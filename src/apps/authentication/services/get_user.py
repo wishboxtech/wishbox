@@ -2,6 +2,7 @@ from src.apps.authentication.selectors import get_user_by_id as get_user_by_id_s
 from src.apps.authentication.selectors import (
     get_user_by_phone_number as get_user_id_selector,
 )
+from src.apps.authentication.selectors import get_user_by_email_or_phone
 
 
 def get_user_by_id(user_id):
@@ -11,5 +12,12 @@ def get_user_by_id(user_id):
 def get_user_id_by_phone_number(phone_number):
     user = get_user_id_selector(phone_number=phone_number)
     if user is None:
+        return None
+    return user.id
+
+
+def get_user_id_by_identifier(identifier):
+    user = get_user_by_email_or_phone(identifier=identifier)
+    if not user:
         return None
     return user.id
