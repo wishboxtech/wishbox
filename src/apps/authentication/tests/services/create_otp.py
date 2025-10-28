@@ -13,6 +13,8 @@ class CreateOneTimePasswordServiceTestCase(TestCase):
 
     @patch("src.apps.authentication.services.create_otp.send_sms_otp")
     def test_create_one_time_password_service(self, *_):
-        otp_id = create_one_time_password(phone_number=self.user.phone_number)
+        otp_id = create_one_time_password(
+            state="phone_number", phone_number=self.user.phone_number
+        )
         self.assertNotEqual(0, cache.ttl(self.user.phone_number))
         self.assertNotEqual(0, cache.ttl(otp_id))

@@ -17,7 +17,7 @@ REQUIRED_FIELDS_FOR_EACH_USER = {
 
 class User(AbstractUser):
     class UserType(models.TextChoices):
-        FOOTBALLIHA_USER = "NU", _("Normal User")
+        NORMAL_USER = "NU", _("Normal User")
         ADMIN = "AD", _("Admin")
 
     username = None
@@ -27,8 +27,14 @@ class User(AbstractUser):
     type = models.CharField(
         max_length=2,
         choices=UserType.choices,
-        default=UserType.FOOTBALLIHA_USER,
+        default=UserType.NORMAL_USER,
         verbose_name=_("type"),
+    )
+
+    email = models.EmailField(
+        _("email address"),
+        blank=True,
+        null=True,
     )
 
     phone_regex = RegexValidator(
@@ -39,7 +45,8 @@ class User(AbstractUser):
         verbose_name=_("phone number"),
         validators=[phone_regex],
         max_length=11,
-        unique=True,
+        null=True,
+        blank=True,
     )
 
     has_accepted_terms = models.BooleanField(
@@ -57,13 +64,40 @@ class User(AbstractUser):
         verbose_name=_("phone number verified at"),
     )
     objects = UserManager()
-    USERNAME_FIELD = "phone_number"
+    USERNAME_FIELD = "id"
     REQUIRED_FIELDS = []
 
     def save(self, *args, **kwargs):
-        if self.password is None or self.password == "":
+
+        if not self.email:
+            self.email = None
+        if not self.phone_number:
+            self.phone_number = None
+
+        if not self.password:
             self.set_unusable_password()
-        self.full_clean()
+
+        exclude = []
+        if self.email is None:
+            exclude.append("email")
+        if self.phone_number is None:
+            exclude.append("phone_number")
+
+        self.full_clean(exclude=exclude)
+
+        if (
+            self.email
+            and User.objects.exclude(pk=self.pk).filter(email=self.email).exists()
+        ):
+            raise ValueError(f"User with email {self.email} already exists.")
+        if (
+            self.phone_number
+            and User.objects.exclude(pk=self.pk)
+            .filter(phone_number=self.phone_number)
+            .exists()
+        ):
+            raise ValueError(f"User with phone {self.phone_number} already exists.")
+
         super(User, self).save(*args, **kwargs)
 
     class Meta:

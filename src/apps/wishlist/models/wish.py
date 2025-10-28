@@ -43,7 +43,7 @@ class Wish(models.Model):
     )
 
     accepted_request = models.ForeignKey(
-        "ReservationRequest",
+        "wishlist.ReservationRequest",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,

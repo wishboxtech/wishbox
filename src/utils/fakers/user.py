@@ -1,4 +1,7 @@
 import factory
+from faker import Faker
+
+fake = Faker()
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -8,3 +11,4 @@ class UserFactory(factory.django.DjangoModelFactory):
     password = "foo"
     set_password = factory.PostGenerationMethodCall("set_password", "foo")
     phone_number = factory.Faker("numerify", text="09#########")
+    email = None
