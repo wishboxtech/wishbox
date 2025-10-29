@@ -13,12 +13,11 @@ from src.api.views.wishlist.update_wishlist import UpdateWishlistAPIView
 from src.api.views.wishlist.create_anonymous_friend import CreateAnonymousFriendAPIView
 from src.api.views.wishlist.submit_request import SubmitRequestAPIView
 
-class WishlistAPIView(GetWishlistsAPIView, CreateWishlistAPIView):
-    ...
+
+class WishlistAPIView(GetWishlistsAPIView, CreateWishlistAPIView): ...
 
 
-class WishActionAPIView(UpdateWishAPIView, DeleteWishAPIView):
-    ...
+class WishActionAPIView(UpdateWishAPIView, DeleteWishAPIView): ...
 
 
 class WishlistActionAPIView(

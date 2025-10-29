@@ -5,17 +5,16 @@ from rest_framework.views import APIView
 from src.apps.wishlist.services import submit_request
 from src.utils.exceptions import BadRequestException
 
+
 class SubmitRequestAPIView(APIView):
     permission_classes = []
-    
+
     def post(self, *args, **kwargs):
         wish_id = kwargs.get("id")
-        
+
         data = self.request.data
         data["wish"] = wish_id
-        created, reservation_data, errs = submit_request(
-            data=data
-        )
+        created, reservation_data, errs = submit_request(data=data)
 
         if errs:
             raise BadRequestException(
@@ -30,6 +29,3 @@ class SubmitRequestAPIView(APIView):
             },
             status=status.HTTP_201_CREATED,
         )
-        
-        
-        
