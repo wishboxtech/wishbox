@@ -40,13 +40,6 @@ class WriteReservationRequestSerialzier(serializers.ModelSerializer):
 
 
 class ReservationRequestSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = ReservationRequest
-        fields = (
-            "wish",
-            "anonymous_friend",
-            "friend",
-            "status",
-            "created_at"
-        )
+        fields = ("wish", "anonymous_friend", "friend", "status", "created_at")

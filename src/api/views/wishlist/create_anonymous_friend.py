@@ -8,12 +8,12 @@ from src.utils.exceptions import BadRequestException
 
 class CreateAnonymousFriendAPIView(APIView):
     permission_classes = []
-    
+
     def post(self, *args, **kwargs):
         created, anonymous_friend_id, errs = create_anonymous_friend(
             data=self.request.data
         )
-        
+
         if errs:
             raise BadRequestException(
                 message=errs.get("errors"),
@@ -23,9 +23,7 @@ class CreateAnonymousFriendAPIView(APIView):
             data={
                 "created": created,
                 "anonymous_friend_id": anonymous_friend_id,
-                "status": status.HTTP_201_CREATED
+                "status": status.HTTP_201_CREATED,
             },
-            status=status.HTTP_201_CREATED
+            status=status.HTTP_201_CREATED,
         )
-        
-        
