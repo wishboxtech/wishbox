@@ -5,10 +5,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from src.apps.authentication.services import (
-    create_one_time_password,
-    one_time_password_exists,
-)
+from src.apps.authentication.services import (create_one_time_password,
+                                              one_time_password_exists)
 from src.static import ErrorEnum
 from src.utils.exceptions import BadRequestException
 

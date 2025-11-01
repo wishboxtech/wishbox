@@ -1,6 +1,8 @@
 from rest_framework.permissions import AllowAny
 
 from src.api.permissions import IsOwnerOfWishlist
+from src.api.views.wishlist.create_anonymous_friend import \
+    CreateAnonymousFriendAPIView
 from src.api.views.wishlist.create_wish import CreateWishAPIVIew
 from src.api.views.wishlist.create_wishlist import CreateWishlistAPIView
 from src.api.views.wishlist.delete_wish import DeleteWishAPIView
@@ -8,10 +10,10 @@ from src.api.views.wishlist.delete_wishlist import DeleteWishlistAPIView
 from src.api.views.wishlist.get_wish_by_id import GetWishByIdAPIView
 from src.api.views.wishlist.get_wishes import GetWishesAPIView
 from src.api.views.wishlist.get_wishlists import GetWishlistsAPIView
+from src.api.views.wishlist.submit_request import SubmitRequestAPIView
 from src.api.views.wishlist.update_wish import UpdateWishAPIView
 from src.api.views.wishlist.update_wishlist import UpdateWishlistAPIView
-from src.api.views.wishlist.create_anonymous_friend import CreateAnonymousFriendAPIView
-from src.api.views.wishlist.submit_request import SubmitRequestAPIView
+
 
 
 class WishlistAPIView(GetWishlistsAPIView, CreateWishlistAPIView): ...

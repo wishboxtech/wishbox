@@ -1,10 +1,8 @@
 from django.urls import path
 
-from src.api.views.authentication import (
-    RefreshTokenAPIView,
-    SendOneTimePassword,
-    VerifyOneTimePasswordAPIView,
-)
+from src.api.views.authentication import (RefreshTokenAPIView,
+                                          SendOneTimePassword,
+                                          VerifyOneTimePasswordAPIView)
 
 authentication_urlpatterns = [
     path(

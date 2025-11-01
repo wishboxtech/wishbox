@@ -6,7 +6,8 @@ from django.test import TestCase
 from src.apps.wishlist.services import update_wish
 from src.static.serializer_errors import SerializerErrors
 from src.utils.exceptions import InvalidWishId, NotWishlistOwner
-from src.utils.fakers import ProfileFactory, UserFactory, WishFactory, WishlistFactory
+from src.utils.fakers import (ProfileFactory, UserFactory, WishFactory,
+                              WishlistFactory)
 
 
 class UpdateWishTestCase(TestCase):

@@ -1,8 +1,9 @@
 import uuid
 from typing import Union
 
-from src.apps.authentication.models import User
 from django.db.models import Q
+
+from src.apps.authentication.models import User
 
 
 def get_user_by_id(user_id: Union[str, uuid.UUID]):

@@ -1,5 +1,6 @@
 from src.apps.profile.selectors import get_profile_by_id
-from src.apps.profile.serializers import ReadProfileSerializer, WriteProfileSerializer
+from src.apps.profile.serializers import (ReadProfileSerializer,
+                                          WriteProfileSerializer)
 from src.static import SerializerErrors
 
 

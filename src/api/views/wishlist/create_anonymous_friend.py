@@ -1,6 +1,6 @@
-from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from src.apps.wishlist.services import create_anonymous_friend
 from src.utils.exceptions import BadRequestException
