@@ -4,7 +4,8 @@ from django.test import TestCase
 from src.apps.wishlist.models import ReservationRequest
 from src.apps.wishlist.services import submit_request
 from src.static import SerializerErrors
-from src.utils.fakers import AnonymousFriendFactory, ProfileFactory, WishFactory
+from src.utils.fakers import (AnonymousFriendFactory, ProfileFactory,
+                              WishFactory)
 
 
 class SubmitReservationRequestTestCase(TestCase):

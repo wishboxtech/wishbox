@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 
 services:
   postgres:
@@ -22,7 +22,7 @@ services:
       - "6379:6379"
     networks:
       - app_network
-      
+
   # elasticsearch:
   #   image: docker.elastic.co/elasticsearch/elasticsearch:7.17.7
   #   container_name: dev_elasticsearch
@@ -33,7 +33,7 @@ services:
   #   environment:
   #     - discovery.type=single-node
   #   mem_limit: 1g
-  #   tty: true 
+  #   tty: true
   #   networks:
   #     - app_network
 
@@ -50,7 +50,7 @@ services:
 
   back:
     build:
-      context: ../.. 
+      context: ../..
       dockerfile: build/Dockerfile
     image: theparsa/wishbox:1.0.2
     container_name: dev_back
@@ -134,8 +134,8 @@ services:
       FAIL_URL: "google.com"
       SUCCESS_URL: "bing.com"
       REDIS_LOW_CACHE_TTL: 10
-      CELERY_BROKER_URL: 'redis://localhost:6379'
-      CELERY_RESULT_BACKEND: 'redis://localhost:6379'
+      CELERY_BROKER_URL: "redis://localhost:6379"
+      CELERY_RESULT_BACKEND: "redis://localhost:6379"
       SHIPPING_FIAT_FEE: 10000
       COMMISSION_FEE: 10000
       RAPID_API_HOST: "api-football-v1.p.rapidapi.com"

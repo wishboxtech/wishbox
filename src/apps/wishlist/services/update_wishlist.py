@@ -1,5 +1,6 @@
 from src.apps.wishlist.selectors import get_wishlist_by_id
-from src.apps.wishlist.serializers import EditWishlistSerialzier, WishlistSerializer
+from src.apps.wishlist.serializers import (EditWishlistSerialzier,
+                                           WishlistSerializer)
 from src.static import SerializerErrors
 from src.utils.exceptions import InvalidWishlistId
 

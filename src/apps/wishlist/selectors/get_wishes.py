@@ -1,6 +1,7 @@
 import uuid
 from typing import Union
-from django.db.models import Q, When, Case, Value, BooleanField
+
+from django.db.models import BooleanField, Case, Q, Value, When
 
 from src.apps.wishlist.models import Wish
 
