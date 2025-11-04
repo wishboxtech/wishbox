@@ -1,9 +1,11 @@
 name: Python application
 on:
   push:
-    branches: [ "test-dev"  ]
+    branches: 
+    - "test-dev"
   pull_request:
-    branches: [ "test-dev" ]
+    branches: 
+    - "test-dev"
 
 permissions:
   contents: read
