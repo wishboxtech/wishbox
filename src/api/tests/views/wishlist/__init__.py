@@ -11,7 +11,3 @@ from src.api.tests.views.wishlist.get_wishlists import GetWishlistsAPIViewTestCa
 from src.api.tests.views.wishlist.submit_request import SubmitRequestAPIViewTestCase
 from src.api.tests.views.wishlist.update_wish import UpdateWishAPITestCase
 from src.api.tests.views.wishlist.update_wishlist import UpdateWishlistTestCase
-from src.api.tests.views.wishlist.create_anonymous_friend import (
-    CreateAnonymousFriendAPIViewTestCase,
-)
-from src.api.tests.views.wishlist.submit_request import SubmitRequestAPIViewTestCase

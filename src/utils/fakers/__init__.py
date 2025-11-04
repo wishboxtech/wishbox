@@ -6,3 +6,4 @@ from src.utils.fakers.profile import ProfileFactory
 from src.utils.fakers.user import UserFactory
 from src.utils.fakers.wishes import WishFactory
 from src.utils.fakers.wishlist import WishlistFactory
+from src.utils.fakers.avatar import AvatarFactory

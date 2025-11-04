@@ -16,6 +16,7 @@ class UserManager(BaseUserManager):
         elif email:
             user = self.model(email=email, **extra_fields)
         user.password = make_password(password)
+        print(user.is_superuser)
         user.save(using=self._db)
         return user
 
@@ -28,11 +29,12 @@ class UserManager(BaseUserManager):
             phone_number=phone_number, email=email, password=password, **extra_fields
         )
 
-    def create_superuser(self, phone_number, password=None, **extra_fields):
+    def create_superuser(self, username, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
         extra_fields.setdefault("type", "AD")
+        email = f"{username}@admin.com"
 
         if extra_fields.get("is_staff") is not True:
             raise ValueError("Superuser must have is_staff=True.")
@@ -41,4 +43,6 @@ class UserManager(BaseUserManager):
         if extra_fields.get("is_active") is not True:
             raise ValueError("Superuser must have is_active=True.")
 
-        return self._create_user(phone_number, password, **extra_fields)
+        return self._create_user(
+            password, email=email, username=username, **extra_fields
+        )

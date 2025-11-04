@@ -1,11 +1,12 @@
+import json
 import uuid
 
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from pydantic import BaseModel
+from pydantic_core import ValidationError as VE
 
-
-class AvatarSettings: ...
+from src.apps.profile.models.settings_schema import AvatarSettings
 
 
 class Avatar(models.Model):
@@ -37,3 +38,17 @@ class Avatar(models.Model):
         auto_now=True,
         verbose_name=_("updated at"),
     )
+
+    def clean(self, *args, **kwargs):
+        super(Avatar, self).clean(*args, **kwargs)
+        try:
+            avatar_settings = json.dumps(self.settings)
+            AvatarSettings.model_validate_json(avatar_settings)
+        except VE as e:
+            # need logs here....
+            raise ValidationError(f"Settings wrong format.")
+        return
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super(Avatar, self).save(*args, **kwargs)

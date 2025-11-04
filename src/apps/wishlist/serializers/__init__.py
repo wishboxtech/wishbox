@@ -2,8 +2,8 @@ from src.apps.wishlist.serializers.anonymous_friend import (
     WriteAnonymousFriendSerialzier,
 )
 from src.apps.wishlist.serializers.reservation_request import (
-    WriteReservationRequestSerialzier,
     ReservationRequestSerializer,
+    WriteReservationRequestSerialzier,
 )
 from src.apps.wishlist.serializers.wish import (
     EditWishSerialzier,

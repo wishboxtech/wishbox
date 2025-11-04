@@ -1,6 +1,7 @@
 import uuid
 
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -20,10 +21,27 @@ class User(AbstractUser):
         NORMAL_USER = "NU", _("Normal User")
         ADMIN = "AD", _("Admin")
 
-    username = None
     first_name = None
     last_name = None
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    username_validator = UnicodeUsernameValidator()
+
+    username = models.CharField(
+        _("username"),
+        max_length=150,
+        unique=True,
+        help_text=_(
+            "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+        ),
+        validators=[username_validator],
+        error_messages={
+            "unique": _("A user with that username already exists."),
+        },
+        default=uuid.uuid4(),
+    )
+
     type = models.CharField(
         max_length=2,
         choices=UserType.choices,
@@ -32,7 +50,7 @@ class User(AbstractUser):
     )
 
     email = models.EmailField(
-        _("email address"),
+        verbose_name=_("email address"),
         blank=True,
         null=True,
     )
@@ -64,7 +82,7 @@ class User(AbstractUser):
         verbose_name=_("phone number verified at"),
     )
     objects = UserManager()
-    USERNAME_FIELD = "id"
+    USERNAME_FIELD = "username"
     REQUIRED_FIELDS = []
 
     def save(self, *args, **kwargs):
@@ -97,6 +115,9 @@ class User(AbstractUser):
             .exists()
         ):
             raise ValueError(f"User with phone {self.phone_number} already exists.")
+
+        if not self.is_superuser:
+            self.username = self.phone_number or self.email
 
         super(User, self).save(*args, **kwargs)
 

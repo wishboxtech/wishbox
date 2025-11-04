@@ -1,6 +1,6 @@
 from src.apps.wishlist.serializers import (
-    WriteReservationRequestSerialzier,
     ReservationRequestSerializer,
+    WriteReservationRequestSerialzier,
 )
 from src.static import SerializerErrors
 
