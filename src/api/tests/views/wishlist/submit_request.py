@@ -4,11 +4,11 @@ from faker import Faker
 from rest_framework.test import RequestsClient
 
 from src.utils.fakers import (
+    AnonymousFriendFactory,
     ProfileFactory,
     UserFactory,
     WishFactory,
     WishlistFactory,
-    AnonymousFriendFactory,
 )
 
 
