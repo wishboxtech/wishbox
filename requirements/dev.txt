@@ -4,18 +4,26 @@
 #
 #    pip-compile --output-file=dev.txt common.in dev.in
 #
+annotated-types==0.7.0
+    # via pydantic
 argon2-cffi==23.1.0
     # via -r common.in
 argon2-cffi-bindings==21.2.0
     # via argon2-cffi
 asgiref==3.8.1
-    # via django
+    # via
+    #   django
+    #   django-cors-headers
 black==22.6.0
     # via -r dev.in
 build==1.2.2.post1
     # via pip-tools
+certifi==2025.10.5
+    # via requests
 cffi==1.17.1
     # via argon2-cffi-bindings
+charset-normalizer==3.4.4
+    # via requests
 click==8.1.8
     # via
     #   black
@@ -25,9 +33,12 @@ coverage==6.4.2
 django==5.1.4
     # via
     #   -r common.in
+    #   django-cors-headers
     #   django-debug-toolbar
     #   django-redis
     #   djangorestframework
+django-cors-headers==4.7.0
+    # via -r common.in
 django-debug-toolbar==4.4.6
     # via -r common.in
 django-redis==5.4.0
@@ -42,6 +53,8 @@ flake8==4.0.1
     # via -r dev.in
 freezegun==1.5.1
     # via -r dev.in
+idna==3.11
+    # via requests
 isort==5.10.1
     # via -r dev.in
 mccabe==0.6.1
@@ -70,6 +83,12 @@ pycodestyle==2.8.0
     # via flake8
 pycparser==2.22
     # via cffi
+pydantic==2.12.3
+    # via -r common.in
+pydantic-core==2.41.4
+    # via
+    #   -r common.in
+    #   pydantic
 pyflakes==2.4.0
     # via flake8
 pyjwt==2.10.1
@@ -88,6 +107,8 @@ python-magic==0.4.27
     # via -r common.in
 redis==5.2.1
     # via django-redis
+requests==2.32.5
+    # via -r common.in
 six==1.17.0
     # via python-dateutil
 sqlparse==0.5.3
@@ -95,11 +116,17 @@ sqlparse==0.5.3
     #   -r common.in
     #   django
     #   django-debug-toolbar
-typing-extensions==4.12.2
+typing-extensions==4.15.0
     # via
-    #   -r common.in
     #   faker
     #   psycopg-pool
+    #   pydantic
+    #   pydantic-core
+    #   typing-inspection
+typing-inspection==0.4.2
+    # via pydantic
+urllib3==2.5.0
+    # via requests
 wheel==0.45.1
     # via pip-tools
 

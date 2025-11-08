@@ -4,6 +4,8 @@
 #
 #    pip-compile --output-file=all.txt common.in dev.in production.in
 #
+annotated-types==0.7.0
+    # via pydantic
 argon2-cffi==23.1.0
     # via -r common.in
 argon2-cffi-bindings==21.2.0
@@ -104,6 +106,12 @@ pycodestyle==2.8.0
     # via flake8
 pycparser==2.22
     # via cffi
+pydantic==2.12.3
+    # via -r common.in
+pydantic-core==2.41.4
+    # via
+    #   -r common.in
+    #   pydantic
 pyflakes==2.4.0
     # via flake8
 pyjwt==2.10.1
@@ -134,11 +142,15 @@ sqlparse==0.5.3
     #   -r common.in
     #   django
     #   django-debug-toolbar
-typing-extensions==4.12.2
+typing-extensions==4.15.0
     # via
-    #   -r common.in
     #   faker
     #   psycopg-pool
+    #   pydantic
+    #   pydantic-core
+    #   typing-inspection
+typing-inspection==0.4.2
+    # via pydantic
 urllib3==2.5.0
     # via
     #   botocore

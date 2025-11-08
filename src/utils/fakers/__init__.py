@@ -7,3 +7,5 @@ from src.utils.fakers.user import UserFactory
 from src.utils.fakers.wishes import WishFactory
 from src.utils.fakers.wishlist import WishlistFactory
 from src.utils.fakers.avatar import AvatarFactory
+from src.utils.fakers.avatar_widgets import AvatarWidgetsFactory
+from src.utils.fakers.avatar_color import AvatarColorsFactory
