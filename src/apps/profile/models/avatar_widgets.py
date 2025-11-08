@@ -48,6 +48,13 @@ class AvatarWidgets(models.Model):
         related_name="widget_image",
     )
 
+    colors = models.ManyToManyField(
+        "profile.AvatarColors",
+        blank=True,
+        related_name="widgets",
+        verbose_name=_("colors"),
+    )
+
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name=_("created at"),

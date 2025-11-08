@@ -189,7 +189,10 @@ DJANGO_APPS = (
     "src.apps.wishlist",
 )
 
-THIRD_PARTY_APPS = ("rest_framework",)
+THIRD_PARTY_APPS = (
+    "rest_framework",
+    "colorfield",
+)
 
 # * Apps specific for this project go here.
 LOCAL_APPS = ()
