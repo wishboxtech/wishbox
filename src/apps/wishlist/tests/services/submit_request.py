@@ -4,8 +4,7 @@ from django.test import TestCase
 from src.apps.wishlist.models import ReservationRequest
 from src.apps.wishlist.services import submit_request
 from src.static import SerializerErrors
-from src.utils.fakers import (AnonymousFriendFactory, ProfileFactory,
-                              WishFactory)
+from src.utils.fakers import AnonymousFriendFactory, ProfileFactory, WishFactory
 
 
 class SubmitReservationRequestTestCase(TestCase):
@@ -25,9 +24,9 @@ class SubmitReservationRequestTestCase(TestCase):
         created, reservation_data, errs = submit_request(data)
 
         self.assertTrue(created)
-        self.assertIsInstance(reservation_data, ReservationRequest)
-        self.assertEqual(reservation_data.wish, self.wish)
-        self.assertEqual(reservation_data.friend, self.profile)
+        # self.assertIsInstance(reservation_data, ReservationRequest)
+        self.assertEqual(reservation_data.get("wish"), self.wish.id)
+        self.assertEqual(reservation_data.get("friend"), self.profile.profile_id)
         self.assertEqual(errs, {})
 
     def test_submit_reservation_request_valid_anonymous_friend(self):
@@ -40,9 +39,11 @@ class SubmitReservationRequestTestCase(TestCase):
         created, reservation_data, errs = submit_request(data)
 
         self.assertTrue(created)
-        self.assertIsInstance(reservation_data, ReservationRequest)
-        self.assertEqual(reservation_data.wish, self.wish)
-        self.assertEqual(reservation_data.anonymous_friend, self.anonymous_friend)
+        # self.assertIsInstance(reservation_data, ReservationRequest)
+        self.assertEqual(reservation_data.get("wish"), self.wish.id)
+        self.assertEqual(
+            reservation_data.get("anonymous_friend"), self.anonymous_friend.id
+        )
         self.assertEqual(errs, {})
 
     def test_submit_reservation_request_invalid_missing_fields(self):

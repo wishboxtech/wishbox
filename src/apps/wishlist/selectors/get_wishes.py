@@ -25,6 +25,7 @@ def get_wish_by_id(id: Union[str, uuid.UUID]):
                 "name",
                 "description",
                 "cover",
+                "accepted_request",
             )
             .annotate(
                 reserved=Case(
