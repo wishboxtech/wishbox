@@ -44,7 +44,7 @@ class Avatar(models.Model):
         try:
             avatar_settings = json.dumps(self.settings)
             AvatarSettings.model_validate_json(avatar_settings)
-        except VE as e:
+        except (VE, Exception) as e:
             # need logs here....
             raise ValidationError(f"Settings wrong format.")
         return
