@@ -1,4 +1,9 @@
 {
+    "python.defaultInterpreterPath": "./venv/bin/activate",
+    "python.analysis.extraPaths": [
+        "./src"
+    ],
+
     "python.testing.unittestArgs": [
         "-v",
         "-s",

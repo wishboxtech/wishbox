@@ -23,6 +23,8 @@ class ErrorEnum:
 
     class Profile:
         PROFILE_NOT_FOUND = "PROFILE_NOT_FOUND"
+        INVALID_AVATAR_SETTINGS = "INVALID_AVATAR_SETTINGS"
+        AVATAR_NOT_FOUND = "AVATAR_NOT_FOUND"
 
     class Wishlist:
         WISHLIST_NOT_FOUND = "WISHLIST_NOT_FOUND"

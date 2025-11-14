@@ -56,6 +56,8 @@ class GetUserAvatarTestCase(TestCase):
 
         self.avatar = AvatarFactory(profile=self.profile, settings=self.valid_settings)
 
+        print(self.avatar.settings)
+
     def test_get_user_avatar_success(self):
         """
         Should return a complete dict with images replacing shape IDs.
