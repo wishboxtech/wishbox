@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from src.utils.fakers import ProfileFactory, AvatarFactory
+from src.utils.fakers import AvatarFactory, ProfileFactory
 
 
 class AvatarModelTestCase(TestCase):

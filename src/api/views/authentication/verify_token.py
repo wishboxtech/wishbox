@@ -4,10 +4,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from settings import ACCESS_TTL
-from src.apps.authentication.services import (create_user,
-                                              get_user_id_by_identifier,
-                                              login_user_by_id,
-                                              verify_otp_and_get_user_phone)
+from src.apps.authentication.services import (
+    create_user,
+    get_user_id_by_identifier,
+    login_user_by_id,
+    verify_otp_and_get_user_phone,
+)
 from src.static import ErrorEnum
 from src.utils.exceptions import BadRequestException
 

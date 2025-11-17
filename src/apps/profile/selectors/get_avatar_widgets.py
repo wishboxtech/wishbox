@@ -1,9 +1,9 @@
 import uuid
 from typing import Union
 
-from src.apps.profile.models import AvatarWidgets
-
 from django.db.models import Case, When
+
+from src.apps.profile.models import AvatarWidgets
 
 
 def get_avatar_widgets():

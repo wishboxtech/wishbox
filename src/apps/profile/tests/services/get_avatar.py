@@ -1,15 +1,16 @@
 import uuid
+
 from django.test import TestCase
 
-from src.apps.profile.services import get_user_avatar
 from src.apps.profile.models import AvatarWidgets
+from src.apps.profile.services import get_user_avatar
+from src.apps.storage.services import serialize_media
 from src.utils.fakers import (
     AvatarFactory,
     AvatarWidgetsFactory,
     MediaModelFactory,
     ProfileFactory,
 )
-from src.apps.storage.services import serialize_media
 
 
 class GetUserAvatarTestCase(TestCase):
@@ -55,8 +56,6 @@ class GetUserAvatarTestCase(TestCase):
         }
 
         self.avatar = AvatarFactory(profile=self.profile, settings=self.valid_settings)
-
-        print(self.avatar.settings)
 
     def test_get_user_avatar_success(self):
         """

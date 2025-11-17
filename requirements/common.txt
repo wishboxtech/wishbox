@@ -26,6 +26,7 @@ django==5.1.4
     #   django-cors-headers
     #   django-debug-toolbar
     #   django-redis
+    #   django-unfold
     #   djangorestframework
 django-colorfield==0.14.0
     # via -r common.in
@@ -34,6 +35,8 @@ django-cors-headers==4.7.0
 django-debug-toolbar==4.4.6
     # via -r common.in
 django-redis==5.4.0
+    # via -r common.in
+django-unfold==0.71.0
     # via -r common.in
 djangorestframework==3.15.2
     # via -r common.in
@@ -59,6 +62,8 @@ pydantic-core==2.41.4
     # via
     #   -r common.in
     #   pydantic
+pygments==2.19.2
+    # via -r common.in
 pyjwt==2.10.1
     # via -r common.in
 python-dotenv==1.0.1

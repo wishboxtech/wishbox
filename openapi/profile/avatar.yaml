@@ -1,0 +1,64 @@
+get:
+  tags:
+    - "Profile"
+  summary: "Get Avatar - READY"
+  description: ""
+  consumes:
+    - "application/json"
+  produces:
+    - "application/json"
+  security:
+    - ApiKeyAuth: []
+  responses:
+    200:
+      description: "successful operation"
+      schema:
+        type: "object"
+        properties:
+          ok:
+            type: "boolean"
+          data:
+            $ref: "./definitions.yaml#/UserAvatar"
+          status:
+            type: "number"
+            default: 201
+    400:
+      description: "Bad Request"
+    429:
+      description: "Throttled"
+
+patch:
+  tags:
+    - "Profile"
+  summary: "Update Avatar - READY"
+  description: "Partial update is **Available**, \n *Note*: *shape* field means the *id* of a widget\n\nAll of the updates works with the *id* of a widget"
+  consumes:
+    - "application/json"
+  produces:
+    - "application/json"
+  security:
+    - ApiKeyAuth: []
+  parameters:
+    - in: "body"
+      name: "body"
+      description: "Updates Profile"
+      required: true
+      schema:
+        $ref: "./definitions.yaml#/UserUpdateAvatar"
+  responses:
+    200:
+      description: "successful operation"
+      schema:
+        type: "object"
+        properties:
+          ok:
+            type: "boolean"
+          data:
+            $ref: "./definitions.yaml#/UserAvatar"
+          status:
+            type: "number"
+            default: 201
+    400:
+      description: "Bad Request"
+    429:
+      description: "Throttled"

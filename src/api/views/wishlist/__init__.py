@@ -14,10 +14,12 @@ from src.api.views.wishlist.update_wish import UpdateWishAPIView
 from src.api.views.wishlist.update_wishlist import UpdateWishlistAPIView
 
 
-class WishlistAPIView(GetWishlistsAPIView, CreateWishlistAPIView): ...
+class WishlistAPIView(GetWishlistsAPIView, CreateWishlistAPIView):
+    ...
 
 
-class WishActionAPIView(UpdateWishAPIView, DeleteWishAPIView): ...
+class WishActionAPIView(UpdateWishAPIView, DeleteWishAPIView):
+    ...
 
 
 class WishlistActionAPIView(

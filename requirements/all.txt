@@ -45,6 +45,7 @@ django==5.1.4
     #   django-debug-toolbar
     #   django-redis
     #   django-storages
+    #   django-unfold
     #   djangorestframework
 django-colorfield==0.14.0
     # via -r common.in
@@ -56,6 +57,8 @@ django-redis==5.4.0
     # via -r common.in
 django-storages==1.14.6
     # via -r production.in
+django-unfold==0.71.0
+    # via -r common.in
 djangorestframework==3.15.2
     # via -r common.in
 factory-boy==3.3.1
@@ -118,6 +121,8 @@ pydantic-core==2.41.4
     #   pydantic
 pyflakes==2.4.0
     # via flake8
+pygments==2.19.2
+    # via -r common.in
 pyjwt==2.10.1
     # via -r common.in
 pyproject-hooks==1.2.0
