@@ -1,15 +1,16 @@
 import uuid
+
 from django.test import TestCase
 
 from src.apps.profile.models import AvatarWidgets
 from src.apps.profile.selectors import (
-    get_avatar_widgets,
     get_avatar_widget_images_by_id,
+    get_avatar_widgets,
 )
 from src.utils.fakers import (
+    AvatarColorsFactory,
     AvatarWidgetsFactory,
     MediaModelFactory,
-    AvatarColorsFactory,
 )
 
 

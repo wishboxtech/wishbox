@@ -4,6 +4,7 @@ import re
 from os import environ
 
 from corsheaders.defaults import default_headers
+
 # Normally you should not import ANYTHING from Django directly
 # into your settings, but ImproperlyConfigured is an exception.
 from django.core.exceptions import ImproperlyConfigured

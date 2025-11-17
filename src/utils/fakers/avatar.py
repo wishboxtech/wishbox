@@ -1,4 +1,5 @@
 import json
+
 import factory
 from faker import Faker
 

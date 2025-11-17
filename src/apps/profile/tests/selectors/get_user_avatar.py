@@ -1,8 +1,9 @@
 import uuid
+
 from django.test import TestCase
 
-from src.apps.profile.selectors import get_user_avatar_settings
 from src.apps.profile.models import Avatar
+from src.apps.profile.selectors import get_user_avatar_settings
 from src.utils.fakers import AvatarFactory, ProfileFactory
 
 

@@ -30,6 +30,8 @@ paths:
     $ref: "./profile/profile.yaml"
   /profile/wishlist/:
     $ref: "./profile/wishlist.yaml"
+  /profile/avatar/:
+    $ref: "./profile/avatar.yaml"
   
   # Storage
   /storage/upload/:

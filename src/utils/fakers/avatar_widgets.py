@@ -3,8 +3,8 @@ import random
 import factory
 from faker import Faker
 
-from src.utils.fakers.media import MediaModelFactory
 from src.apps.profile.models import AvatarWidgets
+from src.utils.fakers.media import MediaModelFactory
 
 fake = Faker()
 

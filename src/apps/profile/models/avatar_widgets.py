@@ -5,7 +5,6 @@ from django.utils.translation import gettext_lazy as _
 
 
 class AvatarWidgets(models.Model):
-
     class WidgetType(models.TextChoices):
         FACE = "Face", _("Face")
         TOPS = "Tops", _("Tops")

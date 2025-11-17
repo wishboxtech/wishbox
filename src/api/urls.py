@@ -1,8 +1,7 @@
 from django.urls import include, path
 
 from settings import ENABLE_SWAGGER
-from src.api.url_patterns_v0_0_0.authentication import \
-    authentication_urlpatterns
+from src.api.url_patterns_v0_0_0.authentication import authentication_urlpatterns
 from src.api.url_patterns_v0_0_0.openapi import openapi_urlpatterns
 from src.api.url_patterns_v0_0_0.profile import profile_urlpatterns
 from src.api.url_patterns_v0_0_0.storage import storage_urlpatterns

@@ -59,3 +59,195 @@ CreateProfileRequest:
       type: "string"
     bio:
       type: "string"
+
+UserAvatar:
+  type: "object"
+  properties:
+    gender:
+      type: "string"
+    widgets:
+      type: "object"
+      properties:
+        ear:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            image: 
+              type: "string"
+        eyes:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            image: 
+              type: "string"
+        face:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            image: 
+              type: "string"
+        nose:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            image: 
+              type: "string"
+        tops:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            image: 
+              type: "string"
+        beard:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            image: 
+              type: "string"
+        mouth:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            image: 
+              type: "string"
+        clothes:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            image: 
+              type: "string"
+        glasses:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            image: 
+              type: "string"
+        earrings:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            image: 
+              type: "string"
+        eyebrows:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            image: 
+              type: "string"
+    background:
+      type: "object"
+      properties:
+        color:
+          type: "string"
+        border_color:
+          type: "string"
+    wrapper_shape:
+      type: "string"
+            
+UserUpdateAvatar:
+  type: "object"
+  properties:
+    gender:
+      type: "string"
+    widgets:
+      type: "object"
+      properties:
+        ear:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            shape: 
+              type: "string"
+        eyes:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            shape: 
+              type: "string"
+        face:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            shape: 
+              type: "string"
+        nose:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            shape: 
+              type: "string"
+        tops:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            shape: 
+              type: "string"
+        beard:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            shape: 
+              type: "string"
+        mouth:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            shape: 
+              type: "string"
+        clothes:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            shape: 
+              type: "string"
+        glasses:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            shape: 
+              type: "string"
+        earrings:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            shape: 
+              type: "string"
+        eyebrows:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            shape: 
+              type: "string"
+    background:
+      type: "object"
+      properties:
+        color:
+          type: "string"
+        border_color:
+          type: "string"
+    wrapper_shape:
+      type: "string"
+            
+         
