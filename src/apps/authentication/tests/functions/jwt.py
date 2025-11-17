@@ -8,8 +8,12 @@ from django.utils import timezone
 from freezegun import freeze_time
 
 from settings import ACCESS_TTL, JWT_SECRET, REFRESH_TTL
-from src.apps.authentication.functions import (claim_token, login, refresh,
-                                               validate_token)
+from src.apps.authentication.functions import (
+    claim_token,
+    login,
+    refresh,
+    validate_token,
+)
 from src.utils.exceptions import InvalidRefresh
 from src.utils.fakers import UserFactory
 

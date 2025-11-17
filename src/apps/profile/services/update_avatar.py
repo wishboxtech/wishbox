@@ -1,26 +1,21 @@
-import copy
 import json
 from typing import Dict
 
-from src.apps.profile.models import AvatarSettings
 from src.apps.profile.helpers import apply_json_patches, flatten_json
+from src.apps.profile.models import AvatarSettings
 from src.apps.profile.selectors import get_user_avatar_settings, update_avatar_settings
-from src.apps.profile.serializers import EditeAvatarSerializer
-from src.static import SerializerErrors
 
-from src.utils.exceptions import InvalidAvatarSettings, AvatarNotFound
+from src.utils.exceptions import AvatarNotFound, InvalidAvatarSettings
 
 
-def update_avatar(profile_id, data: Dict) -> int:
+def update_avatar(profile_id, data: Dict) -> Dict:
     """
     Update user avatar based on the provided data
     """
-    errs = {}
     updated = False
-    avatar_data = None
 
     avatar = get_user_avatar_settings(profile_id=profile_id)
-    if not avatar.settings:
+    if not avatar:
         raise AvatarNotFound()
 
     # Validate Avatar
@@ -31,5 +26,8 @@ def update_avatar(profile_id, data: Dict) -> int:
     except Exception:
         raise InvalidAvatarSettings()
 
-    updated = update_avatar_settings(profile_id=profile_id, updates=flat)
-    return updated
+    updated, settings = update_avatar_settings(profile_id=profile_id, updates=flat)
+    if not updated:
+        raise AvatarNotFound()
+
+    return settings

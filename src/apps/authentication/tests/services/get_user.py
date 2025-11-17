@@ -1,7 +1,9 @@
 from django.test import TestCase
 
-from src.apps.authentication.services import (get_user_id_by_identifier,
-                                              get_user_id_by_phone_number)
+from src.apps.authentication.services import (
+    get_user_id_by_identifier,
+    get_user_id_by_phone_number,
+)
 from src.utils.fakers import UserFactory
 
 

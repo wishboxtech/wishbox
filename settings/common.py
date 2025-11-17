@@ -172,21 +172,28 @@ MIDDLEWARE = [
 ROOT_URLCONF = "src.core.urls"
 # * END URL CONFIGURATION
 
+# * Unfold admin panel
+# See: https://unfoldadmin.com/docs/installation/quickstart/
+
+ACTIVE_UNFOLD_ADMIN = get_env("ACTIVE_UNFOLD_ADMIN", default=False)
+UNFOLD = {
+    "SITE_TITLE": "Wishy Admin Panel",
+    "SITE_HEADER": "Wishy",
+    "SITE_SUBHEADER": "administration",
+}
+# * End Unfold configuration
+
 
 # * APP CONFIGURATION
 DJANGO_APPS = (
+    "unfold",
+    "unfold.contrib.forms",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "src.api",
-    "src.apps.authentication",
-    "src.apps.profile",
-    "src.apps.website",
-    "src.apps.storage",
-    "src.apps.wishlist",
 )
 
 THIRD_PARTY_APPS = (
@@ -195,7 +202,15 @@ THIRD_PARTY_APPS = (
 )
 
 # * Apps specific for this project go here.
-LOCAL_APPS = ()
+LOCAL_APPS = (
+    "src.api",
+    "src.apps.authentication",
+    "src.apps.profile",
+    "src.apps.website",
+    "src.apps.storage",
+    "src.apps.wishlist",
+)
+
 
 # * See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

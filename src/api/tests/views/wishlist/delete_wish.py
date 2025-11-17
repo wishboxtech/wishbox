@@ -6,8 +6,7 @@ from faker import Faker
 from rest_framework.test import RequestsClient
 
 from src.apps.authentication.services import login_user_by_id
-from src.utils.fakers import (ProfileFactory, UserFactory, WishFactory,
-                              WishlistFactory)
+from src.utils.fakers import ProfileFactory, UserFactory, WishFactory, WishlistFactory
 
 
 class DeleteWishAPITestCase(LiveServerTestCase):

@@ -9,6 +9,14 @@ from pydantic_core import ValidationError as VE
 from src.apps.profile.models.settings_schema import AvatarSettings
 
 
+class PrettyJSONEncoder(json.JSONEncoder):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("indent", 4)
+        kwargs.setdefault("sort_keys", True)
+        kwargs.setdefault("ensure_ascii", False)
+        super().__init__(*args, **kwargs)
+
+
 class Avatar(models.Model):
     id = models.UUIDField(
         primary_key=True,
@@ -24,9 +32,7 @@ class Avatar(models.Model):
 
     # TODO: should make a function to generate default values and then remove null blank
     settings = models.JSONField(
-        verbose_name=_("settings"),
-        null=True,
-        blank=True,
+        verbose_name=_("settings"), null=True, blank=True, encoder=PrettyJSONEncoder
     )
 
     created_at = models.DateTimeField(

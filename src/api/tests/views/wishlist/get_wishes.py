@@ -4,8 +4,7 @@ from django.test import LiveServerTestCase
 from django.urls import reverse
 from rest_framework.test import RequestsClient
 
-from src.utils.fakers import (ProfileFactory, UserFactory, WishFactory,
-                              WishlistFactory)
+from src.utils.fakers import ProfileFactory, UserFactory, WishFactory, WishlistFactory
 
 
 class GetWishesAPIViewTestCase(LiveServerTestCase):

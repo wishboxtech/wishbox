@@ -4,10 +4,10 @@ from src.utils.exceptions.general import (
     Unauthorized,
 )
 from src.utils.exceptions.otp import InvalidOTP, InvalidRefresh
+from src.utils.exceptions.profile import AvatarNotFound, InvalidAvatarSettings
 from src.utils.exceptions.user import InvalidUserID
 from src.utils.exceptions.wishlist import (
     InvalidWishId,
     InvalidWishlistId,
     NotWishlistOwner,
 )
-from src.utils.exceptions.profile import InvalidAvatarSettings, AvatarNotFound
