@@ -8,7 +8,7 @@ class SendOneTimePasswordThrottleByDateHour(SimpleRateThrottle):
     scope = "otp_hour"
 
     def get_cache_key(self, request, view):
-        phone_number = self.extract_phone_number(request)
+        phone_number = self._extract_phone_number(request)
         if not phone_number or not self._is_valid_phone_number(phone_number):
             return None
         phone_hash = self._hash_phone_number(phone_number)
@@ -18,7 +18,7 @@ class SendOneTimePasswordThrottleByDateHour(SimpleRateThrottle):
         return request.data.get("phone_number")
 
     def _is_valid_phone_number(self, phone_number):
-        return re.match(r"^\+?\d{10,12}$", phone_number) is not None
+        return re.match(r"^0\d{9,15}$", phone_number) is not None
 
     def _hash_phone_number(self, phone_number):
         return hashlib.sha256(phone_number.encode()).hexdigest()

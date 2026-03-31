@@ -5,7 +5,7 @@ from src.utils.nats.publish import publish
 
 
 @async_to_sync
-async def send_sms_otp(phone, otp):
+async def send_sms_otp(phone, otp, deadline=None):
     await publish(
         data={"phone": phone, "code": otp},
         subject=SMS_SUBJECT,

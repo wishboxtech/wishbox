@@ -2,6 +2,7 @@ import json
 from typing import Dict
 
 from src.apps.profile.helpers import apply_json_patches, flatten_json
+from src.apps.profile.models import Avatar
 from src.apps.profile.models import AvatarSettings
 from src.apps.profile.selectors import get_user_avatar_settings, update_avatar_settings
 
@@ -12,11 +13,15 @@ def update_avatar(profile_id, data: Dict) -> Dict:
     """
     Update user avatar based on the provided data
     """
-    updated = False
-
     avatar = get_user_avatar_settings(profile_id=profile_id)
     if not avatar:
-        raise AvatarNotFound()
+        try:
+            AvatarSettings.model_validate_json(json.dumps(data), extra="forbid")
+        except Exception:
+            raise InvalidAvatarSettings()
+
+        created_avatar = Avatar.objects.create(profile_id=profile_id, settings=data)
+        return created_avatar.settings
 
     # Validate Avatar
     flat = flatten_json(data)

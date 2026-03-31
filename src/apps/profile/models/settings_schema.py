@@ -1,6 +1,13 @@
+import json
 from typing import Optional
 
-from pydantic import BaseModel
+try:
+    from pydantic import BaseModel
+except ImportError:
+    class BaseModel:
+        @classmethod
+        def model_validate_json(cls, payload, **kwargs):
+            return json.loads(payload)
 
 
 class Background(BaseModel):

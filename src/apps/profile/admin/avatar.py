@@ -1,7 +1,11 @@
 from django.contrib import admin
 
 from src.apps.profile.models import Avatar
-from unfold.admin import ModelAdmin
+
+try:
+    from unfold.admin import ModelAdmin
+except ImportError:
+    from django.contrib.admin import ModelAdmin
 
 
 @admin.register(Avatar)

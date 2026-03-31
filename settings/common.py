@@ -1,5 +1,6 @@
 """Common settings"""
 
+from importlib.util import find_spec
 from os.path import abspath, dirname
 from pathlib import Path
 from sys import path
@@ -172,6 +173,11 @@ MIDDLEWARE = [
 ROOT_URLCONF = "src.core.urls"
 # * END URL CONFIGURATION
 
+# * Optional third-party app configuration
+# Keep optional packages from breaking local bootstrapping when they are absent.
+HAS_UNFOLD = find_spec("unfold") is not None
+HAS_COLORFIELD = find_spec("colorfield") is not None
+
 # * Unfold admin panel
 # See: https://unfoldadmin.com/docs/installation/quickstart/
 
@@ -186,8 +192,6 @@ UNFOLD = {
 
 # * APP CONFIGURATION
 DJANGO_APPS = (
-    "unfold",
-    "unfold.contrib.forms",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -198,8 +202,13 @@ DJANGO_APPS = (
 
 THIRD_PARTY_APPS = (
     "rest_framework",
-    "colorfield",
 )
+
+if HAS_UNFOLD:
+    DJANGO_APPS = ("unfold", "unfold.contrib.forms") + DJANGO_APPS
+
+if HAS_COLORFIELD:
+    THIRD_PARTY_APPS += ("colorfield",)
 
 # * Apps specific for this project go here.
 LOCAL_APPS = (

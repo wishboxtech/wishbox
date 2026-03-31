@@ -43,7 +43,7 @@ paths:
     $ref: "./wishlist/wishlist.yaml"
   /wishlist/{id}/wish/{wishid}/:
     $ref: "./wishlist/wish.yaml"
-  /wishlist/{id}/wish/{wishid}/request/:
-    $ref: "./wishlist/request.yaml"
   /wish/{id}/:
     $ref: "./wishlist/wish_by_id.yaml"  
+  /wish/{id}/request/:
+    $ref: "./wishlist/request.yaml"

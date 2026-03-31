@@ -29,7 +29,6 @@ def get_user_avatar(profile_id) -> dict | None:
     # now add image and remove shape id for a clean response
     # we dont have any serializer because the setting is already a json
     for i, widget in enumerate(widgets.values()):
-        del widget["shape"]
         try:
             widget["image"] = serialize_media(widget_images[i].image)
         except IndexError as e:

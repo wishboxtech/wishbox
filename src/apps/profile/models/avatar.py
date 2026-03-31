@@ -4,7 +4,11 @@ import uuid
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from pydantic_core import ValidationError as VE
+
+try:
+    from pydantic_core import ValidationError as PydanticValidationError
+except ImportError:
+    PydanticValidationError = Exception
 
 from src.apps.profile.models.settings_schema import AvatarSettings
 
@@ -50,7 +54,7 @@ class Avatar(models.Model):
         try:
             avatar_settings = json.dumps(self.settings)
             AvatarSettings.model_validate_json(avatar_settings)
-        except (VE, Exception) as e:
+        except (PydanticValidationError, Exception):
             # need logs here....
             raise ValidationError(f"Settings wrong format.")
         return
