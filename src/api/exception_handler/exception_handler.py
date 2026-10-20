@@ -2,6 +2,7 @@ import sys
 import traceback
 
 from django.utils.translation import gettext as _
+from pydantic import ValidationError as DTOValidationError
 from rest_framework import status
 from rest_framework.exceptions import (
     MethodNotAllowed,
@@ -11,11 +12,28 @@ from rest_framework.exceptions import (
 )
 from rest_framework.response import Response
 
+from src.api.exception_handler.domain import domain_error_response
+from src.shared.domain.errors import DomainError
 from src.static import ErrorEnum
 from src.utils.exceptions import BadRequestException, NotFoundException, Unauthorized
 
 
 def api_exception_handler(exc, context):
+    if isinstance(exc, DomainError):
+        return domain_error_response(exc, context)
+    if isinstance(exc, DTOValidationError):
+        errors = {str(item["loc"][0]): item["msg"] for item in exc.errors()}
+        return Response(
+            {
+                "ok": False,
+                "data": errors,
+                "status": 400,
+                "error_type": [
+                    "INVALID_ID" if key.endswith("id") else key for key in errors
+                ],
+            },
+            status=400,
+        )
     if isinstance(exc, BadRequestException):
         return Response(
             data={

@@ -1,1 +1,1 @@
-from src.api.views.authentication import *
+"""HTTP endpoints; each route owns its view and serializers in one module."""

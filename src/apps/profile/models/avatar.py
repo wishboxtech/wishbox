@@ -6,7 +6,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from pydantic_core import ValidationError as VE
 
-from src.apps.profile.models.settings_schema import AvatarSettings
+from src.apps.profile.domain.avatar import AvatarSettings
 
 
 class PrettyJSONEncoder(json.JSONEncoder):
@@ -46,15 +46,14 @@ class Avatar(models.Model):
     )
 
     def clean(self, *args, **kwargs):
-        super(Avatar, self).clean(*args, **kwargs)
+        super().clean(*args, **kwargs)
         try:
             avatar_settings = json.dumps(self.settings)
             AvatarSettings.model_validate_json(avatar_settings)
-        except (VE, Exception) as e:
+        except (VE, Exception):  # noqa: BLE001
             # need logs here....
-            raise ValidationError(f"Settings wrong format.")
-        return
+            raise ValidationError("Settings wrong format.")
 
     def save(self, *args, **kwargs):
         self.full_clean()
-        super(Avatar, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)

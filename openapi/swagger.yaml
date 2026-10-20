@@ -11,35 +11,35 @@ securityDefinitions:
     in: header
     name: access
 tags:
-  - name: AUTH
-    description: Authentication
+- name: AUTH
+  description: Authentication
 schemes:
-  - https
-  - http
+- https
+- http
 paths:
   /auth/otp/:
     post:
       tags:
-        - AUTH
+      - AUTH
       summary: Send OTP - READY
       description: Send a new OTP in order to login or create a new guest
       operationId: sendOTP
       consumes:
-        - application/json
+      - application/json
       produces:
-        - application/json
+      - application/json
       parameters:
-        - in: body
-          name: body
-          description: Sends a new OTP
-          required: true
-          schema:
-            type: object
-            properties:
-              phone_number:
-                type: string
+      - in: body
+        name: body
+        description: Sends a new OTP
+        required: true
+        schema:
+          type: object
+          properties:
+            phone_number:
+              type: string
       responses:
-        '201':
+        201:
           description: successful operation
           schema:
             type: object
@@ -54,35 +54,35 @@ paths:
               status:
                 type: number
                 default: 201
-        '400':
+        400:
           description: Bad Request
-        '429':
+        429:
           description: Throttled
   /auth/otp/verify/:
     post:
       tags:
-        - AUTH
+      - AUTH
       summary: Verify OTP - READY
       description: ''
       operationId: verifyOTP
       consumes:
-        - application/json
+      - application/json
       produces:
-        - application/json
+      - application/json
       parameters:
-        - in: body
-          name: body
-          description: Verifies OTP
-          required: true
-          schema:
-            type: object
-            properties:
-              otp_id:
-                type: string
-              otp_code:
-                type: string
+      - in: body
+        name: body
+        description: Verifies OTP
+        required: true
+        schema:
+          type: object
+          properties:
+            otp_id:
+              type: string
+            otp_code:
+              type: string
       responses:
-        '200':
+        200:
           description: successful operation
           schema:
             type: object
@@ -105,33 +105,33 @@ paths:
               status:
                 type: number
                 default: 200
-        '400':
+        400:
           description: Bad Request
-        '429':
+        429:
           description: Throttled
   /auth/otp/refresh/:
     post:
       tags:
-        - AUTH
+      - AUTH
       summary: Refresh OTP - READY
       description: ''
       operationId: refreshOTP
       consumes:
-        - application/json
+      - application/json
       produces:
-        - application/json
+      - application/json
       parameters:
-        - in: body
-          name: body
-          description: refreshes OTP
-          required: true
-          schema:
-            type: object
-            properties:
-              refresh_token:
-                type: string
+      - in: body
+        name: body
+        description: refreshes OTP
+        required: true
+        schema:
+          type: object
+          properties:
+            refresh_token:
+              type: string
       responses:
-        '200':
+        200:
           description: successful operation
           schema:
             type: object
@@ -148,24 +148,24 @@ paths:
               status:
                 type: number
                 default: 200
-        '400':
+        400:
           description: Bad Request
-        '429':
+        429:
           description: Throttled
   /profile/:
     get:
       tags:
-        - Profile
+      - Profile
       summary: Get Profile - READY
       description: ''
       consumes:
-        - application/json
+      - application/json
       produces:
-        - application/json
+      - application/json
       security:
-        - ApiKeyAuth: []
+      - ApiKeyAuth: []
       responses:
-        '200':
+        200:
           description: successful operation
           schema:
             type: object
@@ -204,46 +204,46 @@ paths:
               status:
                 type: number
                 default: 201
-        '400':
+        400:
           description: Bad Request
-        '429':
+        429:
           description: Throttled
     put:
       tags:
-        - Profile
+      - Profile
       summary: Create or Update Profile - READY
       description: Creates profile for new users(or the one that didn't complete)
       operationId: createProfile
       consumes:
-        - application/json
+      - application/json
       produces:
-        - application/json
+      - application/json
       security:
-        - ApiKeyAuth: []
+      - ApiKeyAuth: []
       parameters:
-        - in: body
-          name: body
-          description: Updates Profile
-          required: true
-          schema:
-            type: object
-            properties:
-              birthdate:
-                type: string
-                format: date
-              gender:
-                type: string
-                default: F
-              photo:
-                type: string
-              first_name:
-                type: string
-              last_name:
-                type: string
-              bio:
-                type: string
+      - in: body
+        name: body
+        description: Updates Profile
+        required: true
+        schema:
+          type: object
+          properties:
+            birthdate:
+              type: string
+              format: date
+            gender:
+              type: string
+              default: F
+            photo:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+            bio:
+              type: string
       responses:
-        '200':
+        200:
           description: successful operation
           schema:
             type: object
@@ -255,89 +255,128 @@ paths:
                 type: object
                 properties:
                   profile:
-                    $ref: '#/paths/~1profile~1/get/responses/200/schema/properties/data'
+                    type: object
+                    properties:
+                      profile_id:
+                        type: string
+                      phone_number:
+                        type: string
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      email:
+                        type: string
+                      birthdate:
+                        type: string
+                        format: date
+                      gender:
+                        type: string
+                        default: M
+                      is_phone_number_verified:
+                        type: boolean
+                      has_accepted_terms:
+                        type: boolean
+                      photo:
+                        type: object
+                        properties:
+                          file:
+                            type: string
+                            format: url
               status:
                 type: number
                 default: 200
-        '400':
+        400:
           description: Bad Request
-        '401':
+        401:
           description: Unauthorized
-        '403':
+        403:
           description: forbidden
   /profile/wishlist/:
     post:
       tags:
-        - Profile
+      - Profile
       summary: Create Wishlist - READY
       description: create a wishlist
       consumes:
-        - application/json
+      - application/json
       produces:
-        - application/json
+      - application/json
       security:
-        - ApiKeyAuth: []
+      - ApiKeyAuth: []
       parameters:
-        - in: body
-          name: body
-          description: Create Wishlist
-          required: true
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-                format: string
-              description:
-                type: string
-                format: string
-              cover:
-                type: string
+      - in: body
+        name: body
+        description: Create Wishlist
+        required: true
+        schema:
+          type: object
+          required:
+          - name
+          - description
+          properties:
+            name:
+              type: string
+              minLength: 1
+              maxLength: 150
+            description:
+              type: string
+            cover:
+              type: string
+              format: uuid
+              x-nullable: true
       responses:
-        '201':
+        201:
           description: successful operation
           schema:
             type: object
             properties:
-              ok:
-                type: boolean
-                default: true
               data:
                 type: object
                 properties:
                   id:
                     type: string
-                    format: string
+                    format: uuid
                   name:
                     type: string
-                    format: string
                   description:
                     type: string
-                    format: string
                   cover:
+                    type: object
+                    x-nullable: true
+                    properties:
+                      file:
+                        type: string
+                  created_at:
                     type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
               status:
                 type: number
                 default: 201
-        '400':
+              created:
+                type: boolean
+        400:
           description: Bad Request
-        '401':
+        401:
           description: Unauthorized
-        '403':
+        403:
           description: forbidden
     get:
       tags:
-        - Profile
+      - Profile
       summary: Get User Wishlists - READY
       description: get user wishlists
       consumes:
-        - application/json
+      - application/json
       produces:
-        - application/json
+      - application/json
       security:
-        - ApiKeyAuth: []
+      - ApiKeyAuth: []
       responses:
-        '200':
+        200:
           description: successful operation
           schema:
             type: object
@@ -345,41 +384,50 @@ paths:
               ok:
                 type: boolean
               data:
-                properties:
-                  wishlist:
-                    type: array
-                    items:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    cover:
                       type: object
+                      x-nullable: true
                       properties:
-                        id:
+                        file:
                           type: string
-                        name:
-                          type: string
-                        description:
-                          type: string
-                        cover:
-                          $ref: '#/paths/~1profile~1/get/responses/200/schema/properties/data/properties/photo'
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                      type: string
+                      format: date-time
               status:
                 type: number
-                default: 201
-        '400':
+                default: 200
+        400:
           description: Bad Request
-        '429':
+        429:
           description: Throttled
   /profile/avatar/:
     get:
       tags:
-        - Profile
+      - Profile
       summary: Get Avatar - READY
       description: ''
       consumes:
-        - application/json
+      - application/json
       produces:
-        - application/json
+      - application/json
       security:
-        - ApiKeyAuth: []
+      - ApiKeyAuth: []
       responses:
-        '200':
+        200:
           description: successful operation
           schema:
             type: object
@@ -483,126 +531,123 @@ paths:
               status:
                 type: number
                 default: 201
-        '400':
+        400:
           description: Bad Request
-        '429':
+        429:
           description: Throttled
     patch:
       tags:
-        - Profile
+      - Profile
       summary: Update Avatar - READY
-      description: |-
-        Partial update is **Available**, 
-         *Note*: *shape* field means the *id* of a widget
-
-        All of the updates works with the *id* of a widget
+      description: "Partial update is **Available**, \n *Note*: *shape* field means\
+        \ the *id* of a widget\n\nAll of the updates works with the *id* of a widget"
       consumes:
-        - application/json
+      - application/json
       produces:
-        - application/json
+      - application/json
       security:
-        - ApiKeyAuth: []
+      - ApiKeyAuth: []
       parameters:
-        - in: body
-          name: body
-          description: Updates Profile
-          required: true
-          schema:
-            type: object
-            properties:
-              gender:
-                type: string
-              widgets:
-                type: object
-                properties:
-                  ear:
-                    type: object
-                    properties:
-                      fill_color:
-                        type: string
-                      shape:
-                        type: string
-                  eyes:
-                    type: object
-                    properties:
-                      fill_color:
-                        type: string
-                      shape:
-                        type: string
-                  face:
-                    type: object
-                    properties:
-                      fill_color:
-                        type: string
-                      shape:
-                        type: string
-                  nose:
-                    type: object
-                    properties:
-                      fill_color:
-                        type: string
-                      shape:
-                        type: string
-                  tops:
-                    type: object
-                    properties:
-                      fill_color:
-                        type: string
-                      shape:
-                        type: string
-                  beard:
-                    type: object
-                    properties:
-                      fill_color:
-                        type: string
-                      shape:
-                        type: string
-                  mouth:
-                    type: object
-                    properties:
-                      fill_color:
-                        type: string
-                      shape:
-                        type: string
-                  clothes:
-                    type: object
-                    properties:
-                      fill_color:
-                        type: string
-                      shape:
-                        type: string
-                  glasses:
-                    type: object
-                    properties:
-                      fill_color:
-                        type: string
-                      shape:
-                        type: string
-                  earrings:
-                    type: object
-                    properties:
-                      fill_color:
-                        type: string
-                      shape:
-                        type: string
-                  eyebrows:
-                    type: object
-                    properties:
-                      fill_color:
-                        type: string
-                      shape:
-                        type: string
-              background:
-                type: object
-                properties:
-                  color:
-                    type: string
-                  border_color:
-                    type: string
-              wrapper_shape:
-                type: string
+      - in: body
+        name: body
+        description: Updates Profile
+        required: true
+        schema:
+          type: object
+          properties:
+            gender:
+              type: string
+            widgets:
+              type: object
+              properties:
+                ear:
+                  type: object
+                  properties:
+                    fill_color:
+                      type: string
+                    shape:
+                      type: string
+                eyes:
+                  type: object
+                  properties:
+                    fill_color:
+                      type: string
+                    shape:
+                      type: string
+                face:
+                  type: object
+                  properties:
+                    fill_color:
+                      type: string
+                    shape:
+                      type: string
+                nose:
+                  type: object
+                  properties:
+                    fill_color:
+                      type: string
+                    shape:
+                      type: string
+                tops:
+                  type: object
+                  properties:
+                    fill_color:
+                      type: string
+                    shape:
+                      type: string
+                beard:
+                  type: object
+                  properties:
+                    fill_color:
+                      type: string
+                    shape:
+                      type: string
+                mouth:
+                  type: object
+                  properties:
+                    fill_color:
+                      type: string
+                    shape:
+                      type: string
+                clothes:
+                  type: object
+                  properties:
+                    fill_color:
+                      type: string
+                    shape:
+                      type: string
+                glasses:
+                  type: object
+                  properties:
+                    fill_color:
+                      type: string
+                    shape:
+                      type: string
+                earrings:
+                  type: object
+                  properties:
+                    fill_color:
+                      type: string
+                    shape:
+                      type: string
+                eyebrows:
+                  type: object
+                  properties:
+                    fill_color:
+                      type: string
+                    shape:
+                      type: string
+            background:
+              type: object
+              properties:
+                color:
+                  type: string
+                border_color:
+                  type: string
+            wrapper_shape:
+              type: string
       responses:
-        '200':
+        200:
           description: successful operation
           schema:
             type: object
@@ -610,35 +655,127 @@ paths:
               ok:
                 type: boolean
               data:
-                $ref: '#/paths/~1profile~1avatar~1/get/responses/200/schema/properties/data'
+                type: object
+                properties:
+                  gender:
+                    type: string
+                  widgets:
+                    type: object
+                    properties:
+                      ear:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      eyes:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      face:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      nose:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      tops:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      beard:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      mouth:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      clothes:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      glasses:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      earrings:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      eyebrows:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                  background:
+                    type: object
+                    properties:
+                      color:
+                        type: string
+                      border_color:
+                        type: string
+                  wrapper_shape:
+                    type: string
               status:
                 type: number
                 default: 201
-        '400':
+        400:
           description: Bad Request
-        '429':
+        429:
           description: Throttled
   /storage/upload/:
     post:
       tags:
-        - Storage
+      - Storage
       summary: upload file
       description: ''
       operationId: uploadFile
       consumes:
-        - application/json
+      - application/json
       produces:
-        - application/json
+      - application/json
       security:
-        - ApiKeyAuth: []
+      - ApiKeyAuth: []
       parameters:
-        - in: formData
-          name: file
-          type: file
-          required: true
-          description: Upload File
+      - in: formData
+        name: file
+        type: file
+        required: true
+        description: Upload File
       responses:
-        '201':
+        201:
           description: successful operation
           schema:
             type: object
@@ -654,156 +791,231 @@ paths:
               status:
                 type: number
                 default: 201
-        '400':
+        400:
           description: Bad Request
-        '429':
+        429:
           description: Throttled
-  '/wishlist/{id}/':
+  /wishlist/{id}/:
     patch:
       tags:
-        - Wishlist
+      - Wishlist
       summary: Edit Wishlist - READY
-      description: edit a wishlist
+      description: Partially update a resource owned by the authenticated user. Omitted
+        fields remain unchanged.
       consumes:
-        - application/json
+      - application/json
       produces:
-        - application/json
+      - application/json
       security:
-        - ApiKeyAuth: []
+      - ApiKeyAuth: []
       parameters:
-        - name: id
-          in: path
-          description: user wishlist id
-          required: true
-          type: string
-        - in: body
-          name: body
-          description: Edit Wishlist
-          required: true
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-                format: string
-              description:
-                type: string
-                format: string
-              cover:
-                type: string
+      - name: id
+        in: path
+        description: user wishlist id
+        required: true
+        type: string
+        format: uuid
+      - in: body
+        name: body
+        description: Edit Wishlist
+        required: true
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              minLength: 1
+              maxLength: 150
+            description:
+              type: string
+            cover:
+              type: string
+              format: uuid
+              x-nullable: true
+          description: Partial update. Omitted fields are preserved; cover null clears
+            the cover.
       responses:
-        '200':
+        200:
           description: successful operation
           schema:
             type: object
             properties:
-              ok:
-                type: boolean
-                default: true
               data:
-                $ref: '#/paths/~1profile~1wishlist~1/post/responses/201/schema/properties/data'
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  cover:
+                    type: object
+                    x-nullable: true
+                    properties:
+                      file:
+                        type: string
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
               status:
                 type: number
                 default: 200
+              updated:
+                type: boolean
+        400:
+          description: Invalid input, missing resource or failed business validation.
+        401:
+          description: Authentication required.
+        403:
+          description: Authenticated user does not own the wishlist.
     delete:
       tags:
-        - Wishlist
+      - Wishlist
       summary: Delete Wishlist - READY
       description: delete a wishlist
       consumes:
-        - application/json
+      - application/json
       produces:
-        - application/json
+      - application/json
       security:
-        - ApiKeyAuth: []
+      - ApiKeyAuth: []
       parameters:
-        - name: id
-          in: path
-          description: user wishlist id
-          required: true
-          type: string
+      - name: id
+        in: path
+        description: user wishlist id
+        required: true
+        type: string
+        format: uuid
       responses:
-        '200':
-          description: successful operation
+        200:
+          description: Deleted successfully.
           schema:
             type: object
             properties:
               deleted:
                 type: boolean
-                default: true
               status:
-                type: number
+                type: integer
                 default: 200
-        '404':
-          description: NotFound Request
-        '429':
+        404:
+          description: Resource does not exist.
+        429:
           description: Throttled
+        400:
+          description: Invalid input, missing resource or failed business validation.
+        401:
+          description: Authentication required.
+        403:
+          description: Authenticated user does not own the wishlist.
     post:
       tags:
-        - Wishlist
+      - Wishlist
       summary: Create Wish - READY
       description: create a wish
       consumes:
-        - application/json
+      - application/json
       produces:
-        - application/json
+      - application/json
       security:
-        - ApiKeyAuth: []
+      - ApiKeyAuth: []
       parameters:
-        - name: id
-          in: path
-          description: user wishlist id
-          required: true
-          type: string
-        - in: body
-          name: body
-          description: Create Wishlist
-          required: true
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-                format: string
-              description:
-                type: string
-              price:
-                type: string
-              cover:
-                type: string
+      - name: id
+        in: path
+        description: user wishlist id
+        required: true
+        type: string
+        format: uuid
+      - in: body
+        name: body
+        description: Create Wishlist
+        required: true
+        schema:
+          type: object
+          required:
+          - name
+          - description
+          - price
+          properties:
+            name:
+              type: string
+              minLength: 1
+              maxLength: 150
+            description:
+              type: string
+            cover:
+              type: string
+              format: uuid
+              x-nullable: true
+            price:
+              type: string
+              description: Decimal, at most 10 digits and no fractional digits.
       responses:
-        '200':
+        400:
+          description: Invalid input, missing resource or failed business validation.
+        401:
+          description: Authentication required.
+        403:
+          description: Authenticated user does not own the wishlist.
+        201:
           description: successful operation
           schema:
             type: object
             properties:
-              ok:
-                type: boolean
-                default: true
               data:
-                $ref: '#/paths/~1wish~1%7Bid%7D~1/get/responses/200/schema/properties/data'
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  cover:
+                    type: object
+                    x-nullable: true
+                    properties:
+                      file:
+                        type: string
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+                  price:
+                    type: string
+                    description: Decimal price without fractional digits.
               status:
                 type: number
-                default: 200
+                default: 201
+              created:
+                type: boolean
     get:
       tags:
-        - Wishlist
+      - Wishlist
       summary: Get Wishes - SEMI READY
       description: get wishes of wishlist
       consumes:
-        - application/json
+      - application/json
       produces:
-        - application/json
+      - application/json
       security:
-        - ApiKeyAuth: []
+      - ApiKeyAuth: []
       parameters:
-        - name: id
-          in: path
-          description: user wishlist id
-          required: true
-          type: string
+      - name: id
+        in: path
+        description: user wishlist id
+        required: true
+        type: string
+        format: uuid
       responses:
-        '200':
+        200:
           description: successful operation
           schema:
             type: object
@@ -818,177 +1030,182 @@ paths:
                   properties:
                     id:
                       type: string
+                      format: uuid
                     name:
                       type: string
-                      format: string
                     description:
                       type: string
-                    price:
-                      type: string
                     cover:
-                      type: string
+                      type: object
+                      x-nullable: true
+                      properties:
+                        file:
+                          type: string
                     created_at:
                       type: string
+                      format: date-time
                     updated_at:
                       type: string
+                      format: date-time
+                    price:
+                      type: string
+                      description: Decimal price without fractional digits.
               status:
                 type: number
                 default: 200
-  '/wishlist/{id}/wish/{wishid}/':
+  /wishlist/{id}/wish/{wishid}/:
     patch:
       tags:
-        - Wishlist
+      - Wishlist
       summary: Edit Wish - SEMI READY
-      description: edit a wish
+      description: Partially update a resource owned by the authenticated user. Omitted
+        fields remain unchanged. The wish must belong to the wishlist in the URL.
       consumes:
-        - application/json
+      - application/json
       produces:
-        - application/json
+      - application/json
       security:
-        - ApiKeyAuth: []
+      - ApiKeyAuth: []
       parameters:
-        - name: id
-          in: path
-          description: user wishlist id
-          required: true
-          type: string
-        - name: wishid
-          in: path
-          description: user wish id
-          required: true
-          type: string
-        - in: body
-          name: body
-          description: Create Wishlist
-          required: true
-          schema:
-            type: object
-            properties:
-              id:
-                type: string
-              name:
-                type: string
-                format: string
-              description:
-                type: string
-              price:
-                type: string
-              cover:
-                type: string
+      - name: id
+        in: path
+        description: user wishlist id
+        required: true
+        type: string
+        format: uuid
+      - name: wishid
+        in: path
+        description: user wish id
+        required: true
+        type: string
+        format: uuid
+      - in: body
+        name: body
+        description: Create Wishlist
+        required: true
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              minLength: 1
+              maxLength: 150
+            description:
+              type: string
+            cover:
+              type: string
+              format: uuid
+              x-nullable: true
+            price:
+              type: string
+              description: Decimal, at most 10 digits and no fractional digits.
+          description: Partial update within the wishlist in the URL. A wish cannot
+            be moved using this endpoint.
       responses:
-        '200':
+        200:
           description: successful operation
           schema:
             type: object
             properties:
-              ok:
-                type: boolean
-                default: true
-              data:
-                $ref: '#/paths/~1wishlist~1%7Bid%7D~1/get/responses/200/schema/properties/data'
-              status:
-                type: number
-                default: 200
-    delete:
-      tags:
-        - Wishlist
-      summary: Delete Wish - READY
-      description: delete a wish
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: id
-          in: path
-          description: user wishlist id
-          required: true
-          type: string
-        - name: wishid
-          in: path
-          description: user wish id
-          required: true
-          type: string
-      responses:
-        '200':
-          description: successful operation
-          schema:
-            type: object
-            properties:
-              ok:
-                type: boolean
-                default: true
-              data:
-                $ref: '#/paths/~1wishlist~1%7Bid%7D~1/get/responses/200/schema/properties/data'
-              status:
-                type: number
-                default: 200
-  '/wishlist/{id}/wish/{wishid}/request/':
-    post:
-      tags:
-        - Wishlist
-      summary: Request To Reserve a Wish - NOT READY
-      description: request a wish
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: id
-          in: path
-          description: user wishlist id
-          required: true
-          type: string
-        - in: body
-          name: body
-          description: Create Wishlist
-          required: true
-          schema:
-            type: object
-            properties:
-              nickname:
-                type: string
-      responses:
-        '200':
-          description: successful operation
-          schema:
-            type: object
-            properties:
-              ok:
-                type: boolean
-                default: true
               data:
                 type: object
                 properties:
-                  done:
+                  id:
                     type: string
+                    format: uuid
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  cover:
+                    type: object
+                    x-nullable: true
+                    properties:
+                      file:
+                        type: string
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+                  price:
+                    type: string
+                    description: Decimal price without fractional digits.
               status:
                 type: number
                 default: 200
-  '/wish/{id}/':
+              updated:
+                type: boolean
+        400:
+          description: Invalid input, missing resource or failed business validation.
+        401:
+          description: Authentication required.
+        403:
+          description: Authenticated user does not own the wishlist.
+    delete:
+      tags:
+      - Wishlist
+      summary: Delete Wish - READY
+      description: delete a wish
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: user wishlist id
+        required: true
+        type: string
+        format: uuid
+      - name: wishid
+        in: path
+        description: user wish id
+        required: true
+        type: string
+        format: uuid
+      responses:
+        200:
+          description: Deleted successfully.
+          schema:
+            type: object
+            properties:
+              deleted:
+                type: boolean
+              status:
+                type: integer
+                default: 200
+        400:
+          description: Invalid input, missing resource or failed business validation.
+        401:
+          description: Authentication required.
+        403:
+          description: Authenticated user does not own the wishlist.
+        404:
+          description: Resource does not exist.
+  /wish/{id}/:
     get:
       tags:
-        - Wish
+      - Wish
       summary: Get Wish By Id - READY
       description: get wish by id
       consumes:
-        - application/json
+      - application/json
       produces:
-        - application/json
+      - application/json
       security:
-        - ApiKeyAuth: []
+      - ApiKeyAuth: []
       parameters:
-        - name: id
-          in: path
-          description: user wishlist id
-          required: true
-          type: string
+      - name: id
+        in: path
+        description: user wishlist id
+        required: true
+        type: string
       responses:
-        '200':
+        200:
           description: successful operation
           schema:
             type: object
@@ -1001,19 +1218,131 @@ paths:
                 properties:
                   id:
                     type: string
+                    format: uuid
                   name:
                     type: string
-                    format: string
                   description:
                     type: string
-                  price:
-                    type: string
                   cover:
-                    type: string
+                    type: object
+                    x-nullable: true
+                    properties:
+                      file:
+                        type: string
                   created_at:
                     type: string
+                    format: date-time
                   updated_at:
                     type: string
+                    format: date-time
+                  price:
+                    type: string
+                    description: Decimal price without fractional digits.
               status:
                 type: number
                 default: 200
+  /wish/{id}/request/:
+    post:
+      tags:
+      - Wishlist
+      summary: Request to reserve a wish
+      description: At least one of friend or anonymous_friend is required. Wish ID
+        is taken from the URL.
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: user wishlist id
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Create Wishlist
+        required: true
+        schema:
+          type: object
+          description: At least one of friend or anonymous_friend is required. Wish
+            ID is taken from the URL.
+          properties:
+            friend:
+              type: string
+              format: uuid
+              x-nullable: true
+            anonymous_friend:
+              type: string
+              format: uuid
+              x-nullable: true
+      responses:
+        201:
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  wish:
+                    type: string
+                    format: uuid
+                  friend:
+                    type: string
+                    format: uuid
+                    x-nullable: true
+                  anonymous_friend:
+                    type: string
+                    format: uuid
+                    x-nullable: true
+                  status:
+                    type: string
+                    enum:
+                    - pending
+                    - accepted
+                    - rejected
+                  created_at:
+                    type: string
+                    format: date-time
+              status:
+                type: number
+                default: 201
+              created:
+                type: boolean
+        400:
+          description: Wish, friend or anonymous friend is invalid, or neither actor
+            was supplied.
+  /wish/create-anonymous-friend/:
+    post:
+      tags:
+      - Wishlist
+      summary: Create an anonymous friend
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          required:
+          - nickname
+          properties:
+            nickname:
+              type: string
+              minLength: 1
+              maxLength: 150
+      responses:
+        201:
+          description: Created
+          schema:
+            type: object
+            properties:
+              created:
+                type: boolean
+              anonymous_friend_id:
+                type: string
+                format: uuid
+              status:
+                type: integer
+                default: 201
+        400:
+          description: Invalid nickname.

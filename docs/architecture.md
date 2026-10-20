@@ -1,0 +1,136 @@
+# Wishbox architecture
+
+This structure follows the Sodoor Architecture Proposal, with the project's decision
+to define explicit domains and avoid a separate adapter layer. Django remains at
+the outer boundaries. Binding rules are in [rule.md](../rule.md).
+
+## Structure
+
+```text
+src/apps/<app>/
+  domain/         # entities, value objects, policies, business errors
+  dto/            # ORM-independent InputDTO / OutputDTO
+  interfaces.py   # contracts consumed by use cases
+  services/       # application use cases with injected dependencies
+  repositories/   # Django/cache persistence and mapping to the domain
+  models/         # Django schema
+  tests/          # integration, repository and model tests
+src/api/views/<group>/<endpoint>/
+  view.py         # one APIView containing the route's HTTP handlers
+  serializer.py   # this endpoint's input/output serializers
+  __init__.py     # exports only
+src/api/          # routes, permissions, shared serialization, error mapping
+src/core/composition.py  # construction of concrete dependencies
+src/shared/       # base DTOs, domain errors and transaction contracts
+tests/unit/       # business tests without Django or a database
+scripts/check_architecture.py  # import and cycle checks
+```
+
+Presentation lives only in `src/api/`; serializers do not belong in `apps/`.
+Each API route has a directory containing its view and serializers in separate
+files. Routes with multiple methods use one APIView, without combining separate
+views through multiple inheritance. `__init__.py` only exports names.
+`selectors/` has moved to `repositories/`; existing queries remain as `query_*`
+functions for tests and database capabilities. New business code should consume
+repository contracts. Django models are not business entities.
+
+## Endpoint files
+
+Paths below are relative to `/api/V0.0.0/`. Each listed `view.py` has a sibling
+`serializer.py` containing that endpoint's serializers.
+
+| Route | Methods | File under `src/api/views/` |
+| --- | --- | --- |
+| `auth/otp/` | POST | `authentication/send_otp/view.py` |
+| `auth/otp/verify/` | POST | `authentication/verify_token/view.py` |
+| `auth/otp/refresh/` | POST | `authentication/refresh_token/view.py` |
+| `profile/` | GET, PUT | `profile/profile/view.py` |
+| `profile/avatar/` | GET, PATCH | `profile/avatar/view.py` |
+| `profile/wishlist/` | GET, POST | `wishlist/wishlist/view.py` |
+| `wishlist/<id>/` | GET, POST, PATCH, DELETE | `wishlist/wishlist_action/view.py` |
+| `wishlist/<id>/wish/<wishid>/` | PATCH, DELETE | `wishlist/wish_action/view.py` |
+| `wish/<id>/` | GET | `wishlist/get_wish_by_id/view.py` |
+| `wish/<id>/request/` | POST | `wishlist/submit_request/view.py` |
+| `wish/create-anonymous-friend/` | POST | `wishlist/create_anonymous_friend/view.py` |
+| `storage/upload/` | POST | `storage/upload_file/view.py` |
+| `website/contact-us/` | GET | `website/contact_us/view.py` |
+| `openapi/` | GET | `openapi/swagger_template/view.py` |
+| `openapi/schema.yaml` | GET | `openapi/swagger_view/view.py` |
+
+Define input serializers for methods with request bodies. Read/delete methods
+without bodies do not need empty input serializers. Each route's output
+serializers live in its `serializer.py`; generic DTO serialization remains shared
+in `src/api/serialization.py`. Swagger's page and schema return HTML/YAML, so their
+`serializer.py` files explain why JSON serialization is unnecessary. Existing
+addresses, URL names, response envelopes and permission policies are preserved.
+
+## Domain ownership
+
+| App | Domain and business responsibilities | Public capabilities |
+| --- | --- | --- |
+| authentication | User identity, OTP requests/verification, login orchestration | `get_user` and identity DTOs |
+| profile | Profile information and avatar settings value objects | `exists` and profile DTOs |
+| storage | Media identity, file data, uploads and reads | `get_media` and `get_media_batch` |
+| wishlist | Wishlists/wishes, ownership, wish membership, reservation requests | Wishlist use cases |
+| website | Contact information | `list_contacts` |
+
+Wishlist entities enforce ownership. The requirement for a friend or anonymous
+friend belongs to a domain policy. Avatar settings form a complete domain value
+object: apply patches to a snapshot, then validate the whole value.
+
+## Communication and injection
+
+```text
+WishlistService → ProfileServiceProtocol        ← ProfileService
+WishlistService → StorageServiceProtocol        ← StorageService
+ProfileService  → AuthenticationServiceProtocol ← AuthenticationService
+ProfileService  → StorageServiceProtocol        ← StorageService
+```
+
+Service contracts use `<ServiceName>Protocol` so their corresponding provider
+is clear. Each protocol exposes only capabilities needed by its consumers, not
+every method of the concrete service. Implementations satisfy these protocols
+structurally; explicit inheritance is unnecessary. Constructor parameters use
+`authentication`, `profile` and `storage`, and composition passes them by keyword.
+
+These are runtime relationships. Services import only Protocol contracts;
+the composition root injects concrete instances. Repositories convert records
+to dataclass entities or DTOs. Lazy QuerySets and Models do not enter services.
+
+## Request flow
+
+```text
+request → input serializer → InputDTO → application service
+        → injected repository / public capability → OutputDTO
+        → response serializer → HTTP response
+```
+
+Views determine input format and response status. Services implement business
+decisions and orchestration. DTOs contain UUIDs, Decimals, dates, bytes and JSON
+data; the upload view converts uploaded files into bytes and a filename.
+
+## Transactions and side effects
+
+The transaction contract is `TransactionBoundary`. As a factory, it creates an
+independent context for every call. The `atomic` implementation lives in
+`src/shared/transactions.py`; only composition injects it.
+
+Wishlist writes and avatar patches execute inside transactions with locks.
+User lookup/creation during verification and login occurs inside a transaction;
+tokens are created after successful exit. OTP notifications use `AfterCommit`.
+Redis and SMS do not participate in database transactions. The current email
+flow generates and verifies OTPs, but the project has no email sender yet.
+
+FileFields also do not participate in database transactions; a database failure
+may leave a file without a record. Uploads currently snapshot files in memory.
+If upload sizes grow, introduce a streaming contract with defined cleanup.
+This redesign does not add an outbox, worker redesign or guaranteed retries.
+
+## Testing and architecture checks
+
+The checker rejects outer imports in inner layers, direct presentation access to
+persistence, private queries across apps, repository-to-service dependencies,
+serializers defined/imported in apps, and cycles. A separate unit test imports
+all services with Django/settings imports blocked. The checker complements code
+review: it does not analyze dynamic imports or every business invariant.
+See [development.md](development.md) for commands.

@@ -1,79 +1,93 @@
 patch:
   tags:
-    - "Wishlist"
-  summary: "Edit Wish - SEMI READY"
-  description: edit a wish
+  - Wishlist
+  summary: Edit Wish - SEMI READY
+  description: Partially update a resource owned by the authenticated user. Omitted
+    fields remain unchanged. The wish must belong to the wishlist in the URL.
   consumes:
-    - "application/json"
+  - application/json
   produces:
-    - "application/json"
+  - application/json
   security:
-    - ApiKeyAuth: []
+  - ApiKeyAuth: []
   parameters:
-    - name: "id"
-      in: "path"
-      description: "user wishlist id"
-      required: True
-      type: "string"
-    - name: "wishid"
-      in: "path"
-      description: "user wish id"
-      required: True
-      type: "string"
-    - in: "body"
-      name: "body"
-      description: "Create Wishlist"
-      required: true
-      schema:
-        $ref: "./definitions.yaml#/EditWish"
+  - name: id
+    in: path
+    description: user wishlist id
+    required: true
+    type: string
+    format: uuid
+  - name: wishid
+    in: path
+    description: user wish id
+    required: true
+    type: string
+    format: uuid
+  - in: body
+    name: body
+    description: Create Wishlist
+    required: true
+    schema:
+      $ref: ./definitions.yaml#/EditWish
   responses:
     200:
-      description: "successful operation"
+      description: successful operation
       schema:
-        type: "object"
+        type: object
         properties:
-          ok:
-            type: "boolean"
-            default: true
           data:
-            $ref: "./definitions.yaml#/Wishes"
+            $ref: ./definitions.yaml#/Wish
           status:
-            type: "number"
+            type: number
             default: 200
-
+          updated:
+            type: boolean
+    400:
+      description: Invalid input, missing resource or failed business validation.
+    401:
+      description: Authentication required.
+    403:
+      description: Authenticated user does not own the wishlist.
 delete:
   tags:
-    - "Wishlist"
-  summary: "Delete Wish - READY"
+  - Wishlist
+  summary: Delete Wish - READY
   description: delete a wish
   consumes:
-    - "application/json"
+  - application/json
   produces:
-    - "application/json"
+  - application/json
   security:
-    - ApiKeyAuth: []
+  - ApiKeyAuth: []
   parameters:
-    - name: "id"
-      in: "path"
-      description: "user wishlist id"
-      required: True
-      type: "string"
-    - name: "wishid"
-      in: "path"
-      description: "user wish id"
-      required: True
-      type: "string"
+  - name: id
+    in: path
+    description: user wishlist id
+    required: true
+    type: string
+    format: uuid
+  - name: wishid
+    in: path
+    description: user wish id
+    required: true
+    type: string
+    format: uuid
   responses:
     200:
-      description: "successful operation"
+      description: Deleted successfully.
       schema:
-        type: "object"
+        type: object
         properties:
-          ok:
-            type: "boolean"
-            default: true
-          data:
-            $ref: "./definitions.yaml#/Wishes"
+          deleted:
+            type: boolean
           status:
-            type: "number"
+            type: integer
             default: 200
+    400:
+      description: Invalid input, missing resource or failed business validation.
+    401:
+      description: Authentication required.
+    403:
+      description: Authenticated user does not own the wishlist.
+    404:
+      description: Resource does not exist.

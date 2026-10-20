@@ -1,143 +1,138 @@
 EditWishlist:
-  type: "object"
+  type: object
   properties:
     name:
-      type: "string"
-      format: "string"
+      type: string
+      minLength: 1
+      maxLength: 150
     description:
-      type: "string"
-      format: "string"
+      type: string
     cover:
-      type: "string"
-
-Wishlist:
-  type: "object"
+      type: string
+      format: uuid
+      x-nullable: true
+  description: Partial update. Omitted fields are preserved; cover null clears the
+    cover.
+Wishlist: &id004
+  type: object
   properties:
-    id:
-      type: "string"
-      format: "string"
+    id: &id006
+      type: string
+      format: uuid
     name:
-      type: "string"
-      format: "string"
+      type: string
     description:
-      type: "string"
-      format: "string"
+      type: string
     cover:
-      type: "string"
-
+      type: object
+      x-nullable: true
+      properties:
+        file:
+          type: string
+    created_at: &id001
+      type: string
+      format: date-time
+    updated_at: *id001
 CreateWish:
-  type: "object"
+  type: object
+  required:
+  - name
+  - description
+  - price
   properties:
     name:
-      type: "string"
-      format: "string"
+      type: string
+      minLength: 1
+      maxLength: 150
     description:
-      type: "string"
-    price:
-      type: "string"
+      type: string
     cover:
-      type: "string"
-      
+      type: string
+      format: uuid
+      x-nullable: true
+    price:
+      type: string
+      description: Decimal, at most 10 digits and no fractional digits.
 EditWish:
-  type: "object"
+  type: object
   properties:
-    id:
-      type: "string"
     name:
-      type: "string"
-      format: "string"
+      type: string
+      minLength: 1
+      maxLength: 150
     description:
-      type: "string"
-    price:
-      type: "string"
+      type: string
     cover:
-      type: "string"
-
+      type: string
+      format: uuid
+      x-nullable: true
+    price:
+      type: string
+      description: Decimal, at most 10 digits and no fractional digits.
+  description: Partial update within the wishlist in the URL. A wish cannot be moved
+    using this endpoint.
 Wishes:
-  type: "array"
-  items:
-    type: "object"
+  type: array
+  items: &id003
+    type: object
     properties:
       id:
-        type: "string"
+        type: string
+        format: uuid
       name:
-        type: "string"
-        format: "string"
+        type: string
       description:
-        type: "string"
-      price:
-        type: "string"
-      # is_reserved:
-      #   type: "boolean"
-      # reserver_nickname:
-      #   type: "string"
+        type: string
       cover:
-        type: "string"
-      created_at:
-        type: "string"
-      updated_at:
-        type: "string"
-
-Wish:
-  type: "object"
-  properties:
-    id:
-      type: "string"
-    name:
-      type: "string"
-      format: "string"
-    description:
-      type: "string"
-    price:
-      type: "string"
-    # is_reserved:
-    #   type: "boolean"
-    # reserver_nickname:
-    #   type: "string"
-    cover:
-      type: "string"
-    created_at:
-      type: "string"
-    updated_at:
-      type: "string"
-
-
-CreateWishlist:
-  type: "object"
-  properties:
-    name:
-      type: "string"
-      format: "string"
-    description:
-      type: "string"
-      format: "string"
-    cover:
-      type: "string"
-
-Wishlists:
-  properties:
-    wishlist:
-      type: "array"
-      items:
-        type: "object"
+        type: object
+        x-nullable: true
         properties:
-          id:
-            type: "string"
-          name:
-            type: "string"
-          description:
-            type: "string"
-          cover:
-            $ref: "../storage/definitions.yaml#/MediaModel"
-
+          file:
+            type: string
+      created_at: &id002
+        type: string
+        format: date-time
+      updated_at: *id002
+      price:
+        type: string
+        description: Decimal price without fractional digits.
+Wish: *id003
+CreateWishlist:
+  type: object
+  required:
+  - name
+  - description
+  properties:
+    name:
+      type: string
+      minLength: 1
+      maxLength: 150
+    description:
+      type: string
+    cover: &id005
+      type: string
+      format: uuid
+      x-nullable: true
+Wishlists:
+  type: array
+  items: *id004
 Request:
-  type: "object"
+  type: object
+  description: At least one of friend or anonymous_friend is required. Wish ID is
+    taken from the URL.
   properties:
-    nickname:
-      type: "string"
-
+    friend: *id005
+    anonymous_friend: *id005
 RequestComplete:
-  type: "object"
+  type: object
   properties:
-    done:
-      type: "string"
+    wish: *id006
+    friend: *id005
+    anonymous_friend: *id005
+    status:
+      type: string
+      enum:
+      - pending
+      - accepted
+      - rejected
+    created_at: *id001

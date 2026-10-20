@@ -1,6 +1,6 @@
 from django.urls import path
 
-from src.api.views.website.contact_us import GetContactUsAPIView
+from src.api.views.website.contact_us.view import GetContactUsAPIView
 
 website_urlpatterns = [
     path(

@@ -1,12 +1,4 @@
-from src.api.views.profile.create_update_profile import CreateUpdateProfile
-from src.api.views.profile.get_profile import GetProfileAPIView
-from src.api.views.profile.get_avatar import GetAvatarAPIView
-from src.api.views.profile.update_avatar import UpdateAvatarAPIView
+from src.api.views.profile.avatar.view import AvatarAPIView
+from src.api.views.profile.profile.view import ProfileAPIView
 
-
-class AvatarAPIView(GetAvatarAPIView, UpdateAvatarAPIView):
-    pass
-
-
-class ProfileAPIView(CreateUpdateProfile, GetProfileAPIView):
-    pass
+__all__ = ["AvatarAPIView", "ProfileAPIView"]

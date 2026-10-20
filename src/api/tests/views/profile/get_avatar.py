@@ -2,7 +2,8 @@ from django.test import LiveServerTestCase
 from django.urls import reverse
 from rest_framework.test import RequestsClient
 
-from src.apps.authentication.services import login_user_by_id
+from src.core.composition import authentication_service
+from src.shared.dto import IdInputDTO
 from src.utils.fakers import AvatarFactory, ProfileFactory
 
 
@@ -12,9 +13,12 @@ class GetAvatarAPIViewTestCase(LiveServerTestCase):
 
         self.profile_with_avatar = ProfileFactory()
         self.avatar = AvatarFactory(profile=self.profile_with_avatar)
-        self.access_token_with_profile = login_user_by_id(
-            self.profile_with_avatar.profile_id
-        ).get("access_token")
+        self.access_token_with_profile = (
+            authentication_service()
+            .login(IdInputDTO(id=self.profile_with_avatar.profile_id))
+            .model_dump()
+            .get("access_token")
+        )
 
     def make_request(self, headers=None):
         url = self.live_server_url + reverse("avatar")

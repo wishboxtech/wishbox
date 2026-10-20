@@ -1,0 +1,33 @@
+post:
+  tags:
+  - Wishlist
+  summary: Create an anonymous friend
+  parameters:
+  - in: body
+    name: body
+    required: true
+    schema:
+      type: object
+      required:
+      - nickname
+      properties:
+        nickname:
+          type: string
+          minLength: 1
+          maxLength: 150
+  responses:
+    201:
+      description: Created
+      schema:
+        type: object
+        properties:
+          created:
+            type: boolean
+          anonymous_friend_id:
+            type: string
+            format: uuid
+          status:
+            type: integer
+            default: 201
+    400:
+      description: Invalid nickname.

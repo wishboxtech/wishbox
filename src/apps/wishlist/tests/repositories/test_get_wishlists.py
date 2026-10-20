@@ -1,0 +1,21 @@
+from django.test import TestCase
+from faker import Faker
+
+from src.apps.wishlist.repositories.queries import get_wishlists_by_profile
+from src.utils.fakers import ProfileFactory, WishlistFactory
+
+
+class GetWishlistsSelectorTestCase(TestCase):
+    def setUp(self):
+        self.faker = Faker()
+        self.profile = ProfileFactory()
+        self.profile_no_wish = ProfileFactory()
+        self.wishlists = WishlistFactory.create_batch(5, profile=self.profile)
+
+    def test_get_wishlists_by_profile_id(self):
+        wishlists = get_wishlists_by_profile(profile_id=self.profile.profile_id)
+        self.assertEqual(wishlists.count(), 5)
+
+    def test_get_empty_wishlists(self):
+        wishlists = get_wishlists_by_profile(profile_id=self.profile_no_wish.profile_id)
+        self.assertEqual(wishlists.count(), 0)

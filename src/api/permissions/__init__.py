@@ -1,1 +1,1 @@
-from src.api.permissions.is_owner_of_wishlist import IsOwnerOfWishlist
+"""API authentication permissions; resource ownership belongs to the use case."""

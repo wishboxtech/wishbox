@@ -3,7 +3,8 @@ from django.urls import reverse
 from faker import Faker
 from rest_framework.test import RequestsClient
 
-from src.apps.authentication.services import login_user_by_id
+from src.core.composition import authentication_service
+from src.shared.dto import IdInputDTO
 from src.utils.fakers import ProfileFactory, UserFactory
 
 
@@ -13,12 +14,20 @@ class CreateWishlistTestCase(LiveServerTestCase):
 
         self.user_with_profile = UserFactory()
         self.profile = ProfileFactory(profile_id=self.user_with_profile.id)
-        self.access_token_with_profile = login_user_by_id(
-            self.user_with_profile.id
-        ).get("access_token")
+        self.access_token_with_profile = (
+            authentication_service()
+            .login(IdInputDTO(id=self.user_with_profile.id))
+            .model_dump()
+            .get("access_token")
+        )
 
         self.solid_user = UserFactory()
-        self.access_token = login_user_by_id(self.solid_user.id).get("access_token")
+        self.access_token = (
+            authentication_service()
+            .login(IdInputDTO(id=self.solid_user.id))
+            .model_dump()
+            .get("access_token")
+        )
 
     def make_request(self, headers=None, data=None):
         url = self.live_server_url + reverse("wishlist")

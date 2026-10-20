@@ -1,9 +1,9 @@
-swagger: "2.0"
+swagger: '2.0'
 info:
-  description: "Wishox API Dobcumentation; It's WIP"
-  version: "0.0.0"
-  title: "Wishbox"
-host: "api.gameparty.ir"
+  description: Wishox API Dobcumentation; It's WIP
+  version: 0.0.0
+  title: Wishbox
+host: api.gameparty.ir
 basePath: /api/V0.0.0
 securityDefinitions:
   ApiKeyAuth:
@@ -11,39 +11,33 @@ securityDefinitions:
     in: header
     name: access
 tags:
-  - name: "AUTH"
-    description: "Authentication"
+- name: AUTH
+  description: Authentication
 schemes:
-  - "https"
-  - "http"
+- https
+- http
 paths:
-  # AUTH
   /auth/otp/:
-    $ref: "./auth/otp.yaml"
+    $ref: ./auth/otp.yaml
   /auth/otp/verify/:
-    $ref: "./auth/verify.yaml"
+    $ref: ./auth/verify.yaml
   /auth/otp/refresh/:
-    $ref: "./auth/refresh.yaml"
-  
-  # Profile
+    $ref: ./auth/refresh.yaml
   /profile/:
-    $ref: "./profile/profile.yaml"
+    $ref: ./profile/profile.yaml
   /profile/wishlist/:
-    $ref: "./profile/wishlist.yaml"
+    $ref: ./profile/wishlist.yaml
   /profile/avatar/:
-    $ref: "./profile/avatar.yaml"
-  
-  # Storage
+    $ref: ./profile/avatar.yaml
   /storage/upload/:
-    $ref: "./storage/upload.yaml"
-
-  # Wish
-  
+    $ref: ./storage/upload.yaml
   /wishlist/{id}/:
-    $ref: "./wishlist/wishlist.yaml"
+    $ref: ./wishlist/wishlist.yaml
   /wishlist/{id}/wish/{wishid}/:
-    $ref: "./wishlist/wish.yaml"
-  /wishlist/{id}/wish/{wishid}/request/:
-    $ref: "./wishlist/request.yaml"
+    $ref: ./wishlist/wish.yaml
   /wish/{id}/:
-    $ref: "./wishlist/wish_by_id.yaml"  
+    $ref: ./wishlist/wish_by_id.yaml
+  /wish/{id}/request/:
+    $ref: ./wishlist/request.yaml
+  /wish/create-anonymous-friend/:
+    $ref: ./wishlist/anonymous_friend.yaml

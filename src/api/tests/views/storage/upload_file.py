@@ -2,7 +2,8 @@ from django.test import LiveServerTestCase
 from django.urls import reverse
 from rest_framework.test import RequestsClient
 
-from src.apps.authentication.services import login_user_by_id
+from src.core.composition import authentication_service
+from src.shared.dto import IdInputDTO
 from src.static import ErrorEnum
 from src.utils.fakers import UserFactory, fake_image
 
@@ -11,7 +12,12 @@ class UploadFileViewTestCase(LiveServerTestCase):
     def setUp(self):
         self.rc = RequestsClient()
         self.user = UserFactory()
-        self.access = login_user_by_id(user_id=self.user.id).get("access_token")
+        self.access = (
+            authentication_service()
+            .login(IdInputDTO(id=self.user.id))
+            .model_dump()
+            .get("access_token")
+        )
 
     def make_request(self, headers=None, data=None, files=None):
         url = self.live_server_url + reverse("upload_media")

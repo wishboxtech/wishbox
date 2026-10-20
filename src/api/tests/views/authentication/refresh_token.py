@@ -6,7 +6,8 @@ from freezegun import freeze_time
 from rest_framework.test import RequestsClient
 
 from settings import REFRESH_TTL
-from src.apps.authentication.services import login_user_by_id
+from src.core.composition import authentication_service
+from src.shared.dto import IdInputDTO
 from src.static import ErrorEnum
 from src.utils.fakers import UserFactory
 
@@ -15,11 +16,17 @@ class RefreshTokenAPIViewTestCase(LiveServerTestCase):
     def setUp(self):
         self.rc = RequestsClient()
         self.user = UserFactory()
-        self.refresh_token_for_valid = login_user_by_id(self.user.id).get(
-            "refresh_token"
+        self.refresh_token_for_valid = (
+            authentication_service()
+            .login(IdInputDTO(id=self.user.id))
+            .model_dump()
+            .get("refresh_token")
         )
-        self.refresh_token_for_invalid = login_user_by_id(self.user.id).get(
-            "refresh_token"
+        self.refresh_token_for_invalid = (
+            authentication_service()
+            .login(IdInputDTO(id=self.user.id))
+            .model_dump()
+            .get("refresh_token")
         )
 
     def make_request(self, data=None):

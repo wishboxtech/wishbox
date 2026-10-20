@@ -2,8 +2,9 @@ from django.test import LiveServerTestCase
 from django.urls import reverse
 from rest_framework.test import RequestsClient
 
-from src.apps.authentication.services import login_user_by_id
-from src.utils.fakers import AvatarWidgetsFactory, AvatarFactory, ProfileFactory
+from src.core.composition import authentication_service
+from src.shared.dto import IdInputDTO
+from src.utils.fakers import AvatarFactory, AvatarWidgetsFactory, ProfileFactory
 
 
 class UpdateAvatarTestCase(LiveServerTestCase):
@@ -13,8 +14,11 @@ class UpdateAvatarTestCase(LiveServerTestCase):
         self.profile = ProfileFactory()
         self.avatar = AvatarFactory(profile=self.profile)
         self.avatar_widget = AvatarWidgetsFactory(type="Face")
-        self.access_token_with_profile = login_user_by_id(self.profile.profile_id).get(
-            "access_token"
+        self.access_token_with_profile = (
+            authentication_service()
+            .login(IdInputDTO(id=self.profile.profile_id))
+            .model_dump()
+            .get("access_token")
         )
 
     def make_request(self, headers=None, data=None):

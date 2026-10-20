@@ -13,7 +13,7 @@ from src.apps.storage.models.media_type import MediaType
 class MediaModel(models.Model):
     def file_path(instance, filename):
         file_name = filename.split(".")[-1]
-        return "{}/{}.{}".format(instance.mime_type, str(uuid.uuid4()), file_name)
+        return f"{instance.mime_type}/{uuid.uuid4()!s}.{file_name}"
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     file = models.FileField(upload_to=file_path, verbose_name=_("file"))
@@ -32,15 +32,19 @@ class MediaModel(models.Model):
 
 @receiver(pre_save, sender=MediaModel)
 def create_media_type(sender, instance, **kwargs):
+    instance.file.seek(0)
     mim = magic.from_buffer(instance.file.read(), mime=True)
+    instance.file.seek(0)
     media_type_object, _ = MediaType.objects.get_or_create(media_type=mim)
     instance.mime_type = media_type_object
 
 
 @receiver(pre_save, sender=MediaModel)
 def create_checksum(sender, instance, **kwargs):
+    instance.file.seek(0)
     sha1_hash = hashlib.sha1()
     content = instance.file.read()
+    instance.file.seek(0)
     sha1_hash.update(content)
     digest = sha1_hash.hexdigest()
     instance.checksum = digest

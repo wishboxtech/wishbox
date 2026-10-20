@@ -8,7 +8,7 @@ from src.apps.website.models import ContactUs
 class ContactUsAPIViewTest(APITestCase):
     def setUp(self):
         self.contact = ContactUs.objects.create(email="boz@abru.com")
-        self.url = reverse("contact_us_api")
+        self.url = reverse("contact_us")
 
     def test_get_contact_us_success(self):
         response = self.client.get(self.url)

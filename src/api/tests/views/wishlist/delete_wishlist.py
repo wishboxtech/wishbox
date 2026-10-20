@@ -5,7 +5,8 @@ from django.urls import reverse
 from faker import Faker
 from rest_framework.test import RequestsClient
 
-from src.apps.authentication.services import login_user_by_id
+from src.core.composition import authentication_service
+from src.shared.dto import IdInputDTO
 from src.utils.fakers import ProfileFactory, UserFactory, WishlistFactory
 
 
@@ -17,9 +18,12 @@ class DeleteWishlistAPITestCase(LiveServerTestCase):
         # Owner user + profile
         self.user_with_profile = UserFactory()
         self.profile = ProfileFactory(profile_id=self.user_with_profile.id)
-        self.access_token_with_profile = login_user_by_id(
-            self.user_with_profile.id
-        ).get("access_token")
+        self.access_token_with_profile = (
+            authentication_service()
+            .login(IdInputDTO(id=self.user_with_profile.id))
+            .model_dump()
+            .get("access_token")
+        )
 
         # Wishlist owned by the profile
         self.wishlist = WishlistFactory(profile=self.profile)
@@ -27,8 +31,11 @@ class DeleteWishlistAPITestCase(LiveServerTestCase):
         # Another user (not the owner)
         self.other_user = UserFactory()
         self.other_profile = ProfileFactory(profile_id=self.other_user.id)
-        self.access_token_other = login_user_by_id(self.other_user.id).get(
-            "access_token"
+        self.access_token_other = (
+            authentication_service()
+            .login(IdInputDTO(id=self.other_user.id))
+            .model_dump()
+            .get("access_token")
         )
 
     def make_request(self, wishlist_id, headers=None):
@@ -75,7 +82,7 @@ class DeleteWishlistAPITestCase(LiveServerTestCase):
 
         self.assertTrue(Wishlist.objects.filter(id=self.wishlist.id).exists())
 
-    def test_forbidden_wishlist_not_found(self):
+    def test_wishlist_not_found(self):
         """Deleting a non-existing wishlist should raise NotFoundException"""
         non_existing_id = uuid.uuid4()
 
@@ -84,7 +91,7 @@ class DeleteWishlistAPITestCase(LiveServerTestCase):
             headers={"access": self.access_token_with_profile},
         )
 
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 404)
 
         json_data = response.json()
         self.assertIn("error_type", json_data)

@@ -1,68 +1,65 @@
 post:
   tags:
-    - "Profile"
-  summary: "Create Wishlist - READY"
+  - Profile
+  summary: Create Wishlist - READY
   description: create a wishlist
   consumes:
-    - "application/json"
+  - application/json
   produces:
-    - "application/json"
+  - application/json
   security:
-    - ApiKeyAuth: []
+  - ApiKeyAuth: []
   parameters:
-    - in: "body"
-      name: "body"
-      description: "Create Wishlist"
-      required: true
-      schema:
-        $ref: "../wishlist/definitions.yaml#/CreateWishlist"
+  - in: body
+    name: body
+    description: Create Wishlist
+    required: true
+    schema:
+      $ref: ../wishlist/definitions.yaml#/CreateWishlist
   responses:
     201:
-      description: "successful operation"
+      description: successful operation
       schema:
-        type: "object"
+        type: object
         properties:
-          ok:
-            type: "boolean"
-            default: true
           data:
-            $ref: "../wishlist/definitions.yaml#/Wishlist"
+            $ref: ../wishlist/definitions.yaml#/Wishlist
           status:
-            type: "number"
+            type: number
             default: 201
+          created:
+            type: boolean
     400:
-      description: "Bad Request"
+      description: Bad Request
     401:
-      description: "Unauthorized"
+      description: Unauthorized
     403:
-      description: "forbidden"
-
-
+      description: forbidden
 get:
   tags:
-    - "Profile"
-  summary: "Get User Wishlists - READY"
+  - Profile
+  summary: Get User Wishlists - READY
   description: get user wishlists
   consumes:
-    - "application/json"
+  - application/json
   produces:
-    - "application/json"
+  - application/json
   security:
-    - ApiKeyAuth: []
+  - ApiKeyAuth: []
   responses:
     200:
-      description: "successful operation"
+      description: successful operation
       schema:
-        type: "object"
+        type: object
         properties:
           ok:
-            type: "boolean"
+            type: boolean
           data:
-            $ref: "../wishlist/definitions.yaml#/Wishlists"
+            $ref: ../wishlist/definitions.yaml#/Wishlists
           status:
-            type: "number"
-            default: 201
+            type: number
+            default: 200
     400:
-      description: "Bad Request"
+      description: Bad Request
     429:
-      description: "Throttled"
+      description: Throttled

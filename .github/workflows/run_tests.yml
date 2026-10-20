@@ -28,13 +28,10 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
-      redis:
-        image: redis:latest
-        ports:
-          - "6379:6379"
     
     env:
-      STAGE: dev
+      STAGE: ci
+      WISHBOX_TEST_DB: postgres
 
     steps:
     - uses: actions/checkout@v4
@@ -50,9 +47,13 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest
         if [ -f requirements/all.txt ]; then pip install -r requirements/all.txt; fi
-    - name: Running simple test
+    - name: Check architecture and business unit tests
       run: |
-        coverage run manage.py test src.apps
+        python scripts/check_architecture.py
+        python -m unittest discover -s tests/unit -v
+    - name: Run repository and API tests
+      run: |
+        coverage run manage.py test src.apps src.api --noinput
     - name: "SHOW RESULTS"
       run: |
         coverage report --sort=-Cover

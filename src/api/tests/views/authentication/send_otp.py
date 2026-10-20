@@ -57,6 +57,7 @@ class SendOneTimePasswordAPIViewTestCase(LiveServerTestCase):
         with patch.multiple(
             "django.core.cache.cache",
             ttl=lambda x: 0,
+            get=lambda key, default=None: None,
             set=lambda key, value, timeout=None, nx=False: True,
         ):
             created_response(data={"phone_number": self.user.phone_number})
@@ -64,6 +65,7 @@ class SendOneTimePasswordAPIViewTestCase(LiveServerTestCase):
         with patch.multiple(
             "django.core.cache.cache",
             ttl=lambda x: 0,
+            get=lambda key, default=None: None,
             set=lambda key, value, timeout=None, nx=False: True,
         ):
             created_response(data={"phone_number": self.user.phone_number})
@@ -71,6 +73,7 @@ class SendOneTimePasswordAPIViewTestCase(LiveServerTestCase):
         with patch.multiple(
             "django.core.cache.cache",
             ttl=lambda x: 0,
+            get=lambda key, default=None: None,
             set=lambda key, value, timeout=None, nx=False: True,
         ):
             created_response(data={"phone_number": "09999999999"})

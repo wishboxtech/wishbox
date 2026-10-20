@@ -37,7 +37,7 @@ def flatten_json(data, prefix=()):
     for key, value in data.items():
         path = prefix + (key,)
 
-        if isinstance(value, dict):
+        if isinstance(value, dict) and value:
             flat.update(flatten_json(value, path))
         else:
             flat[path] = value

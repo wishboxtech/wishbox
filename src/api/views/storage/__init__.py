@@ -1,1 +1,1 @@
-from src.api.views.storage.upload_file import UploadFile
+from src.api.views.storage.upload_file.view import UploadFile

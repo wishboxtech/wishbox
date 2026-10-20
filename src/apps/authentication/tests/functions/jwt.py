@@ -229,9 +229,9 @@ class JWTFunctionsTestCase(TestCase):
         tokens = login(self.user)
         with freeze_time(timezone.now() + timedelta(seconds=2)):
             new_access_token, new_refresh_token = refresh(tokens.get("refresh_token"))
+            self.assertEqual(cache.ttl(tokens.get("access_token")), 10)
         self.assertTrue(validate_token(new_access_token))
         self.assertTrue(validate_token(new_refresh_token))
-        self.assertEqual(cache.ttl(tokens.get("access_token")), 10)
         self.assertEqual(cache.ttl(tokens.get("refresh_token")), 0)
         with self.assertRaises(InvalidRefresh):
             refresh(tokens.get("refresh_token"))  # refresh_token is now invalid

@@ -4,7 +4,8 @@ from django.test import LiveServerTestCase
 from factory.faker import faker
 from rest_framework.test import RequestsClient
 
-from src.apps.authentication.services import create_one_time_password
+from src.apps.authentication.dto import SendOTPInputDTO
+from src.core.composition import authentication_service
 from src.static import ErrorEnum
 from src.utils.fakers import UserFactory
 
@@ -54,22 +55,26 @@ class VerifyOneTimePasswordViewTestCase(LiveServerTestCase):
 
         otp_code = "123423"
         with patch(
-            "src.apps.authentication.models.otp.generate_otp",
+            "src.apps.authentication.repositories.otp.generate_otp",
             new=lambda *args: otp_code,
         ):
-            otp_id = create_one_time_password(
-                state="phone_number", phone_number=self.user.phone_number
+            otp_id = (
+                authentication_service()
+                .send_otp(SendOTPInputDTO(phone_number=self.user.phone_number))
+                .otp_id
             )
             post_ok(
                 data={"otp_id": otp_id, "otp_code": otp_code},
             )
         phone_number = faker.Faker().numerify("09#########")
         with patch(
-            "src.apps.authentication.models.otp.generate_otp",
+            "src.apps.authentication.repositories.otp.generate_otp",
             new=lambda *args: otp_code,
         ):
-            otp_id = create_one_time_password(
-                state="phone_number", phone_number=phone_number
+            otp_id = (
+                authentication_service()
+                .send_otp(SendOTPInputDTO(phone_number=phone_number))
+                .otp_id
             )
             post_ok(
                 data={"otp_id": otp_id, "otp_code": otp_code},

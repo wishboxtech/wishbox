@@ -5,7 +5,8 @@ from django.urls import reverse
 from faker import Faker
 from rest_framework.test import RequestsClient
 
-from src.apps.authentication.services import login_user_by_id
+from src.core.composition import authentication_service
+from src.shared.dto import IdInputDTO
 from src.utils.fakers import ProfileFactory, UserFactory, WishlistFactory
 
 
@@ -15,13 +16,21 @@ class UpdateWishlistTestCase(LiveServerTestCase):
 
         self.user_with_profile = UserFactory()
         self.profile = ProfileFactory(profile_id=self.user_with_profile.id)
-        self.access_token_with_profile = login_user_by_id(
-            self.user_with_profile.id
-        ).get("access_token")
+        self.access_token_with_profile = (
+            authentication_service()
+            .login(IdInputDTO(id=self.user_with_profile.id))
+            .model_dump()
+            .get("access_token")
+        )
 
         self.wishlist = WishlistFactory(profile=self.profile)
         self.solid_user = UserFactory()
-        self.access_token = login_user_by_id(self.solid_user.id).get("access_token")
+        self.access_token = (
+            authentication_service()
+            .login(IdInputDTO(id=self.solid_user.id))
+            .model_dump()
+            .get("access_token")
+        )
 
     def make_request(self, wishlist_id, headers=None, data=None):
         url = self.live_server_url + reverse(
@@ -51,7 +60,7 @@ class UpdateWishlistTestCase(LiveServerTestCase):
         self.assertEqual(data.get("description"), data["description"])
         self.assertEqual(response.json().get("updated"), True)
 
-    def test_forboden_create_wishlist(self):
+    def test_update_missing_wishlist(self):
         data = {
             "name": Faker().name(),
             "description": Faker().text(),
@@ -62,4 +71,4 @@ class UpdateWishlistTestCase(LiveServerTestCase):
             wishlist_id=uuid.uuid4(),
         )
 
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 400)

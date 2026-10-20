@@ -3,7 +3,8 @@ from django.urls import reverse
 from faker import Faker
 from rest_framework.test import RequestsClient
 
-from src.apps.authentication.services import login_user_by_id
+from src.core.composition import authentication_service
+from src.shared.dto import IdInputDTO
 from src.utils.fakers import ProfileFactory, UserFactory, WishlistFactory
 
 
@@ -17,13 +18,21 @@ class CreateWishTestCase(LiveServerTestCase):
         self.profile = ProfileFactory(profile_id=self.user_with_profile.id)
         self.wishlist = WishlistFactory(profile=self.profile)
 
-        self.access_token_with_profile = login_user_by_id(
-            self.user_with_profile.id
-        ).get("access_token")
+        self.access_token_with_profile = (
+            authentication_service()
+            .login(IdInputDTO(id=self.user_with_profile.id))
+            .model_dump()
+            .get("access_token")
+        )
 
         # user WITHOUT profile (invalid case, should fail permission check)
         self.solid_user = UserFactory()
-        self.access_token = login_user_by_id(self.solid_user.id).get("access_token")
+        self.access_token = (
+            authentication_service()
+            .login(IdInputDTO(id=self.solid_user.id))
+            .model_dump()
+            .get("access_token")
+        )
 
         # default payload for creating a wish
         self.valid_payload = {
@@ -81,5 +90,9 @@ class CreateWishTestCase(LiveServerTestCase):
         )
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
-            response.json().get("error_type"), ["CREATE_WISH_SERIALZER_INVALID_NAME"]
+            response.json().get("error_type"),
+            [
+                "CREATE_WISH_SERIALZER_INVALID_NAME",
+                "CREATE_WISH_SERIALIZER_INVALID_PRICE",
+            ],
         )

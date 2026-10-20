@@ -1,1 +1,1 @@
-from src.api.views.website.contact_us import GetContactUsAPIView
+from src.api.views.website.contact_us.view import GetContactUsAPIView

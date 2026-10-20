@@ -1,10 +1,10 @@
 from django.urls import path
 
-from src.api.views.wishlist import (
+from src.api.views.wishlist.create_anonymous_friend.view import (
     CreateAnonymousFriendAPIView,
-    GetWishByIdAPIView,
-    SubmitRequestAPIView,
 )
+from src.api.views.wishlist.get_wish_by_id.view import GetWishByIdAPIView
+from src.api.views.wishlist.submit_request.view import SubmitRequestAPIView
 
 wish_urlpatterns = [
     path(

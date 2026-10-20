@@ -1,7 +1,8 @@
 from django.urls import path
 
-from src.api.views.profile import ProfileAPIView, AvatarAPIView
-from src.api.views.wishlist import WishlistAPIView
+from src.api.views.profile.avatar.view import AvatarAPIView
+from src.api.views.profile.profile.view import ProfileAPIView
+from src.api.views.wishlist.wishlist.view import WishlistAPIView
 
 profile_urlpatterns = [
     path(
