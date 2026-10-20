@@ -1,0 +1,37 @@
+{
+  "name": "wishbox-web",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc --noEmit && vite build",
+    "check": "tsc --noEmit",
+    "test": "tsx --test src/*.test.ts src/*.test.tsx",
+    "preview": "vite preview --host 0.0.0.0",
+    "cats:export": "tsx scripts/export-cat-parts.tsx",
+    "test:ui": "playwright test e2e/ui-audit.spec.ts e2e/second-review.spec.ts e2e/extra-states.spec.ts e2e/details.spec.ts e2e/cat-artwork.spec.ts",
+    "test:live": "playwright test e2e/live-gifting.spec.ts",
+    "test:cats": "npm run cats:export && playwright test e2e/cat-artwork.spec.ts"
+  },
+  "dependencies": {
+    "lucide-react": "^0.468.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.64.1",
+    "@types/node": "^22.20.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "happy-dom": "21.0.3",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.0"
+  }
+}

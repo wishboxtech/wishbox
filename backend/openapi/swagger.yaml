@@ -1,0 +1,1958 @@
+swagger: '2.0'
+info:
+  description: Wishy wishlist and gifting API. English and Persian interfaces; raw JWT Authorization header.
+  version: 0.0.0
+  title: Wishy
+basePath: /api/V0.0.0
+securityDefinitions:
+  ApiKeyAuth:
+    type: apiKey
+    in: header
+    name: Authorization
+tags:
+- name: AUTH
+  description: Authentication
+schemes:
+- https
+- http
+paths:
+  /auth/otp/:
+    post:
+      tags:
+      - AUTH
+      summary: Send OTP - READY
+      description: Send a new OTP in order to login or create a new guest
+      operationId: sendOTP
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Sends a new OTP
+        required: true
+        schema:
+          type: object
+          properties:
+            phone_number:
+              type: string
+      responses:
+        201:
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  otp_id:
+                    type: string
+              status:
+                type: number
+                default: 201
+        400:
+          description: Bad Request
+        429:
+          description: Throttled
+  /auth/otp/verify/:
+    post:
+      tags:
+      - AUTH
+      summary: Verify OTP - READY
+      description: ''
+      operationId: verifyOTP
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Verifies OTP
+        required: true
+        schema:
+          type: object
+          properties:
+            otp_id:
+              type: string
+            otp_code:
+              type: string
+            guest_key:
+              type: string
+              pattern: '^[a-f0-9]{64}$'
+              description: Optional browser secret with explicit user consent. Claimed only when OTP verification creates a new account; ignored on existing-account login.
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                default: true
+              data:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  refresh_token:
+                    type: string
+                  is_new_user:
+                    type: boolean
+                  guest_claimed:
+                    type: boolean
+              status:
+                type: number
+                default: 200
+        400:
+          description: Bad Request
+        429:
+          description: Throttled
+  /auth/otp/refresh/:
+    post:
+      tags:
+      - AUTH
+      summary: Refresh OTP - READY
+      description: ''
+      operationId: refreshOTP
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: refreshes OTP
+        required: true
+        schema:
+          type: object
+          properties:
+            refresh_token:
+              type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  refresh_token:
+                    type: string
+              status:
+                type: number
+                default: 200
+        400:
+          description: Bad Request
+        429:
+          description: Throttled
+  /profile/:
+    get:
+      tags: [Profile]
+      summary: Read the authenticated profile
+      security: [{ApiKeyAuth: []}]
+      responses:
+        200:
+          description: Profile data, including an optional versioned cat recipe.
+          schema:
+            type: object
+            properties:
+              ok: {type: boolean}
+              data: {$ref: '#/definitions/Profile'}
+              status: {type: integer}
+        404:
+          description: Complete profile setup first.
+    put:
+      tags: [Profile]
+      summary: Create or partially update the authenticated profile
+      description: Omitted fields are preserved. Identity comes from the authenticated session.
+      security: [{ApiKeyAuth: []}]
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          properties:
+            first_name: {type: string, maxLength: 150, x-nullable: true}
+            last_name: {type: string, maxLength: 150, x-nullable: true}
+            bio: {type: string, maxLength: 250, x-nullable: true}
+            birthdate: {type: string, format: date, x-nullable: true}
+            gender: {type: string, enum: [male, female, ''], x-nullable: true}
+            photo: {type: string, format: uuid, x-nullable: true}
+            cat_avatar: {$ref: '#/definitions/CatAvatar'}
+      responses:
+        202:
+          description: Profile created or updated.
+          schema:
+            type: object
+            properties:
+              created: {type: boolean}
+              data: {$ref: '#/definitions/Profile'}
+              status: {type: integer}
+        400:
+          description: Invalid fields or cat recipe.
+  /profile/wishlist/:
+    post:
+      tags:
+      - Profile
+      summary: Create Wishlist - READY
+      description: create a wishlist
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - in: body
+        name: body
+        description: Create Wishlist
+        required: true
+        schema:
+          type: object
+          required:
+          - name
+          properties:
+            name:
+              type: string
+              minLength: 1
+              maxLength: 150
+            description:
+              type: string
+            cover:
+              type: string
+              format: uuid
+              x-nullable: true
+      responses:
+        201:
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  cover:
+                    type: object
+                    x-nullable: true
+                    properties:
+                      file:
+                        type: string
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+              status:
+                type: number
+                default: 201
+              created:
+                type: boolean
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized
+        403:
+          description: forbidden
+    get:
+      tags:
+      - Profile
+      summary: Get User Wishlists - READY
+      description: get user wishlists
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      security:
+      - ApiKeyAuth: []
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    cover:
+                      type: object
+                      x-nullable: true
+                      properties:
+                        file:
+                          type: string
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                      type: string
+                      format: date-time
+              status:
+                type: number
+                default: 200
+        400:
+          description: Bad Request
+        429:
+          description: Throttled
+  /profile/avatar/:
+    get:
+      tags:
+      - Profile
+      summary: Get Avatar - READY
+      description: ''
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      security:
+      - ApiKeyAuth: []
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  gender:
+                    type: string
+                  widgets:
+                    type: object
+                    properties:
+                      ear:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      eyes:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      face:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      nose:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      tops:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      beard:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      mouth:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      clothes:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      glasses:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      earrings:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      eyebrows:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                  background:
+                    type: object
+                    properties:
+                      color:
+                        type: string
+                      border_color:
+                        type: string
+                  wrapper_shape:
+                    type: string
+              status:
+                type: number
+                default: 201
+        400:
+          description: Bad Request
+        429:
+          description: Throttled
+    patch:
+      tags:
+      - Profile
+      summary: Update Avatar - READY
+      description: "Partial update is **Available**, \n *Note*: *shape* field means\
+        \ the *id* of a widget\n\nAll of the updates works with the *id* of a widget"
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - in: body
+        name: body
+        description: Updates Profile
+        required: true
+        schema:
+          type: object
+          properties:
+            gender:
+              type: string
+            widgets:
+              type: object
+              properties:
+                ear:
+                  type: object
+                  properties:
+                    fill_color:
+                      type: string
+                    shape:
+                      type: string
+                eyes:
+                  type: object
+                  properties:
+                    fill_color:
+                      type: string
+                    shape:
+                      type: string
+                face:
+                  type: object
+                  properties:
+                    fill_color:
+                      type: string
+                    shape:
+                      type: string
+                nose:
+                  type: object
+                  properties:
+                    fill_color:
+                      type: string
+                    shape:
+                      type: string
+                tops:
+                  type: object
+                  properties:
+                    fill_color:
+                      type: string
+                    shape:
+                      type: string
+                beard:
+                  type: object
+                  properties:
+                    fill_color:
+                      type: string
+                    shape:
+                      type: string
+                mouth:
+                  type: object
+                  properties:
+                    fill_color:
+                      type: string
+                    shape:
+                      type: string
+                clothes:
+                  type: object
+                  properties:
+                    fill_color:
+                      type: string
+                    shape:
+                      type: string
+                glasses:
+                  type: object
+                  properties:
+                    fill_color:
+                      type: string
+                    shape:
+                      type: string
+                earrings:
+                  type: object
+                  properties:
+                    fill_color:
+                      type: string
+                    shape:
+                      type: string
+                eyebrows:
+                  type: object
+                  properties:
+                    fill_color:
+                      type: string
+                    shape:
+                      type: string
+            background:
+              type: object
+              properties:
+                color:
+                  type: string
+                border_color:
+                  type: string
+            wrapper_shape:
+              type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+              data:
+                type: object
+                properties:
+                  gender:
+                    type: string
+                  widgets:
+                    type: object
+                    properties:
+                      ear:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      eyes:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      face:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      nose:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      tops:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      beard:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      mouth:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      clothes:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      glasses:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      earrings:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                      eyebrows:
+                        type: object
+                        properties:
+                          fill_color:
+                            type: string
+                          image:
+                            type: string
+                  background:
+                    type: object
+                    properties:
+                      color:
+                        type: string
+                      border_color:
+                        type: string
+                  wrapper_shape:
+                    type: string
+              status:
+                type: number
+                default: 201
+        400:
+          description: Bad Request
+        429:
+          description: Throttled
+  /storage/upload/:
+    post:
+      tags:
+      - Storage
+      summary: upload file
+      description: ''
+      operationId: uploadFile
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - in: formData
+        name: file
+        type: file
+        required: true
+        description: Upload File
+      responses:
+        201:
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                default: true
+              data:
+                type: object
+                properties:
+                  media_id:
+                    type: string
+              status:
+                type: number
+                default: 201
+        400:
+          description: Bad Request
+        429:
+          description: Throttled
+  /wishlist/{id}/:
+    patch:
+      tags:
+      - Wishlist
+      summary: Edit Wishlist - READY
+      description: Partially update a resource owned by the authenticated user. Omitted
+        fields remain unchanged.
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: user wishlist id
+        required: true
+        type: string
+        format: uuid
+      - in: body
+        name: body
+        description: Edit Wishlist
+        required: true
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              minLength: 1
+              maxLength: 150
+            description:
+              type: string
+            cover:
+              type: string
+              format: uuid
+              x-nullable: true
+          description: Partial update. Omitted fields are preserved; cover null clears
+            the cover.
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  cover:
+                    type: object
+                    x-nullable: true
+                    properties:
+                      file:
+                        type: string
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+              status:
+                type: number
+                default: 200
+              updated:
+                type: boolean
+        400:
+          description: Invalid input, missing resource or failed business validation.
+        401:
+          description: Authentication required.
+        403:
+          description: Authenticated user does not own the wishlist.
+    delete:
+      tags:
+      - Wishlist
+      summary: Delete Wishlist - READY
+      description: delete a wishlist
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: user wishlist id
+        required: true
+        type: string
+        format: uuid
+      responses:
+        200:
+          description: Deleted successfully.
+          schema:
+            type: object
+            properties:
+              deleted:
+                type: boolean
+              status:
+                type: integer
+                default: 200
+        404:
+          description: Resource does not exist.
+        429:
+          description: Throttled
+        400:
+          description: Invalid input, missing resource or failed business validation.
+        401:
+          description: Authentication required.
+        403:
+          description: Authenticated user does not own the wishlist.
+    post:
+      tags:
+      - Wishlist
+      summary: Create Wish - READY
+      description: create a wish
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: user wishlist id
+        required: true
+        type: string
+        format: uuid
+      - in: body
+        name: body
+        description: Create Wishlist
+        required: true
+        schema:
+          type: object
+          required:
+          - name
+          - price
+          properties:
+            name:
+              type: string
+              minLength: 1
+              maxLength: 150
+            description:
+              type: string
+            cover:
+              type: string
+              format: uuid
+              x-nullable: true
+            price:
+              type: string
+              description: Decimal, at most 10 digits and no fractional digits.
+      responses:
+        400:
+          description: Invalid input, missing resource or failed business validation.
+        401:
+          description: Authentication required.
+        403:
+          description: Authenticated user does not own the wishlist.
+        201:
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  cover:
+                    type: object
+                    x-nullable: true
+                    properties:
+                      file:
+                        type: string
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+                  price:
+                    type: string
+                    description: Decimal price without fractional digits.
+                  wishlist_id: &id001
+                    type: string
+                    format: uuid
+              status:
+                type: number
+                default: 201
+              created:
+                type: boolean
+    get:
+      tags:
+      - Wishlist
+      summary: Get Wishes - SEMI READY
+      description: get wishes of wishlist
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: user wishlist id
+        required: true
+        type: string
+        format: uuid
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                default: true
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    cover:
+                      type: object
+                      x-nullable: true
+                      properties:
+                        file:
+                          type: string
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                      type: string
+                      format: date-time
+                    price:
+                      type: string
+                      description: Decimal price without fractional digits.
+                    wishlist_id: *id001
+              status:
+                type: number
+                default: 200
+  /wishlist/{id}/wish/{wishid}/:
+    patch:
+      tags:
+      - Wishlist
+      summary: Edit Wish - SEMI READY
+      description: Partially update a resource owned by the authenticated user. Omitted
+        fields remain unchanged. The wish must belong to the wishlist in the URL.
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: user wishlist id
+        required: true
+        type: string
+        format: uuid
+      - name: wishid
+        in: path
+        description: user wish id
+        required: true
+        type: string
+        format: uuid
+      - in: body
+        name: body
+        description: Create Wishlist
+        required: true
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              minLength: 1
+              maxLength: 150
+            description:
+              type: string
+            cover:
+              type: string
+              format: uuid
+              x-nullable: true
+            price:
+              type: string
+              description: Decimal, at most 10 digits and no fractional digits.
+          description: Partial update within the wishlist in the URL. A wish cannot
+            be moved using this endpoint.
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  cover:
+                    type: object
+                    x-nullable: true
+                    properties:
+                      file:
+                        type: string
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+                  price:
+                    type: string
+                    description: Decimal price without fractional digits.
+                  wishlist_id: *id001
+              status:
+                type: number
+                default: 200
+              updated:
+                type: boolean
+        400:
+          description: Invalid input, missing resource or failed business validation.
+        401:
+          description: Authentication required.
+        403:
+          description: Authenticated user does not own the wishlist.
+    delete:
+      tags:
+      - Wishlist
+      summary: Delete Wish - READY
+      description: delete a wish
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: user wishlist id
+        required: true
+        type: string
+        format: uuid
+      - name: wishid
+        in: path
+        description: user wish id
+        required: true
+        type: string
+        format: uuid
+      responses:
+        200:
+          description: Deleted successfully.
+          schema:
+            type: object
+            properties:
+              deleted:
+                type: boolean
+              status:
+                type: integer
+                default: 200
+        400:
+          description: Invalid input, missing resource or failed business validation.
+        401:
+          description: Authentication required.
+        403:
+          description: Authenticated user does not own the wishlist.
+        404:
+          description: Resource does not exist.
+  /wish/{id}/:
+    get:
+      tags:
+      - Wish
+      summary: Get Wish By Id - READY
+      description: get wish by id
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: user wishlist id
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                default: true
+              data:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  cover:
+                    type: object
+                    x-nullable: true
+                    properties:
+                      file:
+                        type: string
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+                  price:
+                    type: string
+                    description: Decimal price without fractional digits.
+                  wishlist_id: *id001
+              status:
+                type: number
+                default: 200
+  /wish/{id}/request/:
+    post:
+      tags: &id007
+      - Gifting
+      summary: Reserve a wish (legacy URL alias)
+      description: Reserve using a verified session or guest nickname, with a chosen
+        day, concrete next step and checked details. Holds expire at UTC midnight
+        two days after purchase_by, covering the chosen day in every time zone. No
+        payment is processed.
+      produces: &id008
+      - application/json
+      parameters: &id009
+      - name: id
+        in: path
+        required: true
+        type: string
+        format: uuid
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          properties:
+            guest_key:
+              type: string
+              pattern: '^[a-f0-9]{64}$'
+              description: Optional private browser identity, distinct from the public visitor UUID. Used only for guest reservations.
+            nickname:
+              type: string
+              minLength: 1
+              maxLength: 150
+            purchase_by:
+              type: string
+              format: date
+              description: Today through 30 days ahead, validated by the server UTC
+                calendar.
+            purchase_plan:
+              type: string
+              minLength: 3
+              maxLength: 160
+            details_checked:
+              type: boolean
+              description: 'Must be true: the giver checked the exact wish details.'
+          required:
+          - purchase_by
+          - purchase_plan
+          - details_checked
+      responses: &id010
+        201:
+          description: Successful operation
+          schema:
+            type: object
+            properties:
+              ok: &id004
+                type: boolean
+              status: &id002
+                type: integer
+              data: &id006
+                type: object
+                properties:
+                  id: *id002
+                  wish_id: *id001
+                  wishlist_id: *id001
+                  wish_name:
+                    type: string
+                  status: &id012
+                    type: string
+                    enum:
+                    - available
+                    - reserved
+                    - purchased
+                    - received
+                    - cancelled
+                    - expired
+                  created_at: &id014
+                    type: string
+                    format: date-time
+                  management_token:
+                    type: string
+                    x-nullable: true
+                  purchase_by: &id005
+                    type: string
+                    format: date
+                    x-nullable: true
+                  purchase_plan:
+                    type: string
+                  expires_at: &id003
+                    type: string
+                    format: date-time
+                    x-nullable: true
+                  extension_count:
+                    type: integer
+                  received_at: *id003
+                  thank_you:
+                    type: string
+                  thank_you_sent_at: *id003
+                  follow_up_note:
+                    type: string
+                  follow_up_sent_at: *id003
+                  follow_up_acknowledged_at: *id003
+              created: *id004
+        400:
+          description: Invalid input.
+        404:
+          description: Resource does not exist.
+        403:
+          description: Actor is not allowed to perform this action.
+        409:
+          description: This wish is already reserved or received.
+    patch: &id011
+      tags:
+      - Gifting
+      summary: Advance or cancel a gift
+      description: Giver can purchase/cancel or reschedule once while reserved. Reschedule
+        requires a later purchase_by within 7 days of the old plan and 30 days of
+        today. Purchased gifts never auto-expire. Owner alone confirms arrival; arrival
+        is not a satisfaction rating.
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+        format: uuid
+      - name: X-Wishy-Gift-Token
+        in: header
+        required: false
+        type: string
+        description: Private token issued once for a reservation. Never include it
+          in URLs or shared links.
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          properties:
+            action:
+              type: string
+              enum:
+              - purchase
+              - cancel
+              - receive
+              - reschedule
+            purchase_by: *id005
+          required:
+          - action
+      responses:
+        200:
+          description: Successful operation
+          schema:
+            type: object
+            properties:
+              ok: *id004
+              status: *id002
+              data: *id006
+        400:
+          description: Invalid input.
+        404:
+          description: Resource does not exist.
+        403:
+          description: Actor is not allowed to perform this action.
+        409:
+          description: Invalid or stale lifecycle transition.
+  /wish/create-anonymous-friend/:
+    post:
+      tags:
+      - Wishlist
+      summary: Create an anonymous friend
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          required:
+          - nickname
+          properties:
+            nickname:
+              type: string
+              minLength: 1
+              maxLength: 150
+      responses:
+        201:
+          description: Created
+          schema:
+            type: object
+            properties:
+              created:
+                type: boolean
+              anonymous_friend_id:
+                type: string
+                format: uuid
+              status:
+                type: integer
+                default: 201
+        400:
+          description: Invalid nickname.
+  /wish/{id}/reservation/:
+    post:
+      tags: *id007
+      summary: Reserve a wish
+      description: Reserve using a verified session or guest nickname, with a chosen
+        day, concrete next step and checked details. Holds expire at UTC midnight
+        two days after purchase_by, covering the chosen day in every time zone. No
+        payment is processed.
+      produces: *id008
+      parameters: *id009
+      responses: *id010
+    patch: *id011
+  /wish/{id}/activity/:
+    get:
+      tags:
+      - Gifting
+      summary: Read wish activity
+      description: ''
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+        format: uuid
+      - name: X-Wishy-Visitor
+        in: header
+        required: true
+        type: string
+        format: uuid
+        description: Persistent random browser UUID. Signed-in activity is deduplicated
+          by account instead.
+      - name: X-Wishy-Gift-Token
+        in: header
+        required: false
+        type: string
+        description: Private token issued once for a reservation. Never include it
+          in URLs or shared links.
+      responses:
+        200:
+          description: Successful operation
+          schema:
+            type: object
+            properties:
+              ok: *id004
+              status: *id002
+              data: &id013
+                type: object
+                properties:
+                  wish_id: *id001
+                  views: *id002
+                  likes: *id002
+                  liked: *id004
+                  status: *id012
+                  is_owner: *id004
+                  is_giver: *id004
+                  reservation_id:
+                    type: integer
+                    x-nullable: true
+        400:
+          description: Invalid input.
+        404:
+          description: Resource does not exist.
+        403:
+          description: Actor is not allowed to perform this action.
+    post:
+      tags:
+      - Gifting
+      summary: Record a unique view, like or unlike
+      description: Each account/browser counts once per wish, for all time. Repeated
+        view/like/unlike actions are idempotent; no visitor identities are exposed.
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+        format: uuid
+      - name: X-Wishy-Visitor
+        in: header
+        required: true
+        type: string
+        format: uuid
+        description: Persistent random browser UUID. Signed-in activity is deduplicated
+          by account instead.
+      - name: X-Wishy-Gift-Token
+        in: header
+        required: false
+        type: string
+        description: Private token issued once for a reservation. Never include it
+          in URLs or shared links.
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          properties:
+            action:
+              type: string
+              enum:
+              - view
+              - like
+              - unlike
+          required:
+          - action
+      responses:
+        200:
+          description: Successful operation
+          schema:
+            type: object
+            properties:
+              ok: *id004
+              status: *id002
+              data: *id013
+        400:
+          description: Invalid input.
+        404:
+          description: Resource does not exist.
+        403:
+          description: Actor is not allowed to perform this action.
+  /notifications/:
+    get:
+      tags:
+      - Gifting
+      summary: Read the latest 100 notifications
+      description: Newest first, plus unread count across all notifications. Owner-only
+        inbox.
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: Successful operation
+          schema:
+            type: object
+            properties:
+              ok: *id004
+              status: *id002
+              data: &id015
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id: *id001
+                        wish_id:
+                          type: string
+                          format: uuid
+                          x-nullable: true
+                        wish_name:
+                          type: string
+                        event:
+                          type: string
+                          enum:
+                          - reserved
+                          - purchased
+                          - received
+                          - cancelled
+                          - thank_you
+                          - gift_received
+                          - hold_released
+                          - hold_expired
+                          - plan_reminder
+                          - thanks_shared
+                          - follow_up_shared
+                          - follow_up_seen
+                        read_at:
+                          type: string
+                          format: date-time
+                          x-nullable: true
+                        created_at: *id014
+                  unread: *id002
+        400:
+          description: Invalid input.
+        404:
+          description: Resource does not exist.
+        403:
+          description: Actor is not allowed to perform this action.
+      security:
+      - ApiKeyAuth: []
+    patch:
+      tags:
+      - Gifting
+      summary: Mark notifications as read
+      description: Supply an ID to read one notification. Omit it or use null to mark
+        all as read. Only the actor’s own notifications change.
+      produces:
+      - application/json
+      parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          properties:
+            notification_id:
+              type: string
+              format: uuid
+              x-nullable: true
+      responses:
+        200:
+          description: Successful operation
+          schema:
+            type: object
+            properties:
+              ok: *id004
+              status: *id002
+              data: *id015
+        400:
+          description: Invalid input.
+        404:
+          description: Resource does not exist.
+        403:
+          description: Actor is not allowed to perform this action.
+      security:
+      - ApiKeyAuth: []
+  /gifts/:
+    get:
+      tags:
+      - Gifting
+      summary: List up to 200 gifts I am giving
+      description: Registered giver only. Guest management tokens remain in the reserving
+        browser; no tokens or hashes are returned by this list.
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: Successful operation
+          schema:
+            type: object
+            properties:
+              ok: *id004
+              status: *id002
+              data:
+                type: array
+                items: *id006
+        400:
+          description: Invalid input.
+        404:
+          description: Resource does not exist.
+        403:
+          description: Actor is not allowed to perform this action.
+      security:
+      - ApiKeyAuth: []
+  /wishlist/{id}/shared/:
+    get:
+      tags:
+      - Gifting
+      summary: Read shared wishlist metadata, wishes and activity
+      description: Public link. is_owner is determined by the optional authenticated
+        session. A missing list returns 404.
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+        format: uuid
+      - name: X-Wishy-Visitor
+        in: header
+        required: true
+        type: string
+        format: uuid
+        description: Persistent random browser UUID. Signed-in activity is deduplicated
+          by account instead.
+      responses:
+        200:
+          description: Successful operation
+          schema:
+            type: object
+            properties:
+              ok: *id004
+              status: *id002
+              data:
+                type: object
+                properties:
+                  wishlist:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      name:
+                        type: string
+                      description:
+                        type: string
+                      cover:
+                        type: object
+                        x-nullable: true
+                        properties:
+                          file:
+                            type: string
+                      created_at: &id016
+                        type: string
+                        format: date-time
+                      updated_at: *id016
+                  wishes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        name:
+                          type: string
+                        description:
+                          type: string
+                        cover:
+                          type: object
+                          x-nullable: true
+                          properties:
+                            file:
+                              type: string
+                        created_at: &id017
+                          type: string
+                          format: date-time
+                        updated_at: *id017
+                        price:
+                          type: string
+                          description: Decimal price without fractional digits.
+                        wishlist_id: *id001
+                  activity:
+                    type: array
+                    items: *id013
+                  is_owner: *id004
+        400:
+          description: Invalid input.
+        404:
+          description: Resource does not exist.
+        403:
+          description: Actor is not allowed to perform this action.
+  /gifts/{id}/experience/:
+    get:
+      tags:
+      - Gifting
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+      - name: X-Wishy-Gift-Token
+        in: header
+        type: string
+        description: Guest giver management key; never use query parameters.
+      responses:
+        200:
+          description: Authorized actor-specific projection; private fit is never
+            serialized for a giver.
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+              status:
+                type: integer
+              data:
+                type: object
+                properties:
+                  role:
+                    type: string
+                    enum:
+                    - owner
+                    - giver
+                  gift:
+                    type: object
+                    description: Owner gets only a receipt summary (no private giver
+                      plan). Giver gets their own gift/plan and explicitly shared
+                      messages, never recipient fit/private_note.
+                  fit:
+                    type: string
+                    description: Recipient-only; omitted for the giver.
+                  private_note:
+                    type: string
+                    description: Recipient-only; omitted for the giver.
+                  thank_you:
+                    type: string
+                    description: Recipient view only; giver receives the explicitly
+                      shared note in gift.thank_you.
+                  thank_you_sent_at: &id018
+                    type: string
+                    format: date-time
+                    x-nullable: true
+                  follow_up_note:
+                    type: string
+                  follow_up_sent_at: *id018
+                  follow_up_acknowledged_at: *id018
+        400:
+          description: Invalid input.
+        403:
+          description: Actor cannot perform this action.
+        404:
+          description: Missing gift or actor is neither recipient nor giver.
+        409:
+          description: Arrival not yet confirmed or no follow-up to acknowledge.
+      summary: Read a private gift journey or recipient check-in
+      description: Recipient can see their private fit/note and shared messages. Registered/guest
+        giver sees only their own plan, receipt, and messages the recipient explicitly
+        shared. Receipt/keepsake is unchanged by private dissatisfaction. Cancelled/expired
+        gift journeys remain accessible to their actors.
+    patch:
+      tags:
+      - Gifting
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+      - name: X-Wishy-Gift-Token
+        in: header
+        type: string
+        description: Guest giver management key; never use query parameters.
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          properties:
+            action:
+              type: string
+              enum:
+              - save_private
+              - share_thanks
+              - withdraw_thanks
+              - share_follow_up
+              - withdraw_follow_up
+              - acknowledge_follow_up
+            fit:
+              type: string
+              enum:
+              - fits
+              - adjust
+              - not_for_me
+              - trying
+              x-nullable: true
+            private_note:
+              type: string
+              maxLength: 800
+            thank_you:
+              type: string
+              maxLength: 800
+            follow_up_note:
+              type: string
+              maxLength: 800
+          required:
+          - action
+      responses:
+        200:
+          description: Authorized actor-specific projection; private fit is never
+            serialized for a giver.
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+              status:
+                type: integer
+              data:
+                type: object
+                properties:
+                  role:
+                    type: string
+                    enum:
+                    - owner
+                    - giver
+                  gift:
+                    type: object
+                    description: Owner gets only a receipt summary (no private giver
+                      plan). Giver gets their own gift/plan and explicitly shared
+                      messages, never recipient fit/private_note.
+                  fit:
+                    type: string
+                    description: Recipient-only; omitted for the giver.
+                  private_note:
+                    type: string
+                    description: Recipient-only; omitted for the giver.
+                  thank_you:
+                    type: string
+                    description: Recipient view only; giver receives the explicitly
+                      shared note in gift.thank_you.
+                  thank_you_sent_at: &id019
+                    type: string
+                    format: date-time
+                    x-nullable: true
+                  follow_up_note:
+                    type: string
+                  follow_up_sent_at: *id019
+                  follow_up_acknowledged_at: *id019
+        400:
+          description: Invalid input.
+        403:
+          description: Actor cannot perform this action.
+        404:
+          description: Missing gift or actor is neither recipient nor giver.
+        409:
+          description: Arrival not yet confirmed or no follow-up to acknowledge.
+      summary: Save private feedback, share/withdraw a note, or acknowledge a practical
+        note
+      description: Only recipient can save_private, share_thanks, withdraw_thanks,
+        share_follow_up or withdraw_follow_up, after confirmed arrival. No private
+        save produces a notification. Only giver can acknowledge_follow_up. Sharing
+        requires a nonblank corresponding message. Sharing/notification is transactional.
+        No rating, score, or public review is created.
+
+definitions:
+    CatAvatar:
+      type: object
+      x-nullable: true
+      additionalProperties: false
+      description: Version 1 composable cat recipe. Omit to preserve; null selects a photo. Missing parts default to zero.
+      properties:
+        version:
+          type: integer
+          minimum: 1
+          maximum: 1
+          default: 1
+        face:
+          type: integer
+          minimum: 0
+          maximum: 49
+          default: 0
+        ears:
+          type: integer
+          minimum: 0
+          maximum: 49
+          default: 0
+        eyes:
+          type: integer
+          minimum: 0
+          maximum: 49
+          default: 0
+        pupils:
+          type: integer
+          minimum: 0
+          maximum: 49
+          default: 0
+        brows:
+          type: integer
+          minimum: 0
+          maximum: 49
+          default: 0
+        nose:
+          type: integer
+          minimum: 0
+          maximum: 49
+          default: 0
+        mouth:
+          type: integer
+          minimum: 0
+          maximum: 49
+          default: 0
+        whiskers:
+          type: integer
+          minimum: 0
+          maximum: 49
+          default: 0
+        markings:
+          type: integer
+          minimum: 0
+          maximum: 49
+          default: 0
+        accessories:
+          type: integer
+          minimum: 0
+          maximum: 49
+          default: 0
+        fur:
+          type: integer
+          minimum: 0
+          maximum: 15
+          default: 0
+        background:
+          type: integer
+          minimum: 0
+          maximum: 11
+          default: 0
+    Profile:
+      type: object
+      properties:
+        profile_id: {type: string, format: uuid}
+        phone_number: {type: string, x-nullable: true}
+        email: {type: string, x-nullable: true}
+        first_name: {type: string, x-nullable: true}
+        last_name: {type: string, x-nullable: true}
+        bio: {type: string, x-nullable: true}
+        birthdate: {type: string, format: date, x-nullable: true}
+        gender: {type: string, x-nullable: true}
+        is_phone_number_verified: {type: boolean}
+        has_accepted_terms: {type: boolean}
+        cat_avatar: {$ref: '#/definitions/CatAvatar'}
+        photo:
+          type: object
+          x-nullable: true
+          properties:
+            file: {type: string}

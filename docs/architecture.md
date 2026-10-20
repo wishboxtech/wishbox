@@ -1,4 +1,13 @@
-# Wishbox architecture
+# Wishy architecture
+
+Backend code paths in this document are relative to `backend/`. The independent
+React application lives in `frontend/`. Run direct Python/Django commands from
+`backend/`; root Make targets select the correct directory automatically.
+
+The browser application in `frontend/` communicates only through the public HTTP
+API. It contains no persistence or backend business logic. Vite (development) and
+Nginx (built application) proxy API and media requests to Django on the same origin.
+See [the full-stack guide](full-stack.md) for runtime composition and startup.
 
 This structure follows the Sodoor Architecture Proposal, with the project's decision
 to define explicit domains and avoid a separate adapter layer. Django remains at
@@ -50,7 +59,13 @@ Paths below are relative to `/api/V0.0.0/`. Each listed `view.py` has a sibling
 | `wishlist/<id>/` | GET, POST, PATCH, DELETE | `wishlist/wishlist_action/view.py` |
 | `wishlist/<id>/wish/<wishid>/` | PATCH, DELETE | `wishlist/wish_action/view.py` |
 | `wish/<id>/` | GET | `wishlist/get_wish_by_id/view.py` |
-| `wish/<id>/request/` | POST | `wishlist/submit_request/view.py` |
+| `wish/<id>/request/` | POST, PATCH | `wishlist/reserve/view.py` (legacy URL alias) |
+| `wish/<id>/reservation/` | POST, PATCH | `wishlist/reserve/view.py` |
+| `wish/<id>/activity/` | GET, POST | `wishlist/activity/view.py` |
+| `wishlist/<id>/shared/` | GET | `wishlist/shared/view.py` |
+| `gifts/` | GET | `wishlist/gifts/view.py` |
+| `notifications/` | GET, PATCH | `wishlist/notifications/view.py` |
+| `gifts/<id>/experience/` | GET, PATCH | `wishlist/experience/view.py` |
 | `wish/create-anonymous-friend/` | POST | `wishlist/create_anonymous_friend/view.py` |
 | `storage/upload/` | POST | `storage/upload_file/view.py` |
 | `website/contact-us/` | GET | `website/contact_us/view.py` |
@@ -62,25 +77,36 @@ without bodies do not need empty input serializers. Each route's output
 serializers live in its `serializer.py`; generic DTO serialization remains shared
 in `src/api/serialization.py`. Swagger's page and schema return HTML/YAML, so their
 `serializer.py` files explain why JSON serialization is unnecessary. Existing
-addresses, URL names, response envelopes and permission policies are preserved.
+addresses and response envelopes are preserved except for the intentional secure
+reservation migration documented in [Wishy gifting](wishy-gifting.md).
 
 ## Domain ownership
 
 | App | Domain and business responsibilities | Public capabilities |
 | --- | --- | --- |
 | authentication | User identity, OTP requests/verification, login orchestration | `get_user` and identity DTOs |
-| profile | Profile information and avatar settings value objects | `exists` and profile DTOs |
+| profile | Profile information, legacy avatar settings and versioned cat recipe value objects | `exists` and profile DTOs |
 | storage | Media identity, file data, uploads and reads | `get_media` and `get_media_batch` |
-| wishlist | Wishlists/wishes, ownership, wish membership, reservation requests | Wishlist use cases |
+| wishlist | Wishlists/wishes, ownership, gift lifecycle, single-use guest claims, unique activity and notifications | Wishlist and gifting use cases |
 | website | Contact information | `list_contacts` |
 
-Wishlist entities enforce ownership. The requirement for a friend or anonymous
-friend belongs to a domain policy. Avatar settings form a complete domain value
+Wishlist entities enforce ownership. Gifting policies enforce giver/owner roles
+and the reserved → purchased → received lifecycle, including cancellation.
+`GiftingService` locks the wish and writes notifications within the same transaction.
+An injected clock governs planned holds, reminders and expiry. Recipient feedback
+and giver-visible messages use separate output DTOs and explicit sharing actions.
+Repository queries aggregate activity in batches. `gifting_interfaces.py` owns the
+narrow protocols used by this use case; secure credential generation/hashing is
+injected from composition. Avatar settings form a complete domain value
 object: apply patches to a snapshot, then validate the whole value.
 
 ## Communication and injection
 
 ```text
+GiftingService  → GiftRepository                ← DjangoGiftRepository
+GiftingService  → GiftCredentials               ← SecureGiftCredentials
+GiftingService  → WishlistReader                ← WishlistService
+GiftingService  → ProfileServiceProtocol        ← ProfileService
 WishlistService → ProfileServiceProtocol        ← ProfileService
 WishlistService → StorageServiceProtocol        ← StorageService
 ProfileService  → AuthenticationServiceProtocol ← AuthenticationService
@@ -134,3 +160,11 @@ serializers defined/imported in apps, and cycles. A separate unit test imports
 all services with Django/settings imports blocked. The checker complements code
 review: it does not analyze dynamic imports or every business invariant.
 See [development.md](development.md) for commands.
+
+
+Guest signup linking crosses domains through authentication’s consumer-owned
+`GuestClaims` protocol. Composition injects `GuestClaimService`, which consumes
+`GuestRepository`, credential hashing and a transaction boundary. Authentication
+owns first-signup eligibility; wishlist persistence owns one-time identity
+consumption and effective gift ownership. No query or Django dependency enters
+the authentication or wishlist service layers.

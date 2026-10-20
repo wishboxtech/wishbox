@@ -52,3 +52,9 @@ The current schema/cache does not guarantee full concurrency safety for phone/em
 uniqueness or one-time OTP consumption. Constraints or atomic consumption need
 an independent decision and migration. SQLite does not guarantee row locking;
 run write tests on PostgreSQL as well.
+
+## Wishy gifting extension (2026-10-20)
+
+See [gifting contracts](../wishy-gifting.md) for the secure reservation migration,
+new lifecycle, notification/engagement endpoints and intentional legacy request
+compatibility changes. Existing request actor IDs are no longer trusted.

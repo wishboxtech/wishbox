@@ -1,0 +1,259 @@
+UserProfile:
+  type: "object"
+  properties:
+    profile_id:
+      type: "string"
+    phone_number:
+      type: "string"
+    first_name:
+      type: "string"
+    last_name:
+      type: "string"
+    email:
+      type: "string"
+    birthdate:
+      type: "string"
+      format: "date"
+    gender:
+      type: "string"
+      default: "M"
+    is_phone_number_verified:
+      type: "boolean"
+    has_accepted_terms:
+      type: "boolean"
+    cat_avatar:
+      $ref: "../swagger.yaml#/definitions/CatAvatar"
+    photo:
+      $ref: "../storage/definitions.yaml#/MediaModel"
+
+UpdateProfile:
+  type: "object"
+  properties:
+    birthdate:
+      type: "string"
+      format: "date"
+    gender:
+      type: "string"
+      default: "F"
+    cat_avatar:
+      $ref: "../swagger.yaml#/definitions/CatAvatar"
+    photo:
+      type: "string"
+    first_name:
+      type: "string"
+    last_name:
+      type: "string"
+    bio:
+      type: "string"
+
+CreateProfileRequest:
+  type: "object"
+  properties:
+    birthdate:
+      type: "string"
+      format: "date"
+    gender:
+      type: "string"
+      default: "F"
+    cat_avatar:
+      $ref: "../swagger.yaml#/definitions/CatAvatar"
+    photo:
+      type: "string"
+    first_name:
+      type: "string"
+    last_name:
+      type: "string"
+    bio:
+      type: "string"
+
+UserAvatar:
+  type: "object"
+  properties:
+    gender:
+      type: "string"
+    widgets:
+      type: "object"
+      properties:
+        ear:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            image: 
+              type: "string"
+        eyes:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            image: 
+              type: "string"
+        face:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            image: 
+              type: "string"
+        nose:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            image: 
+              type: "string"
+        tops:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            image: 
+              type: "string"
+        beard:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            image: 
+              type: "string"
+        mouth:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            image: 
+              type: "string"
+        clothes:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            image: 
+              type: "string"
+        glasses:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            image: 
+              type: "string"
+        earrings:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            image: 
+              type: "string"
+        eyebrows:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            image: 
+              type: "string"
+    background:
+      type: "object"
+      properties:
+        color:
+          type: "string"
+        border_color:
+          type: "string"
+    wrapper_shape:
+      type: "string"
+            
+UserUpdateAvatar:
+  type: "object"
+  properties:
+    gender:
+      type: "string"
+    widgets:
+      type: "object"
+      properties:
+        ear:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            shape: 
+              type: "string"
+        eyes:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            shape: 
+              type: "string"
+        face:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            shape: 
+              type: "string"
+        nose:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            shape: 
+              type: "string"
+        tops:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            shape: 
+              type: "string"
+        beard:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            shape: 
+              type: "string"
+        mouth:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            shape: 
+              type: "string"
+        clothes:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            shape: 
+              type: "string"
+        glasses:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            shape: 
+              type: "string"
+        earrings:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            shape: 
+              type: "string"
+        eyebrows:
+          type: "object"
+          properties:
+            fill_color:
+              type: "string"
+            shape: 
+              type: "string"
+    background:
+      type: "object"
+      properties:
+        color:
+          type: "string"
+        border_color:
+          type: "string"
+    wrapper_shape:
+      type: "string"
+            
+         

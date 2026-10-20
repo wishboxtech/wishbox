@@ -1,0 +1,163 @@
+post:
+  tags:
+  - Gifting
+  summary: Reserve a wish (legacy URL alias)
+  description: Reserve using a verified session or guest nickname, with a chosen day,
+    concrete next step and checked details. Holds expire at UTC midnight two days
+    after purchase_by, covering the chosen day in every time zone. No payment is processed.
+  produces:
+  - application/json
+  parameters:
+  - name: id
+    in: path
+    required: true
+    type: string
+    format: uuid
+  - name: body
+    in: body
+    required: true
+    schema:
+      type: object
+      properties:
+        guest_key:
+          type: string
+          pattern: '^[a-f0-9]{64}$'
+          description: Optional private browser identity for guest reservations.
+        nickname:
+          type: string
+          minLength: 1
+          maxLength: 150
+        purchase_by:
+          type: string
+          format: date
+          description: Today through 30 days ahead, validated by the server UTC calendar.
+        purchase_plan:
+          type: string
+          minLength: 3
+          maxLength: 160
+        details_checked:
+          type: boolean
+          description: 'Must be true: the giver checked the exact wish details.'
+      required:
+      - purchase_by
+      - purchase_plan
+      - details_checked
+  responses:
+    201:
+      description: Successful operation
+      schema:
+        type: object
+        properties:
+          ok: &id004
+            type: boolean
+          status: &id001
+            type: integer
+          data: &id006
+            type: object
+            properties:
+              id: *id001
+              wish_id: &id002
+                type: string
+                format: uuid
+              wishlist_id: *id002
+              wish_name:
+                type: string
+              status:
+                type: string
+                enum:
+                - available
+                - reserved
+                - purchased
+                - received
+                - cancelled
+                - expired
+              created_at:
+                type: string
+                format: date-time
+              management_token:
+                type: string
+                x-nullable: true
+              purchase_by: &id005
+                type: string
+                format: date
+                x-nullable: true
+              purchase_plan:
+                type: string
+              expires_at: &id003
+                type: string
+                format: date-time
+                x-nullable: true
+              extension_count:
+                type: integer
+              received_at: *id003
+              thank_you:
+                type: string
+              thank_you_sent_at: *id003
+              follow_up_note:
+                type: string
+              follow_up_sent_at: *id003
+              follow_up_acknowledged_at: *id003
+          created: *id004
+    400:
+      description: Invalid input.
+    404:
+      description: Resource does not exist.
+    403:
+      description: Actor is not allowed to perform this action.
+    409:
+      description: This wish is already reserved or received.
+patch:
+  tags:
+  - Gifting
+  summary: Advance or cancel a gift
+  description: Giver can purchase/cancel or reschedule once while reserved. Reschedule
+    requires a later purchase_by within 7 days of the old plan and 30 days of today.
+    Purchased gifts never auto-expire. Owner alone confirms arrival; arrival is not
+    a satisfaction rating.
+  produces:
+  - application/json
+  parameters:
+  - name: id
+    in: path
+    required: true
+    type: string
+    format: uuid
+  - name: X-Wishy-Gift-Token
+    in: header
+    required: false
+    type: string
+    description: Private token issued once for a reservation. Never include it in
+      URLs or shared links.
+  - name: body
+    in: body
+    required: true
+    schema:
+      type: object
+      properties:
+        action:
+          type: string
+          enum:
+          - purchase
+          - cancel
+          - receive
+          - reschedule
+        purchase_by: *id005
+      required:
+      - action
+  responses:
+    200:
+      description: Successful operation
+      schema:
+        type: object
+        properties:
+          ok: *id004
+          status: *id001
+          data: *id006
+    400:
+      description: Invalid input.
+    404:
+      description: Resource does not exist.
+    403:
+      description: Actor is not allowed to perform this action.
+    409:
+      description: Invalid or stale lifecycle transition.

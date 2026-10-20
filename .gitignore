@@ -218,3 +218,9 @@ tags
 .pytest_cache/
 
 *.sqlite3
+
+# Local full-stack configuration and frontend outputs
+.env.local
+node_modules/
+frontend/dist/
+frontend/*.tsbuildinfo

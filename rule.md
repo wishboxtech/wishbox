@@ -1,5 +1,9 @@
 # Architecture and development rules
 
+Backend code paths in this document are relative to `backend/`. The independent
+React application lives in `frontend/`. Run direct Python/Django commands from
+`backend/`; root Make targets select the correct directory automatically.
+
 This file is the project's canonical implementation policy. See
 [architecture.md](docs/architecture.md) for the dependency map,
 [development.md](docs/development.md) for the workflow, and

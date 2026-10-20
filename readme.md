@@ -1,62 +1,80 @@
 # Wishbox
 
-Django/DRF backend for profiles, avatars, media, wishlists and OTP authentication.
-
-Business rules live in explicit domains and injected application services. Pydantic
-DTOs carry data across boundaries; repositories own database/cache access. Runtime
-dependencies are assembled in `src/core/composition.py`.
-
-Read [rule.md](rule.md), [architecture](docs/architecture.md),
-[development guide](docs/development.md) and [migration decisions](docs/decisions/0001-domain-boundaries.md)
-before changing the application. Agent instructions are in [AGENTS.md](AGENTS.md).
+An English/Persian React application and Django/DRF API for wishlists, wishes,
+profiles, avatars, image uploads and gift reservation requests.
 
 ```text
-src/apps/<app>/domain/        entities, value objects and business policies
-src/apps/<app>/dto/           explicit input/output data
-src/apps/<app>/interfaces.py  contracts owned by the use case
-src/apps/<app>/services/      framework-independent application logic
-src/apps/<app>/repositories/  persistence and ORM mapping
-src/apps/<app>/models/        Django schema
-src/api/views/<group>/<endpoint>/
-  view.py                    one APIView containing the route's HTTP methods
-  serializer.py              endpoint input/output serializers
-  __init__.py                view exports only
-src/api/                     routes, shared serialization and error mapping
-src/core/composition.py      dependency construction
-src/shared/                  shared contracts and transaction binding
-openapi/                     API documentation
+wishbox/
+  frontend/           Independent React + TypeScript application
+    src/              Interface, translations and HTTP client
+    package.json      Frontend dependencies and commands
+    Dockerfile        Vite development and Nginx runtime images
+  backend/            Independent Django/DRF application
+    src/              Domains, services, repositories and API
+    settings/         Django configuration
+    requirements/     Python dependencies
+    tests/            Framework-independent unit tests
+    scripts/          Architecture checks and native backend runners
+    templates/        Django templates
+    openapi/          API documentation
+    manage.py         Django CLI
+    Dockerfile        Backend runtime image
+  build/              Full-stack Docker Compose configuration
+  make/               Backend, frontend and Docker Make targets
+  docs/               Architecture and development guides
+  scripts/            Repository setup helpers
+  Makefile            Run and verify both applications together
 ```
 
-## Development
-
-Use Python 3.12 or 3.13 with the current pinned dependencies. The system Python
-may be newer; select the interpreter explicitly when creating the environment.
-Docker and CI currently use Python 3.13. See the development guide for setup troubleshooting.
+## Run the complete application
 
 ```bash
-python3.12 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements/all.txt
-# Configure a local .env for PostgreSQL, Redis and other runtime settings.
-STAGE=dev python manage.py migrate
-STAGE=dev python manage.py runserver
+make up
 ```
+
+Open [Wishbox](http://localhost:8080). Local sign-in uses OTP `123456` and sends
+no SMS. Save your profile before creating a wishlist. Choose English or Persian
+from the header menu; Persian changes the page to RTL.
+
+Use `make dev` for React/Django hot reload, `make down` to stop without deleting
+data, and `make help` for all commands. The first run generates `.env.local` with
+local signing keys. These are development settings, not a production deployment.
+See the [full-stack guide](docs/full-stack.md) for configuration and limitations.
+
+## Native development
+
+Use Python 3.12 or 3.13 and Node 22.12+:
+
+```bash
+make backend-install frontend-install
+make infra
+make migrate
+make backend-run        # Terminal 1
+make frontend-run       # Terminal 2: http://localhost:5173
+```
+
+Each application owns its dependencies and Dockerfile. The repository-root
+Makefile coordinates their execution. Python environment files `.env` and
+`.env.test` belong to `backend/`; `.env.local` is the shared, ignored local stack
+configuration at the repository root. An existing root `.venv` remains usable;
+set `VENV` to use a different virtual environment.
 
 ## Verification
 
 ```bash
-python scripts/check_architecture.py
-python -m unittest discover -s tests/unit -v
-STAGE=ci python manage.py test src.apps src.api --noinput
-# PostgreSQL verification using dedicated test database credentials:
-STAGE=ci WISHBOX_TEST_DB=postgres python manage.py test src.apps src.api --noinput
+make check
+make test
+make frontend-build
+make postgres-test      # Dedicated local PostgreSQL test database
+make docker-test        # Backend checks in Docker, including PostgreSQL locking
 ```
 
-The inner-layer tests run without framework setup or a database. Django test settings
-use SQLite and an in-memory cache by default. See the development guide for PostgreSQL
-and external-integration verification. Deployment files live in `build/`.
+Direct Django and Python test commands must run from `backend/`. Python module
+paths (`src.apps`, `src.api`, `settings`) and existing HTTP routes are unchanged.
+The frontend consumes the public API through a same-origin proxy.
 
-Each API route has its own endpoint directory. For example, anonymous friend
-creation lives in `src/api/views/wishlist/create_anonymous_friend/`, with the
-view in `view.py` and its input/output serializers in `serializer.py`.
-Documentation, docstrings and explanatory comments should be written in English.
+Read [rule.md](rule.md), [the architecture map](docs/architecture.md),
+[the development guide](docs/development.md) and [AGENTS.md](AGENTS.md) before
+changing the application. Runtime dependencies are assembled exclusively in
+`backend/src/core/composition.py`. Domains and services remain independent of
+Django and concrete persistence implementations.

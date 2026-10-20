@@ -8,6 +8,11 @@
 - If a chat starts in a worktree, use the main project path as the working
   directory for all commands and file edits before beginning project work.
 
+The repository has independent `frontend/` and `backend/` applications. Backend
+paths below are relative to `backend/`. Run direct Python/Django commands from
+`backend/`, or use root Make targets. Keep backend runtime dependencies and tests
+inside `backend/` and frontend dependencies and code inside `frontend/`.
+
 Read [rule.md](rule.md) before changing application code. It is the canonical
 architecture policy. Read [docs/architecture.md](docs/architecture.md) for the
 dependency map and [docs/development.md](docs/development.md) for the workflow.

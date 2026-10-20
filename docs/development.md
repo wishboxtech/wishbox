@@ -1,6 +1,14 @@
 # Development guide
 
+Backend code paths in this document are relative to `backend/`. The independent
+React application lives in `frontend/`. Run direct Python/Django commands from
+`backend/`; root Make targets select the correct directory automatically.
+
 Read [rule.md](../rule.md) and [architecture.md](architecture.md) first.
+
+For the React interface and one-command Docker startup, see the
+[full-stack guide](full-stack.md). Use `make up` for the complete application or
+`make dev` for frontend/backend hot reload. `make help` lists all available targets.
 
 ## Adding a capability
 
@@ -70,8 +78,8 @@ be 3.14; choose the interpreter explicitly when creating an environment.
 Pydantic is already a dependency:
 
 ```bash
-python3.12 -m venv .venv
-source .venv/bin/activate
+python3.12 -m venv ../.venv
+source ../.venv/bin/activate
 pip install -r requirements/all.txt
 python scripts/check_architecture.py
 python -m unittest discover -s tests/unit -v
@@ -114,14 +122,14 @@ If the incompatible environment is `venv/`, you can keep it and activate a new
 
 ```bash
 deactivate  # only if another virtual environment is active
-python3.12 -m venv .venv
-source .venv/bin/activate
+python3.12 -m venv ../.venv
+source ../.venv/bin/activate
 python --version
 python -m pip install -r requirements/all.txt
 python -m pip check
 ```
 
-For Python 3.13, create the environment with `python3.13 -m venv .venv`.
+For Python 3.13, create the environment with `python3.13 -m venv ../.venv`.
 In VS Code, choose `${workspaceFolder}/.venv/bin/python` as the interpreter.
 The `activate` file is a shell script, not an interpreter.
 

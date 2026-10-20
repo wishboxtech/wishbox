@@ -1,0 +1,23 @@
+services:
+  back:
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    volumes:
+      - ../backend/src:/usr/src/app/src
+      - ../backend/settings:/usr/src/app/settings
+      - ../backend/openapi:/usr/src/app/openapi
+      - ../backend/templates:/usr/src/app/templates
+  gift-worker:
+    volumes:
+      - ../backend/src:/usr/src/app/src
+      - ../backend/settings:/usr/src/app/settings
+  frontend:
+    build:
+      target: development
+    environment:
+      API_PROXY_TARGET: http://back:8000
+    volumes:
+      - ../frontend/src:/app/src
+      - ../frontend/public:/app/public
+      - ../frontend/index.html:/app/index.html
+      - ../frontend/vite.config.ts:/app/vite.config.ts
+    command: ["npm", "run", "dev", "--", "--port", "80"]

@@ -1,0 +1,185 @@
+EditWishlist:
+  type: object
+  properties:
+    name:
+      type: string
+      minLength: 1
+      maxLength: 150
+    description:
+      type: string
+    cover:
+      type: string
+      format: uuid
+      x-nullable: true
+  description: Partial update. Omitted fields are preserved; cover null clears the
+    cover.
+Wishlist: &id004
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+    name:
+      type: string
+    description:
+      type: string
+    cover:
+      type: object
+      x-nullable: true
+      properties:
+        file:
+          type: string
+    created_at: &id001
+      type: string
+      format: date-time
+    updated_at: *id001
+CreateWish:
+  type: object
+  required:
+  - name
+  - price
+  properties:
+    name:
+      type: string
+      minLength: 1
+      maxLength: 150
+    description:
+      type: string
+    cover:
+      type: string
+      format: uuid
+      x-nullable: true
+    price:
+      type: string
+      description: Decimal, at most 10 digits and no fractional digits.
+EditWish:
+  type: object
+  properties:
+    name:
+      type: string
+      minLength: 1
+      maxLength: 150
+    description:
+      type: string
+    cover:
+      type: string
+      format: uuid
+      x-nullable: true
+    price:
+      type: string
+      description: Decimal, at most 10 digits and no fractional digits.
+  description: Partial update within the wishlist in the URL. A wish cannot be moved
+    using this endpoint.
+Wishes:
+  type: array
+  items: &id003
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+      name:
+        type: string
+      description:
+        type: string
+      cover:
+        type: object
+        x-nullable: true
+        properties:
+          file:
+            type: string
+      created_at: &id002
+        type: string
+        format: date-time
+      updated_at: *id002
+      price:
+        type: string
+        description: Decimal price without fractional digits.
+      wishlist_id: &id005
+        type: string
+        format: uuid
+Wish: *id003
+CreateWishlist:
+  type: object
+  required:
+  - name
+  properties:
+    name:
+      type: string
+      minLength: 1
+      maxLength: 150
+    description:
+      type: string
+    cover:
+      type: string
+      format: uuid
+      x-nullable: true
+Wishlists:
+  type: array
+  items: *id004
+Request:
+  type: object
+  properties:
+    nickname:
+      type: string
+      minLength: 1
+      maxLength: 150
+    purchase_by:
+      type: string
+      format: date
+      description: Today through 30 days ahead, validated by the server UTC calendar.
+    purchase_plan:
+      type: string
+      minLength: 3
+      maxLength: 160
+    details_checked:
+      type: boolean
+      description: 'Must be true: the giver checked the exact wish details.'
+  required:
+  - purchase_by
+  - purchase_plan
+  - details_checked
+RequestComplete:
+  type: object
+  properties:
+    id:
+      type: integer
+    wish_id: *id005
+    wishlist_id: *id005
+    wish_name:
+      type: string
+    status:
+      type: string
+      enum:
+      - available
+      - reserved
+      - purchased
+      - received
+      - cancelled
+      - expired
+    created_at:
+      type: string
+      format: date-time
+    management_token:
+      type: string
+      x-nullable: true
+    purchase_by:
+      type: string
+      format: date
+      x-nullable: true
+    purchase_plan:
+      type: string
+    expires_at: &id006
+      type: string
+      format: date-time
+      x-nullable: true
+    extension_count:
+      type: integer
+    received_at: *id006
+    thank_you:
+      type: string
+    thank_you_sent_at: *id006
+    follow_up_note:
+      type: string
+    follow_up_sent_at: *id006
+    follow_up_acknowledged_at: *id006

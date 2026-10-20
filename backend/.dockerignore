@@ -1,0 +1,9 @@
+.git
+.env*
+.venv
+venv
+media
+static
+**/__pycache__
+**/*.pyc
+.coverage

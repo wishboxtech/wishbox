@@ -1,0 +1,40 @@
+post:
+  tags:
+    - "AUTH"
+  summary: "Verify OTP - READY"
+  description: "The optional guest_key links guest gifts only when this verification creates the first account. Existing accounts never claim."
+  operationId: "verifyOTP"
+  consumes:
+    - "application/json"
+  produces:
+    - "application/json"
+  parameters:
+    - in: "body"
+      name: "body"
+      description: "Verifies OTP"
+      required: true
+      schema:
+        $ref: "./definitions.yaml#/InVerifyOTP"
+  responses:
+    200:
+      description: "successful operation"
+      schema:
+        type: "object"
+        properties:
+          ok:
+            type: "boolean"
+            default: true
+          data:
+            type: "object"
+            properties:
+              access_token: {type: string}
+              refresh_token: {type: string}
+              is_new_user: {type: boolean}
+              guest_claimed: {type: boolean}
+          status:
+            type: "number"
+            default: 200
+    400:
+      description: "Bad Request"
+    429:
+      description: "Throttled"

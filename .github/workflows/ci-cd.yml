@@ -32,7 +32,7 @@ jobs:
           name: Build and push
           uses: docker/build-push-action@v6
           with:
-            context: .
-            file: ./build/Dockerfile
+            context: ./backend
+            file: ./backend/Dockerfile
             push: true
             tags: theparsa/wishbox:latest
