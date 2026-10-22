@@ -1,6 +1,11 @@
 """Development settings and globals."""
 
+from os import environ
+
 from settings.common import *
+from settings.storage import media_storage_settings
+
+STORAGES = media_storage_settings(environ)
 
 # * DEBUG CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug

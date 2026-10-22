@@ -161,6 +161,24 @@ all services with Django/settings imports blocked. The checker complements code
 review: it does not analyze dynamic imports or every business invariant.
 See [development.md](development.md) for commands.
 
+## Administrative reporting and media storage
+
+The existing Unfold admin index calls a presentation callback in
+`src/api/admin_dashboard.py`. The callback grants aggregate reporting only to
+active superusers and delegates to `website.services.dashboard.DashboardService`.
+That service combines framework-free DTO snapshots through consumer-owned
+`UserMetricsReader` and `WishMetricsReader` protocols. Authentication and wishlist
+repositories own their aggregate queries; composition constructs and injects both
+readers. No ORM objects cross the boundary and no public metrics route is added.
+
+The storage settings builder in `settings/storage.py` is shared by development
+and production. S3 replaces only media storage; admin/static assets keep their
+existing local storage. The existing-media copy command delegates to
+`MediaMigrationService`, whose repository owns key enumeration and file transfer.
+Source and destination storage implementations are assembled in composition.
+See [storage and admin operations](storage-and-admin.md) for environment variables,
+copying existing media, rate definitions and activity tracking limitations.
+
 
 Guest signup linking crosses domains through authentication’s consumer-owned
 `GuestClaims` protocol. Composition injects `GuestClaimService`, which consumes
