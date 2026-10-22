@@ -91,7 +91,9 @@ class AuthenticationService:
                     claimed = self.guest_claims.claim(dto.guest_key, user.id)
         if not user.is_active:
             raise InvalidUserID()
-        return self.tokens.issue(user.id).model_copy(
+        tokens = self.tokens.issue(user.id)
+        self.users.record_login(user.id)
+        return tokens.model_copy(
             update={"is_new_user": created, "guest_claimed": claimed}
         )
 
@@ -99,7 +101,9 @@ class AuthenticationService:
         user = self.users.get(dto.id)
         if user is None or not user.is_active:
             raise InvalidUserID()
-        return self.tokens.issue(user.id)
+        tokens = self.tokens.issue(user.id)
+        self.users.record_login(user.id)
+        return tokens
 
     def refresh(self, dto: RefreshInputDTO) -> TokensOutputDTO:
         return self.tokens.refresh(dto.token)

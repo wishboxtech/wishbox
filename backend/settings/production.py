@@ -10,6 +10,9 @@ from corsheaders.defaults import default_headers
 from django.core.exceptions import ImproperlyConfigured
 
 from settings.common import *
+from settings.storage import media_storage_settings
+
+STORAGES = media_storage_settings(environ)
 
 
 def get_env_setting(setting):
@@ -59,59 +62,7 @@ SERVER_EMAIL = EMAIL_HOST_USER
 SECRET_KEY = get_env_setting("SECRET_KEY")
 ########## END SECRET CONFIGURATION
 
-# STORAGE CONFIGURATION
-# settings.py
-
-
-# Common settings
-USE_S3 = get_env("USE_S3")
-S3_MEDIA_URL = get_env("S3_MEDIA_URL")
-S3_STATIC_URL = get_env("S3_STATIC_URL")
-MINIO_STORAGE_ENDPOINT = get_env("MINIO_STORAGE_ENDPOINT", optional=True)
-MINIO_STORAGE_ACCESS_KEY = get_env("MINIO_STORAGE_ACCESS_KEY", optional=True)
-MINIO_STORAGE_SECRET_KEY = get_env("MINIO_STORAGE_SECRET_KEY", optional=True)
-MINIO_STORAGE_MEDIA_BUCKET_NAME = get_env(
-    "MINIO_STORAGE_MEDIA_BUCKET_NAME", optional=True
-)
-MINIO_STORAGE_STATIC_BUCKET_NAME = get_env(
-    "MINIO_STORAGE_STATIC_BUCKET_NAME", optional=True
-)
-MINIO_STORAGE_USE_HTTPS = get_env("MINIO_STORAGE_USE_HTTPS", optional=True)
-
-
-if USE_S3:
-    STORAGES = {
-        "default": {
-            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-            "OPTIONS": {
-                "access_key": MINIO_STORAGE_ACCESS_KEY,
-                "secret_key": MINIO_STORAGE_SECRET_KEY,
-                "bucket_name": S3_MEDIA_URL,  # should get seperated from the ORIGINAL ONE
-                "endpoint_url": f"http{'s' if MINIO_STORAGE_USE_HTTPS else ''}://{MINIO_STORAGE_ENDPOINT}",
-            },
-        },
-        "staticfiles": {
-            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-            "OPTIONS": {
-                "access_key": MINIO_STORAGE_ACCESS_KEY,
-                "secret_key": MINIO_STORAGE_SECRET_KEY,
-                "bucket_name": S3_STATIC_URL,  # should get seperated from the ORIGINAL ONE
-                "endpoint_url": f"http{'s' if MINIO_STORAGE_USE_HTTPS else ''}://{MINIO_STORAGE_ENDPOINT}",
-            },
-        },
-    }
-
-
-DEFAULT_FILE_STORAGE = get_env(
-    "DEFAULT_FILE_STORAGE",
-    default="django.core.files.storage.FileSystemStorage",
-)
-STATICFILES_STORAGE = get_env(
-    "STATICFILES_STORAGE",
-    default="django.contrib.staticfiles.storage.StaticFilesStorage",
-)
-
-# END MINIO CONFIGURATION
+# Media storage is shared with development through settings.storage.
 
 
 # CORSHEADERS CONFIGURATION

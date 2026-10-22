@@ -180,6 +180,7 @@ UNFOLD = {
     "SITE_TITLE": "Wishy Admin Panel",
     "SITE_HEADER": "Wishy",
     "SITE_SUBHEADER": "administration",
+    "DASHBOARD_CALLBACK": "src.api.admin_dashboard.dashboard_callback",
 }
 # * End Unfold configuration
 

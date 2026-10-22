@@ -16,6 +16,9 @@ manifest. Shared orchestration and local stack configuration live at the
 repository root. Make commands below run from the root; direct Django and
 backend Python commands run from `backend/`.
 
+See [S3 storage and the admin overview](storage-and-admin.md) for Arvan uploads,
+existing-media migration, server environment variables and dashboard definitions.
+
 ## One-command startup
 
 Install Docker Engine with Compose v2+ and GNU Make. Python 3.12+ is needed for

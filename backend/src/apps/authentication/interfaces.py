@@ -25,6 +25,9 @@ class UserRepository(Protocol):
     def create(self, dto: CreateUserInputDTO) -> User:
         ...
 
+    def record_login(self, id: UUID) -> None:
+        ...
+
 
 class OTPRepository(Protocol):
     def exists(self, target: str, prefix: str) -> bool:

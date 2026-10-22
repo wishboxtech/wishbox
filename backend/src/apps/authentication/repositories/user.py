@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.db.models import Q
+from django.utils.timezone import now
 
 from src.apps.authentication.domain import User as UserEntity
 from src.apps.authentication.models.user import User
@@ -18,6 +19,9 @@ def user_entity(item):
 
 
 class DjangoUserRepository:
+    def record_login(self, id):
+        User.objects.filter(pk=id).update(last_login=now())
+
     def get(self, id):
         item = User.objects.filter(id=id).first()
         return user_entity(item) if item else None

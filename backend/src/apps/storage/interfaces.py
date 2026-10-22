@@ -1,4 +1,5 @@
 from typing import Protocol
+from collections.abc import Iterable
 from uuid import UUID
 
 from src.apps.storage.domain import Media
@@ -23,4 +24,18 @@ class StorageServiceProtocol(Protocol):
         ...
 
     def get_media_batch(self, ids: tuple[UUID, ...]) -> dict[UUID, MediaOutputDTO]:
+        ...
+
+
+class MediaCopyRepository(Protocol):
+    def names(self) -> Iterable[str]:
+        ...
+
+    def local_exists(self, name: str) -> bool:
+        ...
+
+    def remote_exists(self, name: str) -> bool:
+        ...
+
+    def copy(self, name: str) -> None:
         ...

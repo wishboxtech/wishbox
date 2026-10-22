@@ -1,0 +1,105 @@
+{% extends 'admin/base.html' %}
+{% load i18n static l10n %}
+
+{% block branding %}
+    {% include 'unfold/helpers/site_branding.html' %}
+{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'wishy/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+{% if wishy_metrics %}
+<section class="wishy-dashboard" aria-labelledby="wishy-overview-title">
+    <header class="wishy-heading">
+        <div>
+            <p class="wishy-eyebrow">ADMIN DASHBOARD</p>
+            <h1 id="wishy-overview-title">Wishy overview</h1>
+            <p class="wishy-muted">Account activity and wish fulfillment.</p>
+        </div>
+        <div class="wishy-updated"><span class="wishy-live-dot"></span> Updated on page load<br><time>{{ wishy_metrics.generated_at|date:"d M Y, H:i" }} UTC</time></div>
+    </header>
+
+    <div class="wishy-kpis">
+        <article class="wishy-card">
+            <p class="wishy-card-label"><span class="material-symbols-outlined" aria-hidden="true">group</span> Active users</p>
+            <p class="wishy-value">{{ wishy_metrics.users.active }}</p>
+            <p class="wishy-muted">Successful login in the last 30 days</p>
+        </article>
+        <article class="wishy-card">
+            <p class="wishy-card-label"><span class="material-symbols-outlined" aria-hidden="true">auto_awesome</span> Wishes created</p>
+            <p class="wishy-value">{{ wishy_metrics.wishes.total }}</p>
+            <p class="wishy-muted">All currently stored wishes</p>
+        </article>
+        <article class="wishy-card">
+            <p class="wishy-card-label"><span class="material-symbols-outlined" aria-hidden="true">redeem</span> Wishes fulfilled</p>
+            <p class="wishy-value">{{ wishy_metrics.wishes.fulfilled }}</p>
+            <p class="wishy-muted">Receipt confirmed by the wish owner</p>
+        </article>
+        <article class="wishy-card wishy-card-accent">
+            <p class="wishy-card-label"><span class="material-symbols-outlined" aria-hidden="true">favorite</span> Fulfillment rate</p>
+            <p class="wishy-value">{% if wishy_metrics.fulfillment_rate != None %}{{ wishy_metrics.fulfillment_rate|floatformat:1 }}<span class="wishy-percent">%</span>{% else %}—{% endif %}</p>
+            <p class="wishy-muted">Fulfilled wishes ÷ all wishes</p>
+        </article>
+    </div>
+
+    <div class="wishy-account-summary" aria-label="Account totals">
+        <span><strong>{{ wishy_metrics.users.enabled }}</strong> enabled accounts</span>
+        <span><strong>{{ wishy_metrics.users.total }}</strong> total customer accounts</span>
+        <span><strong>{{ wishy_metrics.users.new }}</strong> joined in the last 30 days</span>
+        <span class="wishy-muted">Staff and administrator accounts excluded</span>
+    </div>
+
+    <div class="wishy-panels">
+        <section class="wishy-panel" aria-labelledby="wishy-gender-title">
+            <div class="wishy-section-heading"><div><h2 id="wishy-gender-title">Fulfillment by gender</h2><p class="wishy-muted">Gender of the wish owner, across all stored wishes.</p></div><span class="wishy-badge">ALL TIME</span></div>
+            <div class="wishy-table-scroll">
+                <table class="wishy-table">
+                    <caption class="wishy-sr-only">Fulfillment rates by wish owner's recorded gender</caption>
+                    <thead><tr><th scope="col">Owner gender</th><th scope="col">Wishes</th><th scope="col">Fulfilled</th><th scope="col">Rate</th></tr></thead>
+                    <tbody>
+                    {% for row in wishy_metrics.by_gender %}
+                        <tr><th scope="row">{{ row.label }}</th><td>{{ row.total }}</td><td>{{ row.fulfilled }}</td><td class="wishy-rate-cell"><div class="wishy-rate">{% if row.rate != None %}<strong>{{ row.rate|floatformat:1 }}%</strong><progress max="100" value="{{ row.rate|unlocalize }}" aria-label="{{ row.label }} fulfillment rate">{{ row.rate|floatformat:1 }}%</progress>{% else %}<span class="wishy-muted">— No wishes</span>{% endif %}</div></td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <p class="wishy-footnote">Not specified includes missing and unrecognized values. Gender is never inferred. A dash means there is no denominator.</p>
+        </section>
+
+        <section class="wishy-panel" aria-labelledby="wishy-pipeline-title">
+            <div class="wishy-section-heading"><div><h2 id="wishy-pipeline-title">From wish to gift</h2><p class="wishy-muted">Where the current wishes stand.</p></div></div>
+            <ol class="wishy-pipeline">
+                <li><span class="wishy-stage-dot wishy-stage-open"></span><span>Awaiting a giver</span><strong>{{ wishy_metrics.awaiting }}</strong></li>
+                <li><span class="wishy-stage-dot wishy-stage-reserved"></span><span>Reserved</span><strong>{{ wishy_metrics.wishes.reserved }}</strong></li>
+                <li><span class="wishy-stage-dot wishy-stage-purchased"></span><span>Purchased, awaiting receipt</span><strong>{{ wishy_metrics.wishes.purchased }}</strong></li>
+                <li><span class="wishy-stage-dot wishy-stage-received"></span><span>Received / fulfilled</span><strong>{{ wishy_metrics.wishes.fulfilled }}</strong></li>
+            </ol>
+            <p class="wishy-footnote">Reservations and purchases count as progress, not fulfillment.</p>
+        </section>
+    </div>
+
+    <section class="wishy-panel wishy-trend-panel" aria-labelledby="wishy-trend-title">
+        <div class="wishy-section-heading"><div><h2 id="wishy-trend-title">The last 30 days</h2><p class="wishy-muted">{{ wishy_metrics.wishes.recent }} wishes created. Daily creation and confirmed receipt, shown in UTC.</p></div><div class="wishy-legend"><span><i class="wishy-created-key"></i>Created</span><span><i class="wishy-fulfilled-key"></i>Fulfilled</span></div></div>
+        {% if wishy_metrics.wishes.total %}
+        <div class="wishy-chart" role="img" aria-label="Daily wishes created and fulfilled over the last 30 calendar days. Exact values are available in the daily counts table below.">
+            {% for day in wishy_trend %}
+            <div class="wishy-chart-day" title="{{ day.day|date:'d M' }}: {{ day.created }} created, {{ day.fulfilled }} fulfilled"><span class="wishy-bar wishy-bar-created" style="height: {{ day.created_height }}%"></span><span class="wishy-bar wishy-bar-fulfilled" style="height: {{ day.fulfilled_height }}%"></span></div>
+            {% endfor %}
+        </div>
+        <div class="wishy-chart-axis"><span>{{ wishy_metrics.chart_since|date:"d M" }}</span><span>{{ wishy_metrics.generated_at|date:"d M" }}</span></div>
+        {% else %}<div class="wishy-empty">Your first wish starts the story. Activity will appear here as wishes are created and received.</div>{% endif %}
+        <details class="wishy-daily-details"><summary>View daily counts</summary><div class="wishy-table-scroll"><table class="wishy-table"><caption class="wishy-sr-only">Daily wish activity in UTC</caption><thead><tr><th scope="col">Date (UTC)</th><th scope="col">Created</th><th scope="col">Fulfilled</th></tr></thead><tbody>{% for day in wishy_trend %}<tr><th scope="row">{{ day.day|date:"Y-m-d" }}</th><td>{{ day.created }}</td><td>{{ day.fulfilled }}</td></tr>{% endfor %}</tbody></table></div></details>
+    </section>
+
+    <p class="wishy-definitions">Active users are enabled customer accounts with a successful login since {{ wishy_metrics.active_since|date:"d M Y, H:i" }} UTC. Login tracking starts with this release; older unrecorded logins cannot be reconstructed. Deleted wishes are excluded. Trend completions use the receipt date; overall rates use all stored wishes.</p>
+</section>
+{% endif %}
+
+<div class="flex flex-col lg:flex-row lg:gap-8">
+    <div class="grow">{% include 'unfold/helpers/app_list_default.html' %}</div>
+    {% include 'unfold/helpers/history.html' %}
+</div>
+{% endblock %}

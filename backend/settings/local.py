@@ -21,11 +21,6 @@ CSRF_TRUSTED_ORIGINS = [
         "5173",
     }
 ]
-STORAGES = {
-    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
-    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
-}
-
 # The toolbar probes host.docker.internal on every request. Linux Docker may
 # spend minutes resolving that optional hostname; the SPA does not use the toolbar.
 MIDDLEWARE = tuple(

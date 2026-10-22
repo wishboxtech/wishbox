@@ -87,6 +87,7 @@ class AuthenticationUnitTests(TestCase):
         )
         self.assertEqual(result.access_token, "access")
         self.users.create.assert_not_called()
+        self.users.record_login.assert_called_once_with(self.user.id)
 
     def test_guest_link_is_only_available_during_new_account_creation(self):
         self.service.guest_claims = Mock()
@@ -165,9 +166,18 @@ class AuthenticationUnitTests(TestCase):
             )
         self.users.create.assert_not_called()
         self.tokens.issue.assert_not_called()
+        self.users.record_login.assert_not_called()
 
     def test_inactive_user_cannot_login(self):
         self.users.get.return_value = replace(self.user, is_active=False)
         with self.assertRaises(InvalidUserID):
             self.service.login(IdInputDTO(id=self.user.id))
         self.tokens.issue.assert_not_called()
+        self.users.record_login.assert_not_called()
+
+    def test_failed_token_issue_does_not_count_as_a_login(self):
+        self.users.get.return_value = self.user
+        self.tokens.issue.side_effect = RuntimeError("Token storage unavailable")
+        with self.assertRaises(RuntimeError):
+            self.service.login(IdInputDTO(id=self.user.id))
+        self.users.record_login.assert_not_called()

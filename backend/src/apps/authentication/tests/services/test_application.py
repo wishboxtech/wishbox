@@ -10,6 +10,7 @@ from src.apps.authentication.dto import (
     VerifyOTPInputDTO,
 )
 from src.apps.authentication.functions import validate_token
+from src.apps.authentication.models import User
 from src.core.composition import authentication_service
 from src.shared.dto import IdInputDTO
 
@@ -26,6 +27,7 @@ class AuthenticationServiceIntegrationTests(TestCase):
         self.assertEqual(self.service.get_user(IdInputDTO(id=user.id)), user)
         tokens = self.service.login(IdInputDTO(id=user.id))
         self.assertTrue(validate_token(tokens.access_token))
+        self.assertIsNotNone(User.objects.get(pk=user.id).last_login)
 
     def test_prefixed_otp_and_verification(self):
         with patch(
@@ -72,3 +74,4 @@ class AuthenticationServiceIntegrationTests(TestCase):
             VerifyOTPInputDTO(otp_id=output.otp_id, otp_code="123456")
         )
         self.assertTrue(validate_token(tokens.access_token))
+        self.assertIsNotNone(User.objects.get(phone_number="09999999999").last_login)

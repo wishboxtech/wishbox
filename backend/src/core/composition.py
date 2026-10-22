@@ -1,13 +1,10 @@
 """The only place that assembles concrete application dependencies."""
 
-from src.apps.wishlist.repositories.gifting import DjangoGiftRepository
-from src.apps.wishlist.repositories.credentials import SecureGiftCredentials
-from src.apps.wishlist.services.gifting import GiftingService
-from src.apps.wishlist.services.guest import GuestClaimService
-from src.apps.wishlist.repositories.guest import DjangoGuestRepository
-
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage, default_storage
 from django.utils.timezone import now
 from settings import UNDER_DEVELOPMENT
+from src.apps.authentication.repositories.metrics import DjangoUserMetricsReader
 from src.apps.authentication.repositories.otp import CachedOTPRepository
 from src.apps.authentication.repositories.tokens import CachedTokenIssuer
 from src.apps.authentication.repositories.user import DjangoUserRepository
@@ -15,11 +12,20 @@ from src.apps.authentication.services import AuthenticationService
 from src.apps.profile.repositories.profile import DjangoProfileRepository
 from src.apps.profile.services import ProfileService
 from src.apps.storage.repositories.media import DjangoMediaRepository
+from src.apps.storage.repositories.migration import DjangoMediaCopyRepository
 from src.apps.storage.services import StorageService
+from src.apps.storage.services.migration import MediaMigrationService
 from src.apps.website.repositories.contact import DjangoContactRepository
 from src.apps.website.services import WebsiteService
+from src.apps.website.services.dashboard import DashboardService
+from src.apps.wishlist.repositories.credentials import SecureGiftCredentials
+from src.apps.wishlist.repositories.gifting import DjangoGiftRepository
+from src.apps.wishlist.repositories.guest import DjangoGuestRepository
+from src.apps.wishlist.repositories.metrics import DjangoWishMetricsReader
 from src.apps.wishlist.repositories.wishlist import DjangoWishlistRepository
 from src.apps.wishlist.services import WishlistService
+from src.apps.wishlist.services.gifting import GiftingService
+from src.apps.wishlist.services.guest import GuestClaimService
 from src.shared.transactions import after_commit, transaction_boundary
 from src.utils.otp import send_sms_otp
 
@@ -49,6 +55,17 @@ def storage_service() -> StorageService:
     )
 
 
+def media_migration_service() -> MediaMigrationService:
+    if settings.STORAGES["default"]["BACKEND"] != "storages.backends.s3.S3Storage":
+        raise ValueError("Enable USE_S3 before running the media copy command")
+    return MediaMigrationService(
+        DjangoMediaCopyRepository(
+            source=FileSystemStorage(location=settings.MEDIA_ROOT),
+            destination=default_storage,
+        )
+    )
+
+
 def profile_service() -> ProfileService:
     return ProfileService(
         repository=DjangoProfileRepository(),
@@ -69,6 +86,12 @@ def wishlist_service() -> WishlistService:
 
 def website_service() -> WebsiteService:
     return WebsiteService(repository=DjangoContactRepository())
+
+
+def dashboard_service() -> DashboardService:
+    return DashboardService(
+        users=DjangoUserMetricsReader(), wishes=DjangoWishMetricsReader(), clock=now
+    )
 
 
 def gifting_service():

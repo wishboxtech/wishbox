@@ -17,3 +17,10 @@ class MediaOutputDTO(DTO):
 
 class UploadMediaOutputDTO(DTO):
     media_id: UUID
+
+
+class CopyMediaOutputDTO(DTO):
+    copied: int
+    would_copy: int
+    existing: int
+    missing: int
