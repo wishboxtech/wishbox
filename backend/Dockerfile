@@ -1,10 +1,18 @@
 FROM python:3.13-slim
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
 WORKDIR /usr/src/app
-RUN apt-get update && apt-get install -y --no-install-recommends libmagic1 libpq5 \
+RUN sed -i \
+      's|http://deb.debian.org|https://mirror.arvancloud.ir|g' \
+      /etc/apt/sources.list.d/debian.sources \
+    && apt-get -o APT::Update::Error-Mode=any update \
+    && apt-get install -y --no-install-recommends libmagic1 libpq5 \
     && rm -rf /var/lib/apt/lists/*
 COPY requirements/all.txt /tmp/requirements.txt
-RUN pip install --no-cache-dir -r /tmp/requirements.txt
+RUN pip install --no-cache-dir \
+    --index-url https://repo.hmirror.ir/python/simple/ \
+    --timeout 60 \
+    --retries 2 \
+    -r /tmp/requirements.txt
 RUN groupadd --gid 1000 app && useradd --uid 1000 --gid app app
 COPY --chown=app:app manage.py ./
 COPY --chown=app:app src ./src

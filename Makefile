@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := help
 ROOT := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 BACKEND := $(ROOT)backend/
-PYTHON ?= python3.12
+PYTHON ?= python3.14
 VENV ?= $(ROOT).venv
 PY := $(VENV)/bin/python
 COMPOSE := docker compose --project-name wishbox --env-file $(ROOT).env.local -f $(ROOT)build/docker-compose.yaml

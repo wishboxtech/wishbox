@@ -1,7 +1,12 @@
 FROM node:22-alpine AS development
 WORKDIR /app
 COPY package*.json ./
-RUN --mount=type=cache,target=/root/.npm npm ci --no-audit --no-fund
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --no-audit --no-fund \
+      --registry=https://repo.hmirror.ir/npm/ \
+      --fetch-retries=2 \
+      --fetch-timeout=60000 \
+      --loglevel=verbose
 COPY . .
 EXPOSE 80
 CMD ["npm", "run", "dev", "--", "--port", "80"]

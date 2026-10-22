@@ -33,3 +33,7 @@ MIDDLEWARE = tuple(
     for item in MIDDLEWARE
     if item != "debug_toolbar.middleware.DebugToolbarMiddleware"
 )
+CSRF_TRUSTED_ORIGINS += [
+    "https://wishy.ir",
+    "https://www.wishy.ir",
+]
