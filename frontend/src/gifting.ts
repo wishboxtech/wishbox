@@ -1,4 +1,5 @@
 import { request } from "./api";
+import { randomUuid } from "./browserCrypto";
 import type { Activity, GiftRecord, GiftStatus } from "./types";
 
 const VISITOR_KEY = "wishy.visitor";
@@ -8,11 +9,11 @@ let memoryGifts: GiftRecord[] = [];
 export function visitorId() {
   try {
     const stored = localStorage.getItem(VISITOR_KEY);
-    if (stored && /^[0-9a-f-]{36}$/i.test(stored)) return stored;
+    if (stored && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(stored)) return stored;
   } catch {
     /* Keep the page usable when browser storage is disabled. */
   }
-  memoryVisitor ||= crypto.randomUUID();
+  memoryVisitor ||= randomUuid();
   try {
     localStorage.setItem(VISITOR_KEY, memoryVisitor);
   } catch {

@@ -51,6 +51,13 @@ describe("gift management", () => {
     assert.equal(visitorId(), visitorId());
     assert.match(visitorId(), /^[a-f0-9-]{36}$/);
   });
+  it("repairs a malformed 36-character visitor instead of sending an invalid UUID", () => {
+    data.set("wishy.visitor", "-".repeat(36));
+    const id = visitorId();
+    assert.match(id, /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/);
+    assert.equal(giftHeaders()["X-Wishy-Visitor"], id);
+    assert.equal(data.get("wishy.visitor"), id);
+  });
   it("offers the correct next step to the giver and owner", () => {
     assert.deepEqual(giftActions(activity), ["purchase", "cancel"]);
     assert.deepEqual(giftActions({ ...activity, status: "purchased" }), [

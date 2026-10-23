@@ -13,7 +13,7 @@
     "test": "tsx --test src/*.test.ts src/*.test.tsx",
     "preview": "vite preview --host 0.0.0.0",
     "cats:export": "tsx scripts/export-cat-parts.tsx",
-    "test:ui": "playwright test e2e/ui-audit.spec.ts e2e/second-review.spec.ts e2e/extra-states.spec.ts e2e/details.spec.ts e2e/cat-artwork.spec.ts",
+    "test:ui": "playwright test e2e/ui-audit.spec.ts e2e/second-review.spec.ts e2e/extra-states.spec.ts e2e/details.spec.ts e2e/cat-artwork.spec.ts e2e/http-origin.spec.ts",
     "test:live": "playwright test e2e/live-gifting.spec.ts",
     "test:cats": "npm run cats:export && playwright test e2e/cat-artwork.spec.ts"
   },
